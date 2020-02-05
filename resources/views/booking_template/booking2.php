@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf 8">
-        <title>Booking Form</title>
-
+        <title>Booking</title>
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.9/angular-sanitize.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/ui-select@0.19.8/dist/select.min.js"></script>
@@ -14,8 +14,8 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/angular-daterangepicker@0.2.3-alpha1/js/angular-daterangepicker.min.js"></script>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-	<link rel="stylesheet" href="booking_template_asset/assets/css/style.css">
-	<link rel="stylesheet" href="booking_template_asset/assets/fonts/material-design-iconic-font/css/material-design-iconic-font.css">
+        <link rel="stylesheet" href="booking_template_asset/assets/css/style.css">
+        <link rel="stylesheet" href="booking_template_asset/assets/fonts/material-design-iconic-font/css/material-design-iconic-font.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
@@ -263,17 +263,10 @@
                             <div class="form-row">
                                 <div class="form-holder w-100">
                                     <i class="zmdi zmdi-account"></i>
-                                    <input type="text" class="form-control" ng-class="{ error: templateForm.firstName.$touched && templateForm.firstName.$invalid }"
-                                           placeholder="First Name" name="firstName" ng-model="form.info.firstName" required>
+                                    <input type="text" class="form-control" ng-class="{ error: templateForm.name.$touched && templateForm.name.$invalid }"
+                                           placeholder="Last Name" name="name" ng-model="form.info.name" required>
                                 </div>
                             </div>
-<!--                            <div class="form-row">-->
-<!--                                <div class="form-holder w-100">-->
-<!--                                    <i class="zmdi zmdi-account"></i>-->
-<!--                                    <input type="text" class="form-control" ng-class="{ error: templateForm.lastName.$touched && templateForm.lastName.$invalid }"-->
-<!--                                           placeholder="Last Name" name="lastName" ng-model="form.info.lastName" required>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="form-row">
                                 <div class="form-holder w-100">
                                     <i class="zmdi zmdi-account"></i>
@@ -281,13 +274,6 @@
                                            placeholder="Phone Number" name="phone" ng-model="form.info.phone" required>
                                 </div>
                             </div>
-<!--                            <div class="form-row">-->
-<!--                                <div class="form-holder w-100">-->
-<!--                                    <i class="zmdi zmdi-account"></i>-->
-<!--                                    <input type="text" class="form-control" ng-class="{ error: templateForm.email.$touched && templateForm.email.$invalid }"-->
-<!--                                           placeholder="Email Address" name="email" ng-model="form.info.email" required>-->
-<!--                                </div>-->
-<!--                            </div>-->
                         </section>
                         <section ng-switch-when="2">
                             <h3>Pick Service</h3>
@@ -373,15 +359,9 @@
                                     <tr>
                                         <th>Name</th>
                                         <td data-title="Subtotal">
-                                            <span>{{ form.info.firstName }} {{ form.info.lastName }}</span>
+                                            <span>{{ form.info.name }}</span>
                                         </td>
                                     </tr>
-<!--                                    <tr>-->
-<!--                                        <th>Email</th>-->
-<!--                                        <td data-title="Subtotal">-->
-<!--                                            <span>{{ form.info.email }}</span>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
                                     <tr>
                                         <th>Phone</th>
                                         <td data-title="Subtotal">
@@ -418,7 +398,7 @@
                                 <a ng-click="nextStep()" role="menuitem">Continue</a>
 		            </li>
 		            <li ng-class="{ hidden: step !== maxStep, disabled: disableNext(templateForm) }">
-                                <a ng-click="done()" role="menuitem">Proceed to checkout</a>
+                                <a ng-click="done()" role="menuitem" href="">Proceed to checkout</a>
 		            </li>
 	                </ul>
                     </div>
@@ -427,173 +407,171 @@
         </div>
 
         <script>
-            const app = angular.module('app', ['daterangepicker', 'ui.select', 'ngSanitize'])
+         const app = angular.module('app', ['daterangepicker', 'ui.select', 'ngSanitize'])
 
 
-            app.filter('propsFilter', function() {
-                return function(items, props) {
-                    var out = [];
+         app.filter('propsFilter', function() {
+             return function(items, props) {
+                 var out = [];
 
-                    if (angular.isArray(items)) {
-                        var keys = Object.keys(props);
+                 if (angular.isArray(items)) {
+                     var keys = Object.keys(props);
 
-                        items.forEach(function(item) {
-                            var itemMatches = false;
+                     items.forEach(function(item) {
+                         var itemMatches = false;
 
-                            for (var i = 0; i < keys.length; i++) {
-                                var prop = keys[i];
-                                var text = props[prop].toLowerCase();
-                                if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                                    itemMatches = true;
-                                    break;
-                                }
-                            }
+                         for (var i = 0; i < keys.length; i++) {
+                             var prop = keys[i];
+                             var text = props[prop].toLowerCase();
+                             if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                                 itemMatches = true;
+                                 break;
+                             }
+                         }
 
-                            if (itemMatches) {
-                                out.push(item);
-                            }
-                        });
-                    } else {
-                        out = items;
-                    }
+                         if (itemMatches) {
+                             out.push(item);
+                         }
+                     });
+                 } else {
+                     out = items;
+                 }
 
-                    return out;
-                };
-            });
+                 return out;
+             };
+         });
 
-            app.controller('FormWizardController', FormWizardController)
+         app.controller('FormWizardController', FormWizardController)
 
-            function FormWizardController($scope) {
-                $scope.step = 1;
-                $scope.maxStep = 5;
+         function FormWizardController($scope) {
+             $scope.step = 1;
+             $scope.maxStep = 5;
 
-                $scope.services = [
-                    {
-                        id: 1,
-                        img: 'assets/images/item-1.jpg',
-                        text: 'Non diam phasellus vestibulum?',
-                        active: false
-                    },
-                    {
-                        id: 2,
-                        img: 'assets/images/item-2.jpg',
-                        text: 'Fermentum dui faucibus in!',
-                        active: false
-                    },
-                    {
-                        id: 3,
-                        img: 'assets/images/item-1.jpg',
-                        text: 'Convallis aenean et tortor?',
-                        active: false
-                    },
-                    {
-                        id: 4,
-                        img: 'assets/images/item-2.jpg',
-                        text: 'Tellus cras adipiscing enim?',
-                        active: false
-                    }
-                ]
+             $scope.services = [
+                 {
+                     id: 1,
+                     img: 'assets/images/item-1.jpg',
+                     text: 'Non diam phasellus vestibulum?',
+                     active: false
+                 },
+                 {
+                     id: 2,
+                     img: 'assets/images/item-2.jpg',
+                     text: 'Fermentum dui faucibus in!',
+                     active: false
+                 },
+                 {
+                     id: 3,
+                     img: 'assets/images/item-1.jpg',
+                     text: 'Convallis aenean et tortor?',
+                     active: false
+                 },
+                 {
+                     id: 4,
+                     img: 'assets/images/item-2.jpg',
+                     text: 'Tellus cras adipiscing enim?',
+                     active: false
+                 }
+             ]
 
-                $scope.servicesMap = $scope.services.reduce((result, item) => {
-                    return {
-                        ...result,
-                        [item.id]: item
-                    }
-                }, {});
+             $scope.servicesMap = $scope.services.reduce((result, item) => {
+                 return {
+                     ...result,
+                     [item.id]: item
+                 }
+             }, {});
 
-                $scope.employees = [
-                    { id: 1, name: 'Adam',      img: 'assets/images/item-1.jpg' },
-                    { id: 2, name: 'Amalie',    img: 'assets/images/item-2.jpg' },
-                    { id: 3, name: 'Estefanía', img: 'assets/images/item-1.jpg' },
-                    { id: 4, name: 'Adrian',    img: 'assets/images/item-2.jpg' },
-                    { id: 5, name: 'Wladimir',  img: 'assets/images/item-1.jpg' },
-                    { id: 6, name: 'Samantha',  img: 'assets/images/item-2.jpg' },
-                    { id: 7, name: 'Nicole',    img: 'assets/images/item-1.jpg' },
-                    { id: 8, name: 'Natasha',   img: 'assets/images/item-2.jpg' },
-                    { id: 9, name: 'Michael',   img: 'assets/images/item-1.jpg' }
-                ];
+             $scope.employees = [
+                 { id: 1, name: 'Adam',      img: 'assets/images/item-1.jpg' },
+                 { id: 2, name: 'Amalie',    img: 'assets/images/item-2.jpg' },
+                 { id: 3, name: 'Estefanía', img: 'assets/images/item-1.jpg' },
+                 { id: 4, name: 'Adrian',    img: 'assets/images/item-2.jpg' },
+                 { id: 5, name: 'Wladimir',  img: 'assets/images/item-1.jpg' },
+                 { id: 6, name: 'Samantha',  img: 'assets/images/item-2.jpg' },
+                 { id: 7, name: 'Nicole',    img: 'assets/images/item-1.jpg' },
+                 { id: 8, name: 'Natasha',   img: 'assets/images/item-2.jpg' },
+                 { id: 9, name: 'Michael',   img: 'assets/images/item-1.jpg' }
+             ];
 
-                $scope.employeesMap = $scope.employees.reduce((result, item) => {
-                    return {
-                        ...result,
-                        [item.id]: item
-                    }
-                }, {});
+             $scope.employeesMap = $scope.employees.reduce((result, item) => {
+                 return {
+                     ...result,
+                     [item.id]: item
+                 }
+             }, {});
 
-                $scope.form = {
-                    info: {
-                        name: 'Fermentum',
-                        phone: '0123456789'
-                    },
-                    services: $scope.services.reduce((result, item) => {
-                        return {
-                            ...result,
-                            [item.id]: {
-                                active: false,
-                                date: {
-                                    startDate: +new Date(),
-                                    endDate: +new Date()
-                                },
-                                employeeId: $scope.employees[0].id
-                            }
-                        }
-                    }, {}),
-                    confirm: {
-                        term: false,
-                        cookie: false
-                    }
-                }
+             $scope.form = {
+                 info: {
+                     name: 'You Name',
+                     phone: 'You Phone Number'
+                 },
+                 services: $scope.services.reduce((result, item) => {
+                     return {
+                         ...result,
+                         [item.id]: {
+                             active: false,
+                             date: {
+                                 startDate: +new Date(),
+                                 endDate: +new Date()
+                             },
+                             employeeId: $scope.employees[0].id
+                         }
+                     }
+                 }, {}),
+                 confirm: {
+                     term: false,
+                     cookie: false
+                 }
+             }
 
-                $scope.setStep = function(step) {
-                    $scope.step = step;
-                }
+             $scope.setStep = function(step) {
+                 $scope.step = step;
+             }
 
-                $scope.nextStep = function() {
-                    $scope.setStep(Math.min($scope.step + 1, $scope.maxStep));
-                }
+             $scope.nextStep = function() {
+                 $scope.setStep(Math.min($scope.step + 1, $scope.maxStep));
+             }
 
-                $scope.prevStep = function() {
-                    $scope.setStep(Math.max($scope.step - 1, 1));
-                }
+             $scope.prevStep = function() {
+                 $scope.setStep(Math.max($scope.step - 1, 1));
+             }
 
-                $scope.done = function() {
-                    console.log($scope.form);
-                }
+             $scope.done = function() {
+                 console.log($scope.form);
+             }
 
-                $scope.validateNext = function() {
-                    return $scope.step === $scope.maxStep;
-                }
+             $scope.validateNext = function() {
+                 return $scope.step === $scope.maxStep;
+             }
 
-                $scope.disableNext = function(form, step=$scope.step) {
-                    switch (step) {
-                        case 1: {
-                            return !(form.name.$valid && form.phone.$valid)
-                        }
+             $scope.disableNext = function(form, step=$scope.step) {
+                 switch (step) {
+                     case 1: {
+                         return !(form.name.$valid && form.phone.$valid)
+                     }
 
-                        case 2: {
-                            return Object.values($scope.form.services).every(item => !item.active);
-                        }
+                     case 2: {
+                         return Object.values($scope.form.services).every(item => !item.active);
+                     }
 
-                        case 3: {
-                            return false;
-                        }
+                     case 3: {
+                         return false;
+                     }
 
-                        case 4: {
-                            return false;
-                        }
+                     case 4: {
+                         return false;
+                     }
 
-                        case 5: {
-                            return !($scope.form.confirm.term && $scope.form.confirm.cookie);
-                        }
+                     case 5: {
+                         return !($scope.form.confirm.term && $scope.form.confirm.cookie);
+                     }
 
-                        default: {
-                            return false;
-                        }
-                    }
-                }
-            }
-
-
+                     default: {
+                         return false;
+                     }
+                 }
+             }
+         }
         </script>
     </body>
 </html>

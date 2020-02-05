@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/booking', function () {
-    return view('booking_template/booking');
+    return view('booking_template/booking2');
 });
 
 Route::get('/admin', function () {
@@ -44,9 +44,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', function() {
-    return view('home');
-})->name('home')->middleware('auth');
+//Route::get('/home', function() {
+//    return view('home');
+//})->name('home')->middleware('auth');
 
 Auth::routes();
 

@@ -26,4 +26,10 @@ class BookingTurnController extends Controller
         return view('home');
     }
 
+    public function confirmBooking(){
+
+    }
+
+
+
 }

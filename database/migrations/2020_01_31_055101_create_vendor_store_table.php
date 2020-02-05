@@ -25,7 +25,7 @@ class CreateVendorStoreTable extends Migration
             $table->date('birthday')->nullable();
             $table->string('address')->nullable();
             $table->string('image')->nullable();
-            $table->string('email')->nullable();
+            $table->longText('email')->nullable();
 
 
         });

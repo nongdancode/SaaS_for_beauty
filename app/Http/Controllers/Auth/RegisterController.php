@@ -81,6 +81,8 @@ class RegisterController extends Controller
     }
     protected function createUserAdminRole()
     {
+
+        $this->middleware('auth');
 //        return User::create([
 //            'name' => $this->user['name'],
 //            'email' => $this->user['email'],

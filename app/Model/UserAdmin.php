@@ -40,4 +40,10 @@ class UserAdmin extends MyModel
         }
     }
 
+    function getStaffByServices($role,$vendor){
+        $queryState = DB::table('user')->selectRaw(
+
+        );
+    }
+
 }

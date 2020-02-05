@@ -23,7 +23,7 @@ class CreateCustomerTable extends Migration
             $table->double('point')->nullable();
             $table->date('birthday')->nullable();
             $table->string('level')->nullable();
-            $table->string('image')->nullable();
+            $table->longText('image')->nullable();
             $table->string('email')->nullable();
             $table->string('vendor')->nullable();
             $table->string('status')->nullable();
