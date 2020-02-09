@@ -18,14 +18,16 @@ Route::get('/', function () {
 Route::get('/booking', function () {
     return view('booking_template/booking2');
 });
-
-Route::get('/admin', function () {
-    return view('admin/admin');
+Route::get('/booking2', function () {
+    return view('booking_template/booking');
+});
+Route::get('/checkin', function () {
+    return view('booking_template/checkin');
 });
 
-Route::get('/admin/sms', function () {
-    return view('admin/sms_sending');
-});
+
+
+
 Route::get('/terms', function () {
     return view('booking_template/term');
 });
@@ -36,8 +38,34 @@ Route::any('/admin/login', function () {
 Route::any('/admin/admin_register_user', function () {
     return view('admin/register_admin');
 });
-Route::any('/admin/sms', 'System\SmsController@showSupplyCustomerPhone');
+
+
+
+Route::any('/admin/sms2', 'System\SmsController@showSupplyCustomerPhone');
+Route::any('/admin/smsapi', 'System\SmsController@getCustomerByvendor');
+Route::any('/admin/sms', function () {
+    return view('admin/sms_sending2');
+});
+
+Route::get('/admin2', function () {
+    return view('admin2/index');
+});
+
+
+
+
+
+
+Route::get('/terms', function () {
+    return view('booking_template/sms_sending');
+});
+
+Route::get('/admin', function () {
+    return view('admin/admin');
+});
+
 Route::any('/admin/admin_register_confirm', 'Auth\RegisterController@createUserAdminRole');
+Route::any('/test', 'System\SMSController@showSupplyCustomerPhone');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -51,3 +79,8 @@ Auth::routes();
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+
+Route::any('/usersxx', 'System\SmsController@test');

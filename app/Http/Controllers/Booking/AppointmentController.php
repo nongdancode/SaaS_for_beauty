@@ -3,27 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Lib\MyUtils;
+use App\Model\MyModel;
 
+use App\Http\Controllers\Controller;
+use App\Model\ServicesVendor;
+use App\Lib\SMSTwillo;
 class AppointmentController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+
+    protected $util;
+    protected $fromDate;
+    protected $toDate;
+    protected $commonModel;
     public function __construct()
     {
-        $this->middleware('auth');
+
+        $this->commonModel = new ServicesVendor();
+        $this->util = new MyUtils();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
+
+
+    public function getReadyServices(){
+
+       $data = $this->commonModel->getAllServicesByVendor(1);
+
     }
 
 }

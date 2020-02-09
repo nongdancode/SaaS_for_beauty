@@ -19,6 +19,8 @@ class CreateServiceTable extends Migration
             $table->double('price')->nullable();
             $table->string( 'description')->nullable();
             $table->longText( 'image')->nullable();
+            $table->string( 'vendor')->nullable();
+            $table->string( 'user_ids')->nullable();
 
 
 
