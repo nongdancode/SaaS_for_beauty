@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Lash Admin</title>
+
+    <!-- STYLE -->
+    <link href="AdminTemplateAssets/assets/css/style.css" rel="stylesheet">
+
+    <!-- LIBRARY -->
+    <script src="AdminTemplateAssets/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="AdminTemplateAssets/node_modules/moment/min/moment.min.js"></script>
+
+    <script src="AdminTemplateAssets/node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="AdminTemplateAssets/node_modules/jquery-ui-dist/jquery-ui.min.css">
+
+    <script src="AdminTemplateAssets/node_modules/ng-admin/build/ng-admin.min.js"></script>
+    <link rel="stylesheet" href="AdminTemplateAssets/node_modules/ng-admin/build/ng-admin.min.css">
+
+    <script src="AdminTemplateAssets/node_modules/ngstorage/ngStorage.min.js"></script>
+
+    <script src="AdminTemplateAssets/node_modules/angular-ui-calendar/src/calendar.js"></script>
+    <script src="AdminTemplateAssets/node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
+    <link rel="stylesheet" href="AdminTemplateAssets/node_modules/fullcalendar/dist/fullcalendar.min.css">
+</head>
+<body>
+<div ui-view="ng-admin"></div>
+
+<!-- MODULES -->
+<script src="AdminTemplateAssets/src/modules/user/user.module.js"></script>
+
+<script src="AdminTemplateAssets/src/modules/calendar/calendar.module.js"></script>
+<script src="AdminTemplateAssets/src/modules/calendar/calendar.route.js"></script>
+<script src="AdminTemplateAssets/src/modules/calendar/calendar.controller.js"></script>
+
+<!-- SERVICES -->
+<script src="AdminTemplateAssets/src/common/services/utility.service.js"></script>
+<script src="AdminTemplateAssets/src/common/services/user.service.js"></script>
+<script src="AdminTemplateAssets/src/common/services/auth.service.js"></script>
+
+<!-- DIRECTIVES -->
+<script src="AdminTemplateAssets/src/common/directives/draggable.directive.js"></script>
+
+<!-- MAIN APP -->
+<script src="AdminTemplateAssets/src/app.js"></script>
+<script src="AdminTemplateAssets/src/app.controller.js"></script>
+<script src="AdminTemplateAssets/src/app.run.js"></script>
+<script src="AdminTemplateAssets/src/app.config.js"></script>
+</body>
+</html>
