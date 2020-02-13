@@ -93,9 +93,9 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 
-    Route::any('/api/admin/mkt_customer', 'System\MarketingController@flectCustomerForMarketing')  ;
+    Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
     Route::any('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
-    Route::any('/api/admin/payment', 'System\PaymentController@getTransactionByVendor');
+    Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
 
 
     Route::any('api/admin/customer_report', 'System\ReportController@apiCustomerReportByPieChart');
