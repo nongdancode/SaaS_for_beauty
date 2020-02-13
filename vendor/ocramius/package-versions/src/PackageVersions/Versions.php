@@ -22,15 +22,12 @@ final class Versions
      */
     public const VERSIONS          = array (
   'almasaeed2010/adminlte' => 'v3.0.2@0e48302342e9c04174ed73902b08324d47d4e792',
-  'asm89/stack-cors' => '1.3.0@b9c31def6a83f84b4d4a40d35996d375755f0e08',
-  'barryvdh/laravel-cors' => 'v1.0.3@4b1f95aeaef2c8c201519833ad212bcbf909f15e',
   'dnoegel/php-xdg-base-dir' => 'v0.1.1@8f8a6e48c5ecb0f991c2fdcf5f154a47d85f9ffd',
   'doctrine/inflector' => '1.3.1@ec3a55242203ffa6a4b27c58176da97ff0a7aec1',
   'doctrine/lexer' => '1.2.0@5242d66dbeb21a30dd8a3e66bf7a73b66e05e1f6',
   'dragonmantank/cron-expression' => 'v2.3.0@72b6fbf76adb3cf5bc0db68559b33d41219aba27',
   'egulias/email-validator' => '2.1.16@5065fafc8c29d229ff207f2a89b02175f479a909',
   'fideloper/proxy' => '4.2.2@790194d5d3da89a713478875d2e2d05855a90a81',
-  'fruitcake/laravel-cors' => 'v1.0.3@4b1f95aeaef2c8c201519833ad212bcbf909f15e',
   'guzzlehttp/guzzle' => '6.5.2@43ece0e75098b7ecd8d13918293029e555a50f82',
   'guzzlehttp/promises' => 'v1.3.1@a59da6cf61d80060647ff4d3eb2c03a2bc694646',
   'guzzlehttp/psr7' => '1.6.1@239400de7a173fe9901b9ac7c06497751f00727a',
@@ -140,7 +137,7 @@ final class Versions
   'sebastian/version' => '2.0.1@99732be0ddb3361e16ad77b68ba41efc8e979019',
   'theseer/tokenizer' => '1.1.3@11336f6f84e16a720dae9d8e6ed5019efa85a0f9',
   'webmozart/assert' => '1.6.0@573381c0a64f155a0d9a23f4b0c797194805b925',
-  'laravel/laravel' => 'dev-master@ed62bb101aff99a8b96c9b1a69d02b4805fd14f9',
+  'laravel/laravel' => 'dev-ver_2@1d384ba8510c00f565acd3f5ce8b739abd11bf49',
 );
 
     private function __construct()
