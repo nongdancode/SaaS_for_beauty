@@ -8,16 +8,17 @@
 
 namespace App\Model;
 
+use Illuminate\Support\Facades\DB;
 
-class ServicesVendor
+class ServicesVendor extends MyModel
 {
-    protected $table = "services";
+    protected $table = "service";
 
     public function getAllServicesByVendor($vendor){
-        $dbData = $this->selectRaw('id,service_name,phone_numbermimage' )->where("vendor",$vendor)->get();
+        $dbData = DB::table($this->table)->select('id', 'image as img', 'service_name as name', 'duration as stepping')->where("vendor", $vendor)->get();
 
 //        return view('/admin/sms',$dbData);
-
+        return $dbData;
 
     }
 

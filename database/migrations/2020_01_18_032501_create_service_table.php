@@ -20,6 +20,7 @@ class CreateServiceTable extends Migration
             $table->string( 'description')->nullable();
             $table->longText( 'image')->nullable();
             $table->string( 'vendor')->nullable();
+            $table->double('duration')->nullable();
             $table->string( 'user_ids')->nullable();
 
 

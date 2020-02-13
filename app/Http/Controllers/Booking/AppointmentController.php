@@ -7,19 +7,22 @@ use App\Lib\MyUtils;
 use App\Model\ServicesVendor;
 use App\Model\UserAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 
 class AppointmentController extends Controller
 {
 
     protected $requestBooking;
+    protected $requestBooking2;
     protected $util;
     protected $fromDate;
     protected $toDate;
     protected $ServiceModel;
     protected $DataModel;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request,Response  $input)
     {
 
         $this->ServiceModel = new ServicesVendor();
@@ -27,6 +30,7 @@ class AppointmentController extends Controller
         $this->DataModel = new UserAdmin();
 
         $this->requestBooking = $request->all();
+        $this->requestBooking2 = $input->content();
     }
 
 
@@ -65,9 +69,15 @@ class AppointmentController extends Controller
         return $data2;
     }
 
-    function confirmBooking()
+    function confirmBooking(Request $request)
     {
-        return $this->requestBooking;
+
+        $data  = $this->requestBooking;
+        $data2  = $this->requestBooking2;
+
+
+
+        return $data;
     }
 
 
