@@ -6,7 +6,7 @@
  * Time: 10:32 AM
  */
 namespace App\Lib;
-
+use DateTime;
 class DateTimeUtils
 {
     private static function getDayArrEveryTiming($fromDate, $toDate, $timing)
@@ -185,5 +185,15 @@ class DateTimeUtils
         }
         krsort($return);
         return $return;
+    }
+
+    public static function convertUnixTSToLocalTX($unitTs,$format){
+        $time1 = $unitTs;
+//        $milliseconds = $time1 % 1000;
+        $ts = intval($time1 / 1000);
+        $dateTime = new DateTime();
+        $date = $dateTime->createFromFormat('U', $ts);
+        $date2 = $date->format($format) ;
+        return $date2;
     }
 }

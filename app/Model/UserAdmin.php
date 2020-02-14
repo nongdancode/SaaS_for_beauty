@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserAdmin extends MyModel
 {
-    protected $table = "user";
+    protected $user = "user";
 
 //    function getUserPhone($numUser,$date,$role){
 //        $dbData = $this->selectRaw('name,phone_number' )
@@ -24,6 +24,16 @@ class UserAdmin extends MyModel
 //        return $dbData;
 //
 //    }
+
+    function getUserNameInfoById($id,$vendorid){
+        $data = DB::table($this->user)->select('name')
+            ->where('id','=',$id)
+            ->where('vendor','=',$vendorid)
+            ->get();
+        return $data;
+    }
+
+
 
     function CreateAdminUserRole($email,$name,$password,$role,$vendor){
         $queryState = DB::table('user')->insertGetId(

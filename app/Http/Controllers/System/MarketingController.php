@@ -33,10 +33,6 @@ class MarketingController extends Controller
         $this->SMSUser = $request->getContent();
 
 
-//        MySession::set("fromDate", $this->fromDate);
-//        MySession::set("toDate", $this->toDate);
-//        MySession::set("gameCode", "luckyWingabar");
-
     }
 
     function flectCustomerForMarketing()
@@ -49,7 +45,19 @@ class MarketingController extends Controller
 
     function sendSMSForMkt(){
 
-        return $this->SMSUser;
+        $data = $this ->util->decodeJson($this->SMSUser);
+        $nums = [];
+        for($i = 0 ; $i < sizeof($data['customerIds']);$i++){
+          $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],1);
+          $cus_phone2 =   $this->util->decodeObjectStdJson($cus_phone );
+          $this->TwilloSMS->SenMessageByNumber($data['message'],$cus_phone2[0]['phone_number']);
+//
+//          print($cus_phone2[0]['phone_number']);
+//            exit();
+        }
+
+
+//          return $this->TwilloSMS->SendMessageByList($data['message'],$nums);
     }
 
 

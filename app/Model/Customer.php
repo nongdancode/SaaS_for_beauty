@@ -37,4 +37,14 @@ class Customer extends MyModel
 
         return $data;
     }
+
+    function getCustomerByIdVendor($cusId,$vendorID){
+        $data = DB::table('customer')->select('name', 'phone_number')
+            ->where('vendor', $vendorID)
+            ->where('id',$cusId)
+            ->get();
+
+
+        return $data;
+    }
 }
