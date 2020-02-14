@@ -34,6 +34,7 @@ class CreateUserTable extends Migration
 
             $table->string('vendor')->nullable();
             $table->string('token')->nullable();
+
         });
     }
 

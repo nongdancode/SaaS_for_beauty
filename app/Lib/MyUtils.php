@@ -150,4 +150,10 @@ class MyUtils
         $j2 = json_decode($json, true);
         return $j2;
     }
+
+    public static function decodeObjectStdJson($json)
+    {
+        $j2 = json_decode(json_encode($json), true);
+        return $j2;
+    }
 }

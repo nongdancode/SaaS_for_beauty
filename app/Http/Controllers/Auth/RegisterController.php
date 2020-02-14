@@ -92,6 +92,8 @@ class RegisterController extends Controller
 //        ]);
 //
         return $this->userTable->CreateAdminUserRole($this->user['email'],$this->user['name'], Hash::make($this->user['password']),$this->user['role'],$this->user['vendor']);
+
+
     }
 
 }
