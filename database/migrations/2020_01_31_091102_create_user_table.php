@@ -31,6 +31,7 @@ class CreateUserTable extends Migration
             $table->longText('image')->nullable();
             $table->string('email')->nullable();
             $table->dateTime('last_login')->nullable();
+            $table->string('ssn')->nullable();
 
             $table->string('vendor')->nullable();
             $table->string('token')->nullable();

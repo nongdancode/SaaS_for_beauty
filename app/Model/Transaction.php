@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class Transaction extends MyModel
 {
-    protected $table = "transaction";
+    protected $transactionTable = "transaction";
+
 
 
     public function getTransactionByVendor($vendor,$limit){

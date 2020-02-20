@@ -156,4 +156,8 @@ class MyUtils
         $j2 = json_decode(json_encode($json), true);
         return $j2;
     }
+
+    public function checkDuplicateTime(){
+
+    }
 }

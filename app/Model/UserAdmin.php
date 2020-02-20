@@ -26,7 +26,7 @@ class UserAdmin extends MyModel
 //    }
 
     function getUserNameInfoById($id,$vendorid){
-        $data = DB::table($this->user)->select('name')
+        $data = DB::table($this->user)->select('id','name','phone_number')
             ->where('id','=',$id)
             ->where('vendor','=',$vendorid)
             ->get();

@@ -90,7 +90,11 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
     Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
     Route::any('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
+    Route::any('/api/booking/charge', 'Booking\AppointmentController@confirmCharge');
 
+
+//calendar admin
+    Route::any('/api/admin/staffs', 'Booking\AppointmentController@getAllFromEmployee');
 
 
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
@@ -98,8 +102,10 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
 
 
-    Route::any('api/admin/customer_report', 'System\ReportController@apiCustomerReportByPieChart');
-    Route::any('api/admin/payment_report', 'System\ReportController@apiPaymentReportByPieChart')  ;
+    Route::any('/api/admin/customer_report', 'System\ReportController@apiCustomerReportByPieChart');
+    Route::any('/api/admin/payment_report', 'System\ReportController@apiPaymentReportByPieChart')  ;
+
+
 
 
 });
