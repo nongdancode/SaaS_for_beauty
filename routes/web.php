@@ -93,6 +93,10 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/booking/charge', 'Booking\AppointmentController@confirmCharge');
 
 
+//calendar admin
+    Route::any('/api/admin/staffs', 'Booking\AppointmentController@getAllFromEmployee');
+
+
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
     Route::any('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
     Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
