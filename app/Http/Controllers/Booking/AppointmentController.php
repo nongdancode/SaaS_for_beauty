@@ -8,6 +8,7 @@ use App\Model\BookingTurn;
 use App\Model\Customer;
 use App\Model\ServicesVendor;
 use App\Model\UserAdmin;
+use App\Model\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
@@ -35,6 +36,7 @@ class AppointmentController extends Controller
     protected $Customer;
     protected  $BookingTurn;
     protected $AuthorizePayment;
+    protected $Vendor;
 
     protected  $services;
 
@@ -54,6 +56,10 @@ class AppointmentController extends Controller
         $this->dateTime = new DateTime();
         $this->dateTimeUtil = new DateTimeUtils();
         $this->AuthorizePayment = new AuthorizePayment();
+
+        $this->Vendor = new Vendor();
+
+
     }
 
 
@@ -96,9 +102,7 @@ class AppointmentController extends Controller
     {
         $bookingturn = new BookingTurn();
         $data  = $this->requestBooking;
-        $customer_name = $data['info']['name'];
-        $customer_phone = $data['info']['phone'];
-        $messages = '';
+
         $price = 0;
         $services = [];
         $servicesReturn = [];
@@ -116,10 +120,6 @@ class AppointmentController extends Controller
             $service_name2 = $this->util->decodeObjectStdJson($service_name );
 
 
-
-
-
-
             $services[$service_name2[0]['name']]['start_time'] = $data['services'][$i]['timeRange']['start'];
             $services[$service_name2[0]['name']]['end_time'] = $data['services'][$i]['timeRange']['end'];
             $services[$service_name2[0]['name']]['staff'] = $user_name2[0]['id'];
@@ -127,9 +127,6 @@ class AppointmentController extends Controller
             $services[$service_name2[0]['name']]['price'] =  $service_name2[0]['price'];
 
             $discontPrice =  $service_name2[0]['price']/100*15;
-
-
-
             $servicesReturn[$service_name2[0]['name']]['id'] = $service_name2[0]['id'];
 
 
@@ -145,29 +142,8 @@ class AppointmentController extends Controller
                 $checkTimeValid = false;
             }
 
-
-//
-//            $s = $service_name2[0]['name'];
-//            $s2 = $user_name2[0]['name'];
-//
-//
-//            $messages =  $messages .    "  " . $s . " with " . $s2  . "  " . " at " . $time2;
-
-//            $this->Customer->addCustomerByBooking($customer_phone,$customer_name,$price,5);
-//            $cus_add = $this->Customer->getCusByPhoneVendor(1,$customer_phone);
-//            $cus_add2 =  $this->util->decodeObjectStdJson($cus_add );
-
-//            $this->BookingTurn->confirmBookingTurn()
         }
         $servicesReturn['price'] = $price;
-
-
-
-//
-//        $message = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messages  ;
-//        $this->message = $message;
-//        $this->services = $services;
-
         $servicesReturn2['data'] = $servicesReturn;
 
         if($checkTimeValid == true){
@@ -176,19 +152,8 @@ class AppointmentController extends Controller
         }
         else{
             $servicesReturn2['code'] = -1;
-            return $servicesReturn2['code'];
+            return \response($servicesReturn2['code']);
         }
-
-
-        //change toconfirm later
-
-
-
-
-
-//        return $services;
-//        $sendMessage =  $this->Twillo->SenMessageByNumber($message,$customer_phone);
-
 
 
     }
@@ -196,61 +161,77 @@ class AppointmentController extends Controller
     function confirmCharge(){
         $payemnt = new AuthorizePayment();
         $data  = $this->requestBooking;
+        $vendor = $this->Vendor;
         $customer_name = $data['booking']['info']['name'];
         $customer_phone = $data['booking']['info']['phone'];
         $messages = '';
         $price = 0;
         $services = [];
         $servicesReturn = [];
-        $payemntinfo = $data['payment'];
+        $key = $this->Vendor->getVendorAuthorizeKey(1);
+        $key2 = $this->util->decodeObjectStdJson($key);
+
+        $login_key = $key2[0]['key1'];
+        $trans_key = $key2[0]['key3'];
+        $servicesReturn['price'] = $price;
+        $cardNumber = $data['payment']['cardNumber'];
+        $cardEx = $data['payment']['cardExpiry'];
+        $cardcvv = $data['payment']['cardCVV'];
+
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, 0.2);
 
 
+        if ($confirm->getResultCode() == 'Ok') {
+            $this->Customer->addCustomerByBooking($customer_phone, $customer_name, $price, 5);
+            for ($i = 0; $i < sizeof($data['booking']['services']); $i++) {
+
+                $user_name = $this->UserModel->getUserNameInfoById($data['booking']['services'][$i]['employeeId'], 1);
+                $user_name2 = $this->util->decodeObjectStdJson($user_name);
+
+                $service_name = $this->ServiceModel->getServicesNameByIdandVendor(1, $data['booking']['services'][$i]['serviceId']);
+                $service_name2 = $this->util->decodeObjectStdJson($service_name);
 
 
-        for ($i = 0 ; $i < sizeof($data['booking']['services']);$i++ ){
+                $services[$service_name2[0]['name']]['start_time'] = $data['booking']['services'][$i]['timeRange']['start'];
+                $services[$service_name2[0]['name']]['end_time'] = $data['booking']['services'][$i]['timeRange']['end'];
+                $services[$service_name2[0]['name']]['staff'] = $user_name2[0]['id'];
+                $services[$service_name2[0]['name']]['phone_staff'] = $user_name2[0]['phone_number'];
+                $services[$service_name2[0]['name']]['price'] = $service_name2[0]['price'];
 
-            $user_name = $this->UserModel->getUserNameInfoById($data['booking']['services'][$i]['employeeId'],1);
-            $user_name2 = $this->util->decodeObjectStdJson($user_name );
-
-            $service_name = $this->ServiceModel->getServicesNameByIdandVendor(1,$data['booking']['services'][$i]['serviceId']);
-            $service_name2 = $this->util->decodeObjectStdJson($service_name );
-
-
+                $discontPrice = $service_name2[0]['price'] / 100 * 15;
 
 
+                $servicesReturn[$service_name2[0]['name']]['id'] = $service_name2[0]['id'];
 
-            $services[$service_name2[0]['name']]['start_time'] = $data['booking']['services'][$i]['timeRange']['start'];
-            $services[$service_name2[0]['name']]['end_time'] = $data['booking']['services'][$i]['timeRange']['end'];
-            $services[$service_name2[0]['name']]['staff'] = $user_name2[0]['id'];
-            $services[$service_name2[0]['name']]['phone_staff'] = $user_name2[0]['phone_number'];
-            $services[$service_name2[0]['name']]['price'] =  $service_name2[0]['price'];
-
-            $discontPrice =  $service_name2[0]['price']/100*15;
+                $price = $price + $discontPrice;
 
 
+                $time1 = $data['booking']['services'][$i]['timeRange']['start'];
+                $time2 = $time1 = $this->dateTimeUtil->convertUnixTSToLocalTX($time1, 'd/m/Y H:i:s');
 
-            $servicesReturn[$service_name2[0]['name']]['id'] = $service_name2[0]['id'];
+                $time3 = $data['booking']['services'][$i]['timeRange']['end'];
+                $time4 = $time1 = $this->dateTimeUtil->convertUnixTSToLocalTX($time3, 'd/m/Y H:i:s');
 
-
-            $price = $price + $discontPrice;
-
-
-            $time1 =   $data['booking']['services'][$i]['timeRange']['start'];
-            $time2 =  $time1 = $this->dateTimeUtil->convertUnixTSToLocalTX($time1,'d/m/Y H:i:s');
-
-            $s = $service_name2[0]['name'];
-            $s2 = $user_name2[0]['name'];
+                $s = $service_name2[0]['name'];
+                $s2 = $user_name2[0]['name'];
+                $this->BookingTurn->confirmBookingTurn($service_name2[0]['id'],$user_name2[0]['id'],$customer_phone,$time2,$time4);
 
 
-            $messages =  $messages .    "  " . $s . " with " . $s2  . "  " . " at " . $time2;
+                $messages = $messages . "  " . $s . " with " . $s2 . "  " . " at " . $time2;
 
 //            $this->Customer->addCustomerByBooking($customer_phone,$customer_name,$price,5);
 //            $cus_add = $this->Customer->getCusByPhoneVendor(1,$customer_phone);
 //            $cus_add2 =  $this->util->decodeObjectStdJson($cus_add );
-
 //            $this->BookingTurn->confirmBookingTurn()
+            }
+
+
+            $this->Twillo->SenMessageByNumber($messages, $customer_phone);
+
+
         }
-        $servicesReturn['price'] = $price;
+
+        $response['code'] = $confirm->getResultCode();
 
 
 
@@ -258,8 +239,8 @@ class AppointmentController extends Controller
         $message = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messages  ;
 
 
+       return \response($response);
 
-//      return  $servicesInfo;
 
 
 

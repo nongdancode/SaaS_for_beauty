@@ -15,7 +15,7 @@ class Vendor
     protected  $vendor =  "vendor_store";
 
     function getVendorAuthorizeKey($vendor){
-       $queryState = DB::table($this->vendor_key)->select('key_1','key_3')->where('vendor_id',$vendor)->get();
+       $queryState = DB::table($this->vendor_key)->select('key1','key3')->where('vendor_id',$vendor)->get();
        return $queryState;
     }
     function getVendor($vendor){
