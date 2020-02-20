@@ -15,10 +15,15 @@ class CreateBookingturnsTable extends Migration
     {
         Schema::create('bookingturns', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('service_list');
-            $table->double('cost');
+            $table->string('service_id');
+            $table->string('user_id');
+            $table->string('cus_id');
+            $table->double( 'income');
+            $table->string( 'vendor_id');
             $table->string( 'description');
-            $table->dateTime( 'time_book');
+            $table->dateTime( 'start_time');
+            $table->dateTime( 'end_time');
+
 
 
 

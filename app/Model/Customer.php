@@ -11,6 +11,8 @@ class Customer extends MyModel
 {
     protected $table = "customer";
 
+
+
     function getCustomerPhoneByVendor($vendor)
     {
         $data = DB::table('customer')->select('name', 'phone_number')->where('vendor', $vendor)->get();
@@ -47,4 +49,22 @@ class Customer extends MyModel
 
         return $data;
     }
+
+    function addCustomerByBooking($phone_number , $name ,$amount_paid ,$point){
+        $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number],
+            ['name'=> $name ,'amount_paid'=> $amount_paid,'point' => $point]);
+    }
+
+    function getCusByPhoneVendor($vendor,$phone){
+        $data = DB::table('customer')->select('name', 'phone_number','id','amount_paid','birthday')
+            ->where('vendor', $vendor)
+            ->where('phone',$phone)
+            ->get();
+
+
+        return $data;
+
+    }
+
+
 }

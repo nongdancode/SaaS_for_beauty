@@ -23,6 +23,7 @@ class CreateTransactionTable extends Migration
             $table->double('amount');
             $table->dateTime('charge_at');
             $table->string('vendor');
+            $table->string('type_charge');
 
 
         });

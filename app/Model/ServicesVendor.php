@@ -16,7 +16,7 @@ class ServicesVendor extends MyModel
 
     public function getAllServicesByVendor($vendor){
         $dbData = DB::table($this->table)
-            ->select('id', 'image as img', 'service_name as name', 'duration as stepping')
+            ->select('id', 'image as img', 'service_name as name', 'duration as stepping','price')
             ->where("vendor", $vendor)->get();
 
         return $dbData;
@@ -26,7 +26,7 @@ class ServicesVendor extends MyModel
     public function getServicesNameByIdandVendor($vendor,$serviceID)
     {
         $dbData = DB::table($this->table)
-            ->select('id', 'image as img', 'service_name as name', 'duration as stepping')
+            ->select('id', 'image as img', 'service_name as name', 'duration as stepping','price')
             ->where("vendor", $vendor)
              ->where("id", $serviceID)
             ->get();

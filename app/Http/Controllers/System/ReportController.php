@@ -44,4 +44,11 @@ class ReportController  extends Controller
         return $data;
     }
 
+    function apiPaymentPiechartByStatusTransaction()
+    {
+
+
+    }
+
+
 }
