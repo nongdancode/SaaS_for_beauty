@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class Transaction extends MyModel
 {
     protected $transactionTable = "transaction";
+    protected $transactiononline = "transactiononline";
 
 
 
@@ -29,6 +30,10 @@ class Transaction extends MyModel
 
 
         return $dbData;
+    }
+
+    public function storeTransactionOnlineetail(){
+
     }
 
 }

@@ -13,17 +13,7 @@ class UserAdmin extends MyModel
 {
     protected $user = "user";
 
-//    function getUserPhone($numUser,$date,$role){
-//        $dbData = $this->selectRaw('name,phone_number' )
-//
-//            ->where("last_visit", $date)
-//            ->where("role", $role)
-//
-//            ->get($numUser);
-//
-//        return $dbData;
-//
-//    }
+
 
     function getUserNameInfoById($id,$vendorid){
         $data = DB::table($this->user)->select('id','name','phone_number')
@@ -50,18 +40,27 @@ class UserAdmin extends MyModel
 
     function getStaffByAllServices($vendor)
     {
-//
-//
-//        DB::raw('UNIX_TIMESTAMP(scheduletask.day) as day' )
+
         $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
-            ->select('scheduletask.user_ids as id', 'user.name', 'user.image as img', 'scheduletask.services_ids as service_id', 'service.service_name'
-            )
+            ->select('scheduletask.user_ids as id', 'user.name', 'user.image as img', 'scheduletask.services_ids as service_id', 'service.service_name')
             ->where('scheduletask.vendor', '=', $vendor)
             ->groupBy('scheduletask.user_ids', 'user.name', 'user.image', 'scheduletask.services_ids', 'service.service_name', 'scheduletask.day')
             ->get();
         return $queryState;
     }
+
+    function getServicesByStaff($vendor,$staffId){
+        $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
+            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
+            ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img','service.duration as stepping')
+            ->where('scheduletask.vendor', '=', $vendor)
+            ->where('scheduletask.user_ids', '=', $staffId)
+            ->groupBy('scheduletask.services_ids ', 'service.service_name ','service.image','service.duration')
+            ->get();
+        return $queryState;
+    }
+
 
     function getAllEmployeeTurnInDayForBooking($employeeId, $servicesId, $day, $vendor)
     {
@@ -86,5 +85,8 @@ class UserAdmin extends MyModel
 
         return $queryState;
     }
+
+
+
 
 }

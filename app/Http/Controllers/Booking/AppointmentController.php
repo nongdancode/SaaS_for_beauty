@@ -18,7 +18,7 @@ use App\Lib\DateTimeUtils;
 use DateTime;
 use DateTimeZone;
 use function MongoDB\BSON\toJSON;
-
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -202,41 +202,45 @@ class AppointmentController extends Controller
 
 
                 $servicesReturn[$service_name2[0]['name']]['id'] = $service_name2[0]['id'];
-
                 $price = $price + $discontPrice;
 
 
                 $time1 = $data['booking']['services'][$i]['timeRange']['start'];
-                $time2 = $time1 = $this->dateTimeUtil->convertUnixTSToLocalTX($time1, 'd/m/Y H:i:s');
+                $time2  = $this->dateTimeUtil->convertUnixTSToLocalTX($time1,'Y-m-d H:i:s');
+//                $datesql_start1 =  strtotime($time2);
+                $datesql_start2 =  date("Y-m-d H:i:s", strtotime($time2));
 
                 $time3 = $data['booking']['services'][$i]['timeRange']['end'];
-                $time4 = $time1 = $this->dateTimeUtil->convertUnixTSToLocalTX($time3, 'd/m/Y H:i:s');
+                $time4  = $this->dateTimeUtil->convertUnixTSToLocalTX($time3,'Y-m-d H:i:s');
+//                $datesql_end1 = strtotime($time4);
+                $datesql_end2 =  date("Y-m-d H:i:s",strtotime($time4) );
+
 
                 $s = $service_name2[0]['name'];
                 $s2 = $user_name2[0]['name'];
                 $this->BookingTurn->confirmBookingTurn($service_name2[0]['id'],$user_name2[0]['id'],$customer_phone,$time2,$time4);
 
 
-                $messages = $messages . "  " . $s . " with " . $s2 . "  " . " at " . $time2;
+                $messages = $messages . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
 
-//            $this->Customer->addCustomerByBooking($customer_phone,$customer_name,$price,5);
-//            $cus_add = $this->Customer->getCusByPhoneVendor(1,$customer_phone);
-//            $cus_add2 =  $this->util->decodeObjectStdJson($cus_add );
-//            $this->BookingTurn->confirmBookingTurn()
             }
+            $message = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messages  ;
 
+            $this->Twillo->SenMessageByNumber($message, $customer_phone);
+            $response['code'] = 0;
 
-            $this->Twillo->SenMessageByNumber($messages, $customer_phone);
 
 
         }
+        else{
+            $response['code'] = "error";
+        }
 
-        $response['code'] = $confirm->getResultCode();
 
 
 
-//
-        $message = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messages  ;
+
+
 
 
        return \response($response);

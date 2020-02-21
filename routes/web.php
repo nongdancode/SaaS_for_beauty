@@ -94,7 +94,8 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 //calendar admin
-    Route::any('/api/admin/staffs', 'Booking\AppointmentController@getAllFromEmployee');
+//    Route::any('/api/admin/staffs', 'Booking\AppointmentController@getAllFromEmployee');
+    Route::any('/api/admin/staffs/{staffid}/tasks', 'System\ScheduleTaskController@getServicesOfStaffForScheduling');
 
 
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
