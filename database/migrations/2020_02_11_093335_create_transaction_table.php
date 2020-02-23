@@ -14,16 +14,16 @@ class CreateTransactionTable extends Migration
     public function up()
     {
         Schema::create('transaction', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id')->nullable();
             $table->timestamps();
-            $table->string('card_number');
-            $table->string('card_type');
-            $table->string('status');
-            $table->string('name_on_card');
-            $table->double('amount');
-            $table->dateTime('charge_at');
-            $table->string('vendor');
-            $table->string('type_charge');
+            $table->string('card_number')->nullable();
+            $table->string('card_type')->nullable();
+            $table->string('status')->nullable();
+            $table->string('name_on_card')->nullable();
+            $table->double('amount')->nullable();
+            $table->dateTime('charge_at')->nullable();
+            $table->string('vendor')->nullable();
+            $table->string('type_charge')->nullable();
 
 
         });

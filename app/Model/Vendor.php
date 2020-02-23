@@ -9,17 +9,17 @@
 namespace App\Model;
 
 use Illuminate\Support\Facades\DB;
-class Vendor
+class Vendor extends MyModel
 {
     protected $vendor_key = "vendor_key";
     protected  $vendor =  "vendor_store";
 
     function getVendorAuthorizeKey($vendor){
        $queryState = DB::table($this->vendor_key)->select('key1','key3')->where('vendor_id',$vendor)->get();
-       return $queryState;
+       return $this->decodeStd($queryState);
     }
     function getVendor($vendor){
         $queryState = DB::table($this->vendor)->where('id',$vendor)->get();
-        return $queryState;
+        return $this->decodeStd($queryState);
     }
 }

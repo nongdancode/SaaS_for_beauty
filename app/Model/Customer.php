@@ -18,7 +18,7 @@ class Customer extends MyModel
         $data = DB::table('customer')->select('name', 'phone_number')->where('vendor', $vendor)->get();
 
 
-        return $data;
+        return $this->decodeStd($data);
 //         return $data;
     }
 
@@ -27,7 +27,7 @@ class Customer extends MyModel
         $data = DB::table('customer')->limit($limit)->get();
 
 
-        return $data;
+        return $this->decodeStd($data);
     }
 
     function getCustomerByDemandandTimeSteamp($limit)
@@ -37,7 +37,7 @@ class Customer extends MyModel
             )->limit($limit)->get();
 
 
-        return $data;
+        return $this->decodeStd($data);
     }
 
     function getCustomerByIdVendor($cusId,$vendorID){
@@ -47,7 +47,7 @@ class Customer extends MyModel
             ->get();
 
 
-        return $data;
+        return $this->decodeStd($data);
     }
 
     function addCustomerByBooking($phone_number , $name ,$amount_paid ,$point){
@@ -62,7 +62,7 @@ class Customer extends MyModel
             ->get();
 
 
-        return $data;
+        return $this->decodeStd($data);
 
     }
 
