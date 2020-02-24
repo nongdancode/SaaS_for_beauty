@@ -71,7 +71,6 @@ class AppointmentController extends Controller
     {
 
         $data = $this->ServiceModel->getAllServicesByVendor(1);
-
         return $data;
 
     }
@@ -80,8 +79,6 @@ class AppointmentController extends Controller
     {
 
         $data = $this->UserModel->getStaffByAllServices(1);
-
-
 
         for ($i = 0; $i < sizeof($data); $i++) {
 
@@ -104,14 +101,12 @@ class AppointmentController extends Controller
 
     function confirmBooking()
     {
-        $bookingturn = new BookingTurn();
         $data  = $this->requestBooking;
 
         $price = 0;
         $services = [];
         $servicesReturn = [];
         $checkTimeValid = false;
-        $bookingturn2 = '';
 
 
 
@@ -137,7 +132,6 @@ class AppointmentController extends Controller
 
 
             $time1 =   $data['services'][$i]['timeRange']['start'];
-//            $time2  = $this->dateTimeUtil->convertUnixTSToLocalTX($time1,'d/m/Y H:i:s');
 
             $bookingturn2 = $this->scheduleTask->getBookingTurnForChecking($this->VendorId, $user_name[0]['id'],$service_name[0]['id'],$time1);
 
@@ -167,7 +161,6 @@ class AppointmentController extends Controller
     function confirmCharge(){
         $payemnt = new AuthorizePayment();
         $data  = $this->requestBooking;
-        $vendor = $this->Vendor;
         $customer_name = $data['booking']['info']['name'];
         $customer_phone = $data['booking']['info']['phone'];
         $messages = '';
@@ -213,12 +206,12 @@ class AppointmentController extends Controller
 
                 $time1 = $data['booking']['services'][$i]['timeRange']['start'];
                 $time2  = $this->dateTimeUtil->convertUnixTSToLocalTX($time1,'Y-m-d H:i:s');
-//                $datesql_start1 =  strtotime($time2);
+
                 $datesql_start2 =  date("Y-m-d H:i:s", strtotime($time2));
 
                 $time3 = $data['booking']['services'][$i]['timeRange']['end'];
                 $time4  = $this->dateTimeUtil->convertUnixTSToLocalTX($time3,'Y-m-d H:i:s');
-//                $datesql_end1 = strtotime($time4);
+
                 $datesql_end2 =  date("Y-m-d H:i:s",strtotime($time4) );
 
 
@@ -242,9 +235,6 @@ class AppointmentController extends Controller
         else{
             $response['code'] = 1;
         }
-
-
-
 
 
 

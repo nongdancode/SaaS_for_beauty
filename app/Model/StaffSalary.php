@@ -12,9 +12,26 @@ namespace App\Model;
 class StaffSalary extends MyModel
 {
    protected $UserModel = 'user';
+   protected $SalaryDefine = 'salarydefine';
 
 
-   public function listPaymentTypleForStaff($vendor,$staffid){
-       
+   public function listPaymentTypleForStaff(){
+       $dbData = DB::table($this->SalaryDefine)
+           ->select('description as payment_type')
+           ->where('salary_type','payment')
+           ->groupby('description')
+           ->get();
+
+       return $this->decodeStd($dbData);
+   }
+
+   public function listCommissionTypeForStaff(){
+       $dbData = DB::table($this->SalaryDefine)
+           ->select('description as commission')
+           ->where('salary_type','commission_type')
+           ->groupby('description')
+           ->get();
+
+       return $this->decodeStd($dbData);
    }
 }
