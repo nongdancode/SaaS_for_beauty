@@ -13,24 +13,14 @@ class UserAdmin extends MyModel
 {
     protected $user = "user";
 
-//    function getUserPhone($numUser,$date,$role){
-//        $dbData = $this->selectRaw('name,phone_number' )
-//
-//            ->where("last_visit", $date)
-//            ->where("role", $role)
-//
-//            ->get($numUser);
-//
-//        return $dbData;
-//
-//    }
+
 
     function getUserNameInfoById($id,$vendorid){
         $data = DB::table($this->user)->select('id','name','phone_number')
             ->where('id','=',$id)
             ->where('vendor','=',$vendorid)
             ->get();
-        return $data;
+        return $this->decodeStd($data);
     }
 
 
@@ -50,41 +40,82 @@ class UserAdmin extends MyModel
 
     function getStaffByAllServices($vendor)
     {
-//
-//
-//        DB::raw('UNIX_TIMESTAMP(scheduletask.day) as day' )
+
         $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
-            ->select('scheduletask.user_ids as id', 'user.name', 'user.image as img', 'scheduletask.services_ids as service_id', 'service.service_name'
-            )
+            ->select('scheduletask.user_ids as id', 'user.name', 'user.image as img', 'scheduletask.services_ids as service_id', 'service.service_name')
             ->where('scheduletask.vendor', '=', $vendor)
             ->groupBy('scheduletask.user_ids', 'user.name', 'user.image', 'scheduletask.services_ids', 'service.service_name', 'scheduletask.day')
             ->get();
-        return $queryState;
+        return $this->decodeStd($queryState);
     }
+
+    function getServicesByStaff($vendor,$staffId){
+        $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
+            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
+            ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img','service.duration as stepping')
+            ->where('scheduletask.vendor', '=', $vendor)
+            ->where('scheduletask.user_ids', '=', $staffId)
+            ->groupBy('scheduletask.services_ids ', 'service.service_name ','service.image','service.duration')
+            ->get();
+        return $this->decodeStd($queryState);
+    }
+
+    function getStaffByVendor($vendor){
+        $queryState = DB::table('user')->select('id','name','image as img')
+            ->where('vendor',$vendor)
+            ->where('role','=','staff')
+            ->get();
+        return $this->decodeStd($queryState);
+    }
+
 
     function getAllEmployeeTurnInDayForBooking($employeeId, $servicesId, $day, $vendor)
     {
-        $queryState = DB::table('scheduletask')->select(DB::raw('(TIME_TO_SEC(start_time) +  UNIX_TIMESTAMP(day)) as start_time'),
+        $queryState = DB::table('scheduletask')
+
+            ->select(DB::raw('(TIME_TO_SEC(start_time) +  UNIX_TIMESTAMP(day)) as start_time'),
             DB::raw('(TIME_TO_SEC(end_time) +  UNIX_TIMESTAMP(day)) as end_time'))
             ->where('services_ids', '=', $servicesId)
             ->where('user_ids', '=', $employeeId)
             ->where('vendor', '=', $vendor)
             ->where('day', '=', $day)
+            ->where('status','=','active')
             ->get();
 
-        return $queryState;
+        return $this->decodeStd($queryState);
     }
+    function getScheduleForStaff($employeeId,$vendor){
+        $queryState = DB::table('scheduletask')
+
+            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
+            ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img',
+                'service.duration as stepping','service.image as img'
+            ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start_time'),
+                DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end_time'))
+            ->where('scheduletask.vendor', '=', $vendor)
+            ->where('scheduletask.user_ids', '=', $employeeId)
+
+            ->get();
+        return $this->decodeStd($queryState);
+    }
+
+
 
     function getTurnDayOfEmployeeForBooking($employeeId, $servicesId, $vendor)
     {
-        $queryState = DB::table('scheduletask')->select('services_ids', 'user_ids', 'day as day1', DB::raw('UNIX_TIMESTAMP(day) as day2'))
+        $queryState = DB::table('scheduletask')
+
+            ->select('services_ids', 'user_ids', 'day as day1', DB::raw('UNIX_TIMESTAMP(day) as day2'))
             ->where('services_ids', '=', $servicesId)
             ->where('user_ids', '=', $employeeId)
             ->where('vendor', '=', $vendor)
             ->get();
 
-        return $queryState;
+        return $this->decodeStd($queryState);
     }
+
+
+
 
 }

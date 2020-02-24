@@ -13,12 +13,13 @@ class CreateUsersServicesTables extends Migration
      */
     public function up()
     {
-        Schema::create('users_services_tables', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('user_id');
-            $table->string('services_id');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+        Schema::create('users_services', function (Blueprint $table) {
+            $table->bigIncrements('id')->nullable();
+            $table->string('vendor_id')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('services_id')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
 
 
         });
@@ -31,6 +32,6 @@ class CreateUsersServicesTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_services_tables');
+        Schema::dropIfExists('users_services');
     }
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class Transaction extends MyModel
 {
     protected $transactionTable = "transaction";
+    protected $transactiononline = "transactiononline";
 
 
 
@@ -21,14 +22,18 @@ class Transaction extends MyModel
         $dbData = DB::table($this->table)->where("vendor", $vendor)->limit($limit)->get();
 
 
-        return $dbData;
+        return $this->decodeStd($dbData);
     }
 
     public function getTransactionByVendorBytimStamp($vendor,$limit){
         $dbData = DB::table($this->table)->select('card_type','status','amount',DB::raw('UNIX_TIMESTAMP(charge_at) as charge_at'))->   where("vendor", $vendor)->limit($limit)->get();
 
 
-        return $dbData;
+        return $this->decodeStd($dbData);
+    }
+
+    public function storeTransactionOnlineetail(){
+
     }
 
 }

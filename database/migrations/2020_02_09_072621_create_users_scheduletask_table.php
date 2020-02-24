@@ -14,12 +14,12 @@ class CreateUsersScheduletaskTable extends Migration
     public function up()
     {
         Schema::create('users_scheduletask', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('user_id');
-            $table->string('services_id');
-            $table->string('schedule_id');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->bigIncrements('id')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('services_id')->nullable();
+            $table->string('schedule_id')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
         });
     }
 

@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\DB;
 class ServicesVendor extends MyModel
 {
     protected $table = "service";
+    protected $table2 = "users_services";
 
     public function getAllServicesByVendor($vendor){
         $dbData = DB::table($this->table)
             ->select('id', 'image as img', 'service_name as name', 'duration as stepping','price')
             ->where("vendor", $vendor)->get();
 
-        return $dbData;
+        return $this->decodeStd($dbData);
 
     }
 
@@ -31,7 +32,17 @@ class ServicesVendor extends MyModel
              ->where("id", $serviceID)
             ->get();
 
-        return $dbData;
+        return $this->decodeStd($dbData);
+    }
+
+    public function getservicesByStaff($vendor,$user_id){
+        $dbData = DB::table('service')->join('users_services' ,'users_services.services_id','=','service.id')
+            ->select('service.service_name as name','service.id as id','service.image as img','service.duration as stepping')
+            ->where('users_services.vendor_id',$vendor)
+            ->where('users_services.user_id',$user_id)
+            ->get();
+        return $this->decodeStd($dbData);
+
     }
 
 }

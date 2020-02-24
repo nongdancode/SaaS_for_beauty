@@ -7,9 +7,13 @@
  */
 
 namespace App\Model;
-
+use App\Lib\MyUtils;
 use Illuminate\Database\Eloquent\Model;
 class MyModel extends Model
 {
 
+     public function decodeStd($object){
+         $object2 = MyUtils::decodeObjectStdJson($object);
+         return $object2;
+     }
 }
