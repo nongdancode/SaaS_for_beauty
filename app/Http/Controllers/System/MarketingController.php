@@ -49,8 +49,8 @@ class MarketingController extends Controller
         $nums = [];
         for($i = 0 ; $i < sizeof($data['customerIds']);$i++){
           $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],1);
-          $cus_phone2 =   $this->util->decodeObjectStdJson($cus_phone );
-          $this->TwilloSMS->SenMessageByNumber($data['message'],$cus_phone2[0]['phone_number']);
+
+          $this->TwilloSMS->SenMessageByNumber($data['message'],$cus_phone[0]['phone_number']);
 //
 //          print($cus_phone2[0]['phone_number']);
 //            exit();

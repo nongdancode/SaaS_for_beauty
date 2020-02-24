@@ -108,7 +108,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/admin/payment_report', 'System\ReportController@apiPaymentReportByPieChart')  ;
 
 
-
+//calendar xxxxxxxxxxxxxxxxx
 
 });
 //Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
