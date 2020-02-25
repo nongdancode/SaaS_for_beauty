@@ -46,6 +46,11 @@ class EmployeeManageController extends Controller
       return $data;
   }
 
+  function getAllServicesByVendor(){
+        $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
+        return $data;
+  }
+
     function getAllEmployeeFromVendor(){
 
         $data = $this->UserModel->getStaffByVendor(1);
@@ -63,6 +68,10 @@ class EmployeeManageController extends Controller
         for($i=0 ; $i< sizeof($UserFollow);$i++){
             $this->ServiceModel->addEmployeeForServies($this->VendorId, $ser_id,$UserFollow[$i]);
         }
+    }
+
+    function addEmployee(){
+        $employeeFields = $this->Request;
     }
 
 }

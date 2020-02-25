@@ -49,8 +49,12 @@ class ServicesVendor extends MyModel
     function addServices($vendorId, $servicenName,$servicePrice,$duration){
         $dbData = DB::table('service')->insertGetId( ['vendor' => $vendorId, 'service_name'=> $servicenName,'duration'=>$duration,'price'=> $servicePrice
            ]);
+        return $dbData;
     }
     function addEmployeeForServies($vendorId,$servicesID,$employeeId){
-        $dbData = DB::table('users_services')->insertGetId(['vendor_id'=>$vendorId,'services_id'=>$servicesID,'user_id'=>$employeeId]);
+        $dbData = DB::table('users_services')->insertGetId(['vendor_id'=>$vendorId,'services_id'=>$servicesID,'user_id'=>$employeeId
+            ]);
+
+        return $dbData;
     }
 }
