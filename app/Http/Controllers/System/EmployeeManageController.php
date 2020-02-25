@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\System;
 use App\Lib\MyUtils;
+use App\Model\ServicesVendor;
 use App\Model\StaffSalary;
 use App\Model\UserAdmin;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class EmployeeManageController extends Controller
 
     protected $VendorId = 1;
     protected $UserModel;
+    protected $ServiceModel;
 
 
     function __construct(Request $request)
@@ -27,6 +29,8 @@ class EmployeeManageController extends Controller
         $this->Staff = new UserAdmin();
         $this->salaryDefine = new StaffSalary();
         $this->UserModel = new UserAdmin();
+        $this->ServiceModel = new ServicesVendor();
+        $this->Request = $request->all();
 
 
     }
@@ -42,10 +46,32 @@ class EmployeeManageController extends Controller
       return $data;
   }
 
+  function getAllServicesByVendor(){
+        $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
+        return $data;
+  }
+
     function getAllEmployeeFromVendor(){
 
         $data = $this->UserModel->getStaffByVendor(1);
         return $data;
+    }
+
+
+    function addServices(){
+        $servicesFields = $this->Request;
+        $sevice_name = $servicesFields['name'];
+        $service_cost = $servicesFields['cost'];
+        $stepping = $servicesFields['stepping'];
+        $UserFollow =$servicesFields['users'];
+      $ser_id =  $this->ServiceModel->addServices($this->VendorId,$sevice_name,$service_cost,$stepping);
+        for($i=0 ; $i< sizeof($UserFollow);$i++){
+            $this->ServiceModel->addEmployeeForServies($this->VendorId, $ser_id,$UserFollow[$i]);
+        }
+    }
+
+    function addEmployee(){
+        $employeeFields = $this->Request;
     }
 
 }
