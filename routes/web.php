@@ -112,8 +112,8 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     //employee
 
-    Route::any('api/admin/staff-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
-    Route::any('api/admin/staff-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
+    Route::any('api/admin/user-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
+    Route::any('api/admin/user-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
     Route::any('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
     //services
