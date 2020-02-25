@@ -91,26 +91,118 @@ class ScheduleTaskController extends Controller
 
    }
 
-   function editSchedule(){
-        $dataUpdateSchedule = $this->requestData;
-
-        $staffId = $this->staffId;
-        for($i=0;$i< sizeof($dataUpdateSchedule); $i++){
-            $start_time = $dataUpdateSchedule[$i]['start'];
-            $end_time = $dataUpdateSchedule[$i]['end'];
-            $date_start1 = date('yy-m-d',$start_time);
-            $time_start1 = date('H:i:s',$start_time);
-
-            $date_end1 = date('yy-m-d',$end_time);
-            $time_end1 = date('H:i:s',$end_time);
+   function editSchedule()
+   {
+       $dataUpdateSchedule = $this->requestData;
+       $schedule_add = $dataUpdateSchedule['add'];
+       $schedule_delete = $dataUpdateSchedule['delete'];
 
 
+       if(sizeof( $schedule_add)>0){
+           for ($i = 0; $i < sizeof($schedule_add); $i++){
+               $start_time = $schedule_add[$i]['start'];
+               $end_time = $schedule_add[$i]['end'];
+               $date_start1 = date('yy-m-d', $start_time);
+               $time_start1 = date('H:i:s', $start_time);
 
-            dd( $time_start1);
-            exit();
-        }
+               $date_end1 = date('yy-m-d', $end_time);
+               $time_end1 = date('H:i:s', $end_time);
+               $this->CurrentSchedule->addScheduleForStaff($this->VendorId,$this->staffId,$time_start1,$schedule_add[$i]['id'],$time_end1,$date_start1);
 
-      return response($dataUpdateSchedule);
+           }
+       }
+
+
+       if(sizeof($schedule_delete)>0){
+           for ($i = 0; $i < sizeof($schedule_delete); $i++){
+               $start_time = $schedule_delete[$i]['start'];
+               $end_time = $schedule_delete[$i]['end'];
+               $date_start1 = date('yy-m-d', $start_time);
+               $time_start1 = date('H:i:s', $start_time);
+
+               $date_end1 = date('yy-m-d', $end_time);
+               $time_end1 = date('H:i:s', $end_time);
+               $schedule_delete = $this->CurrentSchedule->getScheduleOfStaffForCheckAdd($this->VendorId, $this->staffId, $start_time, $schedule_delete[$i]['id']);
+
+               $this->CurrentSchedule->deleteScheduleTaskByCondition($schedule_delete[0]['id'],$this->VendorId);
+
+           }
+       }
+//       dd($dataUpdateSchedule);
+//       exit();
+//
+//       $count = 0;
+//       $countd = 0;
+//       $dataCurrentSchedule = $this->CurrentSchedule->getScheduleOfStaffForCheckingDelete($this->VendorId, $this->staffId);
+//       $staffId = $this->staffId;
+//       $scheduleAddId = [];
+//       $listIdDiff = [];
+//       $listid1 = [];
+//       $NewListId = [];
+//       $OldlistId = [];
+//
+//
+//           for ($i = 0; $i < sizeof($dataUpdateSchedule); $i++) {
+//               $start_time = $dataUpdateSchedule[$i]['start'];
+//               $end_time = $dataUpdateSchedule[$i]['end'];
+//               $date_start1 = date('yy-m-d', $start_time);
+//               $time_start1 = date('H:i:s', $start_time);
+//
+//               $date_end1 = date('yy-m-d', $end_time);
+//               $time_end1 = date('H:i:s', $end_time);
+//               $checkAdd = $this->CurrentSchedule->getScheduleOfStaffForCheckAdd($this->VendorId, $this->staffId, $start_time, $dataUpdateSchedule[$i]['id']);
+////check add action
+//               if (sizeof($checkAdd) == 0) {
+//                   $count = $count + 1;
+//                   $Add2 =    $this->CurrentSchedule->addScheduleForStaff($this->VendorId,$this->staffId,$time_start1,$dataUpdateSchedule[$i]['id'],$time_end1,$date_start1);
+//
+//                  array_push($scheduleAddId, $Add2);
+//               }
+//
+//           }
+//
+//
+//
+//       $listid2 = [];
+//
+////
+//
+//
+//           for ($i = 0; $i < sizeof($dataUpdateSchedule); $i++){
+//               $start_time = $dataUpdateSchedule[$i]['start'];
+//               $end_time = $dataUpdateSchedule[$i]['end'];
+//               $date_start1 = date('yy-m-d', $start_time);
+//               $time_start1 = date('H:i:s', $start_time);
+//
+//               $date_end1 = date('yy-m-d', $end_time);
+//               $time_end1 = date('H:i:s', $end_time);
+//               $NewList = $this->CurrentSchedule->getScheduleOfStaffForCheckAdd($this->VendorId, $this->staffId, $start_time, $dataUpdateSchedule[$i]['id']);
+//
+//               array_push($NewListId,$NewList[0]['id']);
+//           }
+//
+//
+//
+//          for($i = 0 ; $i<sizeof($dataCurrentSchedule);$i++){
+//               array_push($OldlistId,$dataCurrentSchedule[$i]['id']);
+//          }
+//
+//        $diff1 = array_diff($OldlistId,$NewListId);
+//         $diff2 = array_diff($diff1,$scheduleAddId);
+//           dd($diff2);
+//           exit();
+//       for($x = 0 ; $x < sizeof($diff1); $x++){
+//
+////           $this->CurrentSchedule->deleteScheduleTaskByCondition($diff1[$x],$this->VendorId);
+//       }
+//
+//      $check['add'] = $diff1;
+//
+//       return $check;
+       $returnStatus['code'] = 0;
+
+       return $returnStatus;
+//       return response($dataUpdateSchedule);
    }
 
 }

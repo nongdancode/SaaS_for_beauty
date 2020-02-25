@@ -55,7 +55,7 @@ class SMSTwillo
      * @throws \Twilio\Exceptions\ConfigurationException
      * @throws \Twilio\Exceptions\TwilioException
      */
-    public function SenMessageByNumber($message, $number)
+    public function SendMessageByNumber($message, $number)
     {
         $account_sid = getenv("TWILIO_SID");
         $auth_token = getenv("TWILIO_AUTH_TOKEN");

@@ -56,25 +56,87 @@ class ScheduleTask  extends MyModel
 
     function addCusCheckin($vendorId,$cus_id){
         DB::table('scheduletask')->updateOrInsert(['cus_id' => $cus_id],
-            ['vendor'=>$vendorId,'task'=>'checking']
+            ['vendor'=>$vendorId,'task'=>'checkin']
         );
 
     }
 
-    function getCusCheckin($vendorId){
-       $data =  DB::table('scheduletask')
-        ->join('customer','customer.id','=','scheduletask.cus_id')
-            ->select('customer.id','customer.name','customer.phone','schedule.status')
-            ->where('schedule.task','=','checkin')
-            ->where('schedule.vendor',$vendorId)
-            ->get();
+//    function getCusCheckinNonBooking($vendorId){
+//       $data =  DB::table('scheduletask')
+//        ->join('customer','customer.id','=','scheduletask.cus_id')
+//            ->select('customer.id','customer.name','customer.phone','schedule.status')
+//            ->where('schedule.task','=','checkin')
+//           ->where('schedule.status','=','active')
+//            ->where('schedule.vendor',$vendorId)
+//            ->get();
+//
+//        return $this->decodeStd($data);
+//    }
+//
+//    function getCusCheckinAndBooking($vendorId){
+//        $data =  DB::table('scheduletask')
+//            ->join('customer','customer.id','=','scheduletask.cus_id')
+//            ->select('customer.id','customer.name','customer.phone','schedule.status')
+//            ->where('schedule.task','=','checkin')
+//            ->where('schedule.status','=','booking')
+//            ->where('schedule.vendor',$vendorId)
+//            ->get();
+//
+//        return $this->decodeStd($data);
+//    }
 
-        return $this->decodeStd($data);
-    }
 
-     function UpdateScheduleForStaff($vendorId,$staffID){
-        
-     }
+  function getScheduleOfStaffForCheckingDelete($vendorId,$staffId){
+      $data =  DB::table('scheduletask')
+          ->where('vendor',$vendorId)
+          ->where('user_ids',$staffId)
+
+          ->get();
+
+      return $this->decodeStd($data);
+  }
+
+  function getScheduleOfStaffForCheckAdd($vendorId,$staffId,$start_time,$service_id){
+      $data =  DB::table('scheduletask')
+
+          ->where('vendor',$vendorId)
+          ->where('user_ids',$staffId)
+          ->where('services_ids',$service_id)
+
+          ->whereRaw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) = ?',[$start_time])
+          ->get();
+
+      return $this->decodeStd($data);
+  }
+
+  function addScheduleForStaff($vendorId,$staffId,$start_time,$service_id,$end_time,$day){
+      $data =  DB::table('scheduletask')
+          ->  insertGetId(['start_time'=>$start_time,'end_time'=> $end_time,'day'=>$day,
+              'services_ids' => $service_id, 'user_ids'=> $staffId,'vendor'=>$vendorId,'status'=>'active']);
+
+      return $data;
+  }
+
+  function getScheduleTaskIDbyConditions($vendorId,$staffId,$start_time,$service_id){
+      $data =  DB::table('scheduletask')
+         ->select('id')
+          ->where('vendor',$vendorId)
+          ->where('user_ids',$staffId)
+          ->where('services_ids',$service_id)
+
+          ->whereRaw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) = ?',[$start_time])
+          ->get();
+      return $this->decodeStd($data);
+  }
+
+  function deleteScheduleTaskByCondition($id,$vendorId){
+      DB::table('scheduletask')
+          ->where('id', '=', $id)
+          ->where('vendor',$vendorId)
+          ->delete();
+  }
+
+
 //    function getCusWaitlist($vendorId){
 //        $data = DB::table('scheduletask')
 //            ->join('service','service.id','=','scheduletask.services_ids')

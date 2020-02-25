@@ -57,12 +57,9 @@ class AppointmentController extends Controller
         $this->dateTime = new DateTime();
         $this->dateTimeUtil = new DateTimeUtils();
         $this->AuthorizePayment = new AuthorizePayment();
-
         $this->Vendor = new Vendor();
 
         $this->scheduleTask = new ScheduleTask();
-
-
     }
 
 
@@ -96,6 +93,8 @@ class AppointmentController extends Controller
 
         return $data;
     }
+
+
 
     function confirmBooking()
     {
@@ -159,7 +158,9 @@ class AppointmentController extends Controller
         $data  = $this->requestBooking;
         $customer_name = $data['booking']['info']['name'];
         $customer_phone = $data['booking']['info']['phone'];
-        $messages = '';
+        $messagesForcus = '';
+        $messagesForStaff='';
+        $messagesForVendor='';
         $price = 0;
         $services = [];
         $servicesReturn = [];
@@ -221,21 +222,22 @@ class AppointmentController extends Controller
                 $this->scheduleTask->confirmBooking($this->VendorId,$user_name[0]['id'],$service_name[0]['id'],$time1,$cusId2);
 
 
-                $messages = $messages . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
+                $messagesForcus = $messagesForcus . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
+                $messagesForStaff =      $messagesForStaff ." You have booking at " . $time2  . " for service ". $s ;
+                $messagesForVendor = $messagesForVendor . "  " . $s2 . " have booking at: ". $time2;
 
             }
-            $message = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messages  ;
 
-            $this->Twillo->SenMessageByNumber($message, $customer_phone);
+            $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
+            $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
+            $this->Twillo->SendMessageByNumber( $messagesForStaff, '8327744593');
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
         }
         else{
             $response['code'] = 1;
         }
-
-
-
 
 
        return \response($response);

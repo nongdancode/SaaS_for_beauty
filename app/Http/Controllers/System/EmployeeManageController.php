@@ -17,6 +17,7 @@ class EmployeeManageController extends Controller
     protected $salaryDefine;
 
     protected $VendorId = 1;
+    protected $UserModel;
 
 
     function __construct(Request $request)
@@ -25,6 +26,7 @@ class EmployeeManageController extends Controller
         $this->util = new MyUtils();
         $this->Staff = new UserAdmin();
         $this->salaryDefine = new StaffSalary();
+        $this->UserModel = new UserAdmin();
 
 
     }
@@ -40,5 +42,10 @@ class EmployeeManageController extends Controller
       return $data;
   }
 
+    function getAllEmployeeFromVendor(){
+
+        $data = $this->UserModel->getStaffByVendor(1);
+        return $data;
+    }
 
 }
