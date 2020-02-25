@@ -42,7 +42,7 @@ class AppointmentController extends Controller
     protected  $scheduleTask;
     protected  $services;
 
-    public function __construct(Request $request,Response  $input)
+    public function __construct(Request $request)
     {
 
         $this->ServiceModel = new ServicesVendor();
@@ -54,7 +54,6 @@ class AppointmentController extends Controller
         $this->requestBooking = $request->all();
         $this->BookingTurn = new BookingTurn();
 
-        $this->requestBooking2 = $input->content();
         $this->dateTime = new DateTime();
         $this->dateTimeUtil = new DateTimeUtils();
         $this->AuthorizePayment = new AuthorizePayment();
@@ -90,7 +89,6 @@ class AppointmentController extends Controller
                     $this->UserModel
                         ->getAllEmployeeTurnInDayForBooking($data[$i]['id'], $data[$i]['service_id'], $subDay[$a]['day1'], 1);
 
-
             }
 
         }
@@ -107,8 +105,6 @@ class AppointmentController extends Controller
         $services = [];
         $servicesReturn = [];
         $checkTimeValid = false;
-
-
 
 
         for ($i = 0 ; $i < sizeof($data['services']);$i++ ){
@@ -181,7 +177,8 @@ class AppointmentController extends Controller
 
 
         if ($confirm->getResultCode() == 'Ok') {
-            $this->Customer->addCustomerByBooking($customer_phone, $customer_name, $price, 5);
+            $date2 = date('m/d/Y h:i:s a', time());
+            $this->Customer->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $price, 5);
             for ($i = 0; $i < sizeof($data['booking']['services']); $i++) {
 
                 $user_name = $this->UserModel->getUserNameInfoById($data['booking']['services'][$i]['employeeId'], $this->VendorId);
@@ -217,8 +214,11 @@ class AppointmentController extends Controller
 
                 $s = $service_name[0]['name'];
                 $s2 = $user_name[0]['name'];
+                $cusId = $this->Customer->getCusByPhoneVendor($this->VendorId,$customer_phone);
 
-                $this->scheduleTask->confirmBooking($this->VendorId,$user_name[0]['id'],$service_name[0]['id'],$time1);
+                $cusId2 =$cusId[0]['id'];
+
+                $this->scheduleTask->confirmBooking($this->VendorId,$user_name[0]['id'],$service_name[0]['id'],$time1,$cusId2);
 
 
                 $messages = $messages . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
@@ -228,8 +228,6 @@ class AppointmentController extends Controller
 
             $this->Twillo->SenMessageByNumber($message, $customer_phone);
             $response['code'] = 0;
-
-
 
         }
         else{

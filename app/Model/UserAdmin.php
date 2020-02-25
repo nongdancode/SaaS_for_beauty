@@ -9,7 +9,7 @@
 namespace App\Model;
 use Illuminate\Support\Facades\DB;
 
-class UserAdmin extends MyModel
+class UserAdmin extends  MyModel
 {
     protected $user = "user";
 
@@ -30,6 +30,18 @@ class UserAdmin extends MyModel
             ['email' => $email, 'password'=> $password,'name'=>$name,'role'=> $role,'vendor'=>$vendor]
         );
 
+        if($queryState){
+            return "Success";
+        }
+        else{
+            return "False ";
+        }
+    }
+
+    function CreateEmployeeForVendor($email,$name,$ssn,$role,$vendor){
+        $queryState = DB::table('user')->insertGetId(
+            ['email' => $email, 'ssn'=> $ssn,'name'=>$name,'role'=> $role,'vendor'=>$vendor]
+        );
         if($queryState){
             return "Success";
         }

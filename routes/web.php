@@ -97,6 +97,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/admin/staffs', 'System\ScheduleTaskController@getStafffForSchdedule');
     Route::any('/api/admin/staffs/{staffid}/tasks', 'System\ScheduleTaskController@getServicesOfStaffForScheduling');
     Route::any('/api/admin/staffs/{staffid}/schedules', 'System\ScheduleTaskController@getScheduleForStaff');
+    Route::any('/api/admin/schedules/{staffId}/tasks', 'System\ScheduleTaskController@editSchedule');
 
 
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
@@ -107,6 +108,12 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/admin/customer_report', 'System\ReportController@apiCustomerReportByPieChart');
     Route::any('/api/admin/payment_report', 'System\ReportController@apiPaymentReportByPieChart')  ;
 
+
+
+    //employee
+
+    Route::any('api/admin/staff-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
+    Route::any('api/admin/staff-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
 
 //calendar xxxxxxxxxxxxxxxxx
 

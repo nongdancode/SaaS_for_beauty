@@ -11,6 +11,7 @@ use App\Lib\MyUtils;
 use App\Model\StaffSalary;
 use App\Model\UserAdmin;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 class EmployeeManageController extends Controller
 {
     protected $salaryDefine;
@@ -38,4 +39,6 @@ class EmployeeManageController extends Controller
 
       return $data;
   }
+
+
 }
