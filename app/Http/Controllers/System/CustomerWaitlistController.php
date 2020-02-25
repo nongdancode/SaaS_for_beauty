@@ -68,4 +68,5 @@ class CustomerWaitlistController extends Controller
      return $dataCus;
 
     }
+
 }
