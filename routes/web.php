@@ -97,7 +97,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/admin/staffs', 'System\ScheduleTaskController@getStafffForSchdedule');
     Route::any('/api/admin/staffs/{staffid}/tasks', 'System\ScheduleTaskController@getServicesOfStaffForScheduling');
     Route::any('/api/admin/staffs/{staffid}/schedules', 'System\ScheduleTaskController@getScheduleForStaff');
-    Route::any('/api/admin/schedules/{staffId}/tasks', 'System\ScheduleTaskController@editSchedule');
+    Route::any('/api/admin/schedules/{staffid}/tasks', 'System\ScheduleTaskController@editSchedule');
 
 
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
@@ -114,6 +114,12 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     Route::any('api/admin/staff-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
     Route::any('api/admin/staff-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
+    Route::any('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
+
+    //checkin-waitlist
+    Route::any('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
+    Route::any('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
+
 
 //calendar xxxxxxxxxxxxxxxxx
 

@@ -25,6 +25,7 @@ class CustomerWaitlistController extends Controller
     protected $VendorId = 1;
 
 
+
     function __construct(Request $request)
     {
 
@@ -38,9 +39,33 @@ class CustomerWaitlistController extends Controller
     function getWaitlist(){
 
 
-     $data = $this->customerModel->getCustomerForWaitlist($this->VendorId);
+     $dataCus = $this->customerModel->getCustomerForWaitlist($this->VendorId);
 
-     return $data;
+     $CusNonBooking = $this->customerModel->getCusCheckinNonBooking($this->VendorId);
+     $CusBooking =  $this->customerModel->getCusCheckinAndBooking($this->VendorId);
+     $returnData = [];
+
+     $invoiceInfo['id'] =rand(10,100000);
+     $invoiceInfo['tax'] = 10;
+
+
+     $aboutInfo['companyName']='The lash supply';
+        $aboutInfo['phone'] = '8327744593';
+        $address['street'] = 'Bellard';
+        $address['city'] = "Houston";
+        $address['stage'] = "Texas";
+        $aboutInfo['address'] = $address;
+        $invoiceInfo['about'] = $aboutInfo;
+
+
+
+     for($i=0; $i< sizeof($dataCus);$i++){
+
+     }
+//     $returnData =
+
+
+     return $dataCus;
 
     }
 }

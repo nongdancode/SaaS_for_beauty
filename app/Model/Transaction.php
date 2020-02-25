@@ -32,7 +32,7 @@ class Transaction extends MyModel
         return $this->decodeStd($dbData);
     }
 
-    public function storeTransactionOnlineetail(){
+    public function addTransactionOnline(){
 
     }
 
