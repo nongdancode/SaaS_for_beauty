@@ -23,6 +23,7 @@ class ScheduleTask extends Migration
             $table->string('vendor')->nullable();
             $table->string('user_ids')->nullable();
             $table->string('status')->nullable();
+            $table->string('cus_id')->nullable();
 
 
         });

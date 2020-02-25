@@ -8,6 +8,7 @@
 
 namespace App\Model;
 
+use Illuminate\Support\Facades\DB;
 
 class StaffSalary extends MyModel
 {

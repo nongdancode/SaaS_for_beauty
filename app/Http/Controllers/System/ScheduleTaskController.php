@@ -27,6 +27,7 @@ class ScheduleTaskController extends Controller
     protected $VendorId = 1;
     protected $bookingTurn;
     protected $CurrentSchedule;
+    protected $requestData;
 
 
     function __construct(Request $request)
@@ -38,6 +39,8 @@ class ScheduleTaskController extends Controller
         $this->staffServices = new ServicesVendor();
         $this->CurrentSchedule= new ScheduleTask();
         $this->staffId = $request->staffid;
+        $this->requestData = $request->all();
+
 
     }
 
@@ -86,12 +89,28 @@ class ScheduleTaskController extends Controller
 
 
 
+   }
+
+   function editSchedule(){
+        $dataUpdateSchedule = $this->requestData;
+
+        $staffId = $this->staffId;
+        for($i=0;$i< sizeof($dataUpdateSchedule); $i++){
+            $start_time = $dataUpdateSchedule[$i]['start'];
+            $end_time = $dataUpdateSchedule[$i]['end'];
+            $date_start1 = date('yy-m-d',$start_time);
+            $time_start1 = date('H:i:s',$start_time);
+
+            $date_end1 = date('yy-m-d',$end_time);
+            $time_end1 = date('H:i:s',$end_time);
 
 
 
+            dd( $time_start1);
+            exit();
+        }
 
-
-
+      return response($dataUpdateSchedule);
    }
 
 }
