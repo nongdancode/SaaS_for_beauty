@@ -16,6 +16,14 @@ use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 
 use Illuminate\Http\Request;
+
+
+use App\User;
+
+use JWTAuth;
+use JWTAuthException;
+use Hash;
+
 class LoginController extends Controller
 {
     public $loginAfterSignUp = true;

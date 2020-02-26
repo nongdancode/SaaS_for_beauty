@@ -46,10 +46,6 @@ class EmployeeManageController extends Controller
       return $data;
   }
 
-  function getAllServicesByVendor(){
-        $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
-        return $data;
-  }
 
     function getAllEmployeeFromVendor(){
 
@@ -58,17 +54,7 @@ class EmployeeManageController extends Controller
     }
 
 
-    function addServices(){
-        $servicesFields = $this->Request;
-        $sevice_name = $servicesFields['name'];
-        $service_cost = $servicesFields['cost'];
-        $stepping = $servicesFields['stepping'];
-        $UserFollow =$servicesFields['users'];
-      $ser_id =  $this->ServiceModel->addServices($this->VendorId,$sevice_name,$service_cost,$stepping);
-        for($i=0 ; $i< sizeof($UserFollow);$i++){
-            $this->ServiceModel->addEmployeeForServies($this->VendorId, $ser_id,$UserFollow[$i]);
-        }
-    }
+
 
     function addEmployee(){
         $employeeFields = $this->Request;

@@ -117,8 +117,8 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
     //services
-    Route::any('api/admin/services', 'System\EmployeeManageController@getAllServicesByVendor')  ;
-    Route::any('api/admin/services', 'System\EmployeeManageController@addServices')  ;
+    Route::any('api/admin/services', 'System\ServiceManageController@getAllServicesByVendor')  ;
+    Route::any('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
     Route::any('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
     //checkin-waitlist
