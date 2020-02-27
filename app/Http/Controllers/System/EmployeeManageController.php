@@ -13,6 +13,8 @@ use App\Model\StaffSalary;
 use App\Model\UserAdmin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Lcobucci\JWT\Signature;
+
 class EmployeeManageController extends Controller
 {
     protected $salaryDefine;
@@ -49,8 +51,25 @@ class EmployeeManageController extends Controller
 
     function getAllEmployeeFromVendor(){
 
-        $data = $this->UserModel->getStaffByVendor(1);
+        $data = $this->UserModel->getStaffByVendor($this->VendorId);
+        for($i = 0 ; $i<sizeof($data);$i++){
+            $serviceInfo = $this->ServiceModel->getservicesByStaff($this->VendorId,$data[$i],$data[$i]['id']);
+            for($a = 0 ; $a<sizeof($serviceInfo);$a++){
+                $data[$i]['services'][] = $serviceInfo[$a]['id'];
+            }
+        }
+
         return $data;
+    }
+
+    function getEmployeeForFakerNHOLAPHAIDELETECAIDOQUYNAY(){
+        $data = $this->UserModel->getStaffByVendor($this->VendorId);
+        for($i = 0 ; $i<sizeof($data);$i++){
+            $data[$i]['password'] = '123123@';
+        }
+        return $data;
+
+
     }
 
 
@@ -58,6 +77,8 @@ class EmployeeManageController extends Controller
 
     function addEmployee(){
         $employeeFields = $this->Request;
+        dd($employeeFields);
+        exit();
     }
 
 }

@@ -8,6 +8,7 @@ use App\Model\BookingTurn;
 use App\Model\Customer;
 use App\Model\ScheduleTask;
 use App\Model\ServicesVendor;
+use App\Model\Transaction;
 use App\Model\UserAdmin;
 use App\Model\Vendor;
 use Illuminate\Http\Request;
@@ -41,6 +42,7 @@ class AppointmentController extends Controller
     protected $Vendor;
     protected  $scheduleTask;
     protected  $services;
+    protected $Transaction;
 
     public function __construct(Request $request)
     {
@@ -58,7 +60,7 @@ class AppointmentController extends Controller
         $this->dateTimeUtil = new DateTimeUtils();
         $this->AuthorizePayment = new AuthorizePayment();
         $this->Vendor = new Vendor();
-
+        $this->Transaction = new Transaction();
         $this->scheduleTask = new ScheduleTask();
     }
 
@@ -66,7 +68,8 @@ class AppointmentController extends Controller
     function getReadyServices()
     {
 
-        $data = $this->ServiceModel->getAllServicesByVendor(1);
+        $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
+
         return $data;
 
     }
@@ -86,6 +89,7 @@ class AppointmentController extends Controller
                     $this->UserModel
                         ->getAllEmployeeTurnInDayForBooking($data[$i]['id'], $data[$i]['service_id'], $subDay[$a]['day1'], 1);
 
+
             }
 
         }
@@ -93,6 +97,8 @@ class AppointmentController extends Controller
 
         return $data;
     }
+
+
 
 
 
@@ -134,8 +140,8 @@ class AppointmentController extends Controller
             if(sizeof($bookingturn2)>0){
                 $checkTimeValid = True;
             }
-
         }
+
 
         $servicesReturn['price'] = $price;
         $servicesReturn2['data']['price'] = $price;
@@ -164,6 +170,7 @@ class AppointmentController extends Controller
         $price = 0;
         $services = [];
         $servicesReturn = [];
+        $discountRate = 20;
         $key = $this->Vendor->getVendorAuthorizeKey($this->VendorId);
 
 
@@ -174,12 +181,26 @@ class AppointmentController extends Controller
         $cardEx = $data['payment']['cardExpiry'];
         $cardcvv = $data['payment']['cardCVV'];
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, 0.2);
 
+        for ($i = 0; $i < sizeof($data['booking']['services']); $i++){
+
+            $service_name = $this->ServiceModel->getServicesNameByIdandVendor($this->VendorId, $data['booking']['services'][$i]['serviceId']);
+
+            $discontPrice = $service_name[0]['price'] / 100 * $discountRate;
+            $servicesReturn[$service_name[0]['name']]['id'] = $service_name[0]['id'];
+            $price = $price + $discontPrice;
+
+
+        }
+
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, $price);
 
         if ($confirm->getResultCode() == 'Ok') {
+            $this->Transaction->insertTransactionByVendor
+            (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
+                $price,$this->VendorId,'online',$customer_phone);
             $date2 = date('m/d/Y h:i:s a', time());
-            $this->Customer->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $price, 5);
+
             for ($i = 0; $i < sizeof($data['booking']['services']); $i++) {
 
                 $user_name = $this->UserModel->getUserNameInfoById($data['booking']['services'][$i]['employeeId'], $this->VendorId);
@@ -188,19 +209,18 @@ class AppointmentController extends Controller
                 $service_name = $this->ServiceModel->getServicesNameByIdandVendor(1, $data['booking']['services'][$i]['serviceId']);
 
 
-
                 $services[$service_name[0]['name']]['start_time'] = $data['booking']['services'][$i]['timeRange']['start'];
                 $services[$service_name[0]['name']]['end_time'] = $data['booking']['services'][$i]['timeRange']['end'];
                 $services[$service_name[0]['name']]['staff'] = $user_name[0]['id'];
                 $services[$service_name[0]['name']]['phone_staff'] = $user_name[0]['phone_number'];
                 $services[$service_name[0]['name']]['price'] = $service_name[0]['price'];
 
-                $discontPrice = $service_name[0]['price'] / 100 * 15;
+
 
 
                 $servicesReturn[$service_name[0]['name']]['id'] = $service_name[0]['id'];
                 $price = $price + $discontPrice;
-
+                $this->Customer->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $price, 5);
 
                 $time1 = $data['booking']['services'][$i]['timeRange']['start'];
                 $time2  = $this->dateTimeUtil->convertUnixTSToLocalTX($time1,'Y-m-d H:i:s');
@@ -228,11 +248,12 @@ class AppointmentController extends Controller
 
             }
 
+
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-            $this->Twillo->SendMessageByNumber( $messagesForStaff, '8327744593');
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
+            $this->Twillo->SendMessageByNumber( $messagesForStaff, '8327744593 ');
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
         }

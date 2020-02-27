@@ -39,6 +39,8 @@ class MyUtils
         return $_d;
     }
 
+
+
     public static function UpCaseKpiCode($kpiCode, $removeTiming = false)
     {
         $timing = "";

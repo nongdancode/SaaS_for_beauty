@@ -23,9 +23,12 @@ class Customer extends MyModel
 //         return $data;
     }
 
-    function getCustomerByDemand($limit)
+    function getCustomerByDemand($limit,$vendorId)
     {
-        $data = DB::table('customer')->limit($limit)->get();
+        $data = DB::table('customer')
+            ->where('vendor',$vendorId)
+
+            ->limit($limit)->get();
 
 
         return $this->decodeStd($data);
@@ -54,6 +57,7 @@ class Customer extends MyModel
     function addCustomerByBooking($vendorId,$phone_number , $name ,$amount_paid ,$point){
         $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number],
             ['vendor'=>$vendorId,'name'=> $name ,'amount_paid'=> $amount_paid,'point' => $point,'last_visit'=>DB::raw('NOW()')]);
+        return $data;
     }
 
     function getCusByPhoneVendor($vendor,$phone){

@@ -13,6 +13,8 @@ use App\Lib\MyUtils;
 use App\Lib\SMSTwillo;
 use App\Model\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class MarketingController extends Controller
 {
@@ -23,6 +25,7 @@ class MarketingController extends Controller
     protected $TwilloSMS;
     protected $SMSDatatable;
     protected $SMSUser;
+    protected $VendorId = 1;
 
     function __construct(Request $request)
     {
@@ -37,7 +40,7 @@ class MarketingController extends Controller
 
     function flectCustomerForMarketing()
     {
-        $cus1 = $this->customerModel->getCustomerByDemand(50);
+        $cus1 = $this->customerModel->getCustomerByDemand(50,$this->VendorId);
 
         return $cus1;
 
@@ -58,6 +61,9 @@ class MarketingController extends Controller
 
 
 //          return $this->TwilloSMS->SendMessageByList($data['message'],$nums);
+    }
+    function sendMMSForMkt(){
+
     }
 
 
