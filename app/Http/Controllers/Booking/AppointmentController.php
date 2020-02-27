@@ -152,7 +152,7 @@ class AppointmentController extends Controller
         }
         else{
             $servicesReturn2['code']=1;
-            return \response($servicesReturn2['code']);
+            return \response($servicesReturn2);
 //            return \response(  "error");
         }
 
