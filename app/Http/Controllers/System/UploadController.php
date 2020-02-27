@@ -24,6 +24,7 @@ class UploadController extends Controller
     public function updateImage(Request $request){
         // Logic for user upload of avatar
         $returnData = [];
+
         if($request->hasFile('image')){
             $avatar = $request->file('image');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
