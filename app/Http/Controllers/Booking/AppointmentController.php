@@ -172,6 +172,7 @@ class AppointmentController extends Controller
         $servicesReturn = [];
         $discountRate = 20;
         $key = $this->Vendor->getVendorAuthorizeKey($this->VendorId);
+        $staffname = '';
 
 
         $login_key = $key[0]['key1'];
@@ -235,6 +236,7 @@ class AppointmentController extends Controller
 
                 $s = $service_name[0]['name'];
                 $s2 = $user_name[0]['name'];
+                $staffphone = $user_name[0]['phone_number'];
                 $cusId = $this->Customer->getCusByPhoneVendor($this->VendorId,$customer_phone);
 
                 $cusId2 =$cusId[0]['id'];
@@ -251,8 +253,8 @@ class AppointmentController extends Controller
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-            $this->Twillo->SendMessageByNumber( $messagesForStaff, '8327744593 ');
-//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
 //            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
