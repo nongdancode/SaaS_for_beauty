@@ -19,7 +19,8 @@
         "twilio/sdk": "^5.42",
         "vlucas/phpdotenv": "^3.3",
         "yajra/laravel-datatables": "1.5",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "intervention/image": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
