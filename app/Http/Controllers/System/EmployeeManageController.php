@@ -68,18 +68,20 @@ class EmployeeManageController extends Controller
             $data[$i]['password'] = '123123@';
         }
         return $data;
-
-
     }
 
 
 
 
-    function addEmployee(){
-        $employeeFields = $this->Request;
-//        $this->UserModel->CreateEmployeeForVendor($employeeFields['email'],$employeeFields['name'],$employeeFields)
-
-
+    function addEmployee(Request $request){
+        $employeeFields = $request->all();
+        $userAddId = $this->UserModel->CreateEmployeeForVendor($employeeFields['email'],$employeeFields['name'],
+            $employeeFields['social_sn'], 'staff',$this->VendorId,$employeeFields['phone_number']);
+        if(sizeof($employeeFields['services']) >0){
+            for($i = 0 ; $i<sizeof($employeeFields['services']);$i++){
+                $this->UserModel->addServiceForEmployee($this->VendorId,$employeeFields['services'][$i],$userAddId);
+            }
+        }
     }
 
 }

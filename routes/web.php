@@ -78,7 +78,8 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     Route::any('api/admin/user-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
     Route::any('api/admin/user-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
-    Route::any('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
+    Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
+    Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee')  ;
 
 
 
@@ -87,6 +88,10 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::post('api/admin/services', 'System\ServiceManageController@addServiceForCrud')  ;
     Route::put('api/admin/services', 'System\ServiceManageController@updateServiceForCrud')  ;
     Route::delete('api/admin/services', 'System\ServiceManageController@deleteServiceForCrud')  ;
+
+
+    //employee
+
 
     Route::any('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
     Route::any('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;

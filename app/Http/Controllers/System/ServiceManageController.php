@@ -100,13 +100,47 @@ class ServiceManageController  extends Controller
 
         $listEmployeeForservice = $this->ServiceModel->listAllEmployeeIdForService($this->VendorId,$serviveField['id']);
 
+
+
+
         if( sizeof($serviveField['userIds'])>=sizeof($listEmployeeForservice)){
             for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
                 $this ->ServiceModel->updateEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
             }
-        }else{
-            $this ->ServiceModel->updateEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds']);
         }
+
+
+        if( sizeof($serviveField['userIds'])<sizeof($listEmployeeForservice)){
+             if(sizeof($serviveField['userIds']) == 0){
+                 for($i= 0 ; $i< sizeof(  $listEmployeeForservice); $i++){
+                     $this ->ServiceModel->deleteEmployeForService($this->VendorId,
+                         $listEmployeeForservice[$i]['user_id'],$listEmployeeForservice[$i]['services_id']);
+                 }
+             }
+//             else{
+//                 for($i= 0 ; $i< sizeof($listEmployeeForservice) ;$i++){
+//                     if(empty($serviveField['userIds'][$i])){
+//                         $this ->ServiceModel->deleteEmployeForService($this->VendorId,
+//                           $listEmployeeForservice[$i]['services_id'],$listEmployeeForservice[$i]['user_id']);
+//                     } if(!empty($serviveField['userIds'][$i])){
+//                         $this ->ServiceModel->updateEmployeeForServies($this->VendorId,
+//                             $listEmployeeForservice[$i]['services_id'],$serviveField['userIds'][$i]);
+//                     }
+//
+//
+//                 }
+//             }
+        }
+    }
+
+
+
+    function deleteServiceForCrud($id){
+
+
+
+        $this->ServiceModel->deleteService($this->VendorId,$id);
+
 
     }
 
