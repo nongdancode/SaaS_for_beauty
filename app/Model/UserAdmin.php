@@ -90,7 +90,7 @@ class UserAdmin extends  MyModel
     function getStaffByVendor($vendor){
         $queryState = DB::table('user')
             ->where('vendor',$vendor)
-            ->where('role','=','staff')
+
             ->get();
         return $this->decodeStd($queryState);
     }

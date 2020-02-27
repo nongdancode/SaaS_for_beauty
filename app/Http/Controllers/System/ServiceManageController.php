@@ -94,10 +94,22 @@ class ServiceManageController  extends Controller
 
     function updateServiceForCrud(Request $request){
 
+        $serviveField = $request->all();
+        $serviceAddId = $this->ServiceModel->updateServiceForCrud($this->VendorId, $serviveField['id'],
+            $serviveField['name'],$serviveField['price'],$serviveField['stepping']);
+
+        $listEmployeeForservice = $this->ServiceModel->listAllEmployeeIdForService($this->VendorId,$serviveField['id']);
+
+        if( sizeof($serviveField['userIds'])>=sizeof($listEmployeeForservice)){
+            for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
+                $this ->ServiceModel->updateEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
+            }
+        }else{
+            $this ->ServiceModel->updateEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds']);
+        }
+
     }
 
-    function deleteServiceForCrud(Request $request){
 
-    }
 
 }

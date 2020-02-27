@@ -58,5 +58,41 @@ class ServicesVendor extends MyModel
         return $dbData;
     }
 
+    function updateServiceForCrud($vendorId,$servicesID,$servicenName,$servicePrice,$duration){
+        $dbData = DB::table('service')
+            ->where('id', $servicesID)
+            ->where('vendor',$vendorId)
+            ->update(['service_name' => $servicenName,'price'=>$servicePrice,'duration'=>$duration]);
+        return $dbData;
+    }
+
+    function updateEmployeeForServies($vendorId,$servicesID,$employeeId){
+
+
+            $dbData = DB::table('users_services')
+                ->where('vendor_id',$vendorId)
+                ->where('services_id',$servicesID)
+                ->updateOrInsert(['vendor_id'=>$vendorId,'services_id'=>$servicesID,'user_id'=>$employeeId]
+             );
+
+        return $dbData;
+    }
+
+    function listAllEmployeeIdForService($vendorId,$servicesID){
+        $dbData = DB::table('users_services')
+            ->where('vendor_id',$vendorId)
+            ->where('services_id',$servicesID)
+            ->get();
+        return $this->decodeStd($dbData);
+
+    }
+
+    function deleteEmployeForService($vendorId,$servicesID,$employeeId){
+        $dbData = DB::table('users_services')
+            ->where('vendor_id',$vendorId)
+            ->where('services_id',$servicesID)
+            ->where('user_id',$employeeId)
+            ->delete();
+    }
 
 }
