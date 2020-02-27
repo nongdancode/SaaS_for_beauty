@@ -44,7 +44,7 @@ class UploadController extends Controller
             $url =  public_path("lash_image/". $filename );
             $this->updateImage->make($file)->resize(300, 300)->save( $url  );
 
-            $returnData['data'] = $url2;
+            $returnData['data'] = $url;
             $returnData['code']=0;
 
             return  $returnData;
