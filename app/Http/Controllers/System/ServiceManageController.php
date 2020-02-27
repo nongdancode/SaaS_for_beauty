@@ -51,8 +51,8 @@ class ServiceManageController  extends Controller
         return $data;
     }
 
-    function addServices(){
-        $servicesFields = $this->dataRequest;
+    function addServices(Request $request){
+        $servicesFields = $request->all();
         $sevice_name = $servicesFields['name'];
         $service_cost = $servicesFields['cost'];
         $stepping = $servicesFields['stepping'];
@@ -81,8 +81,18 @@ class ServiceManageController  extends Controller
         return $data;
     }
 
-    function  addServiceForCrud(){
+    function  addServiceForCrud(Request $request){
+        $serviveField = $request->all();
+        $serviceAddId = $this->ServiceModel->addServices($this->VendorId,$serviveField['name'],$serviveField['price'],$serviveField['duration']);
+        if( sizeof($serviveField['userIds'])>0){
+            for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
+               $this ->ServiceModel->addEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
+            }
+        }
 
+    }
+
+    function updateServiceForCrud(Request $request){
 
     }
 
