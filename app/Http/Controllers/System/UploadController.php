@@ -36,10 +36,11 @@ class UploadController extends Controller
            $returnData['url'] = $url;
             $returnData['code']=0;
 
-           return  $url;
+           return  $returnData;
         }
         else{
-            return $returnData['code']=1;
+          $returnData['code']=1;
+            return $returnData;
         }
 
     }
