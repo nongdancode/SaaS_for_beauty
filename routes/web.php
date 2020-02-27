@@ -95,7 +95,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 //upload image
-    Route::any('api/admin/upload', 'System\UploadController@updateImage');
+    Route::any('api/admin/upload-image', 'System\UploadController@updateImage');
 
 
 
