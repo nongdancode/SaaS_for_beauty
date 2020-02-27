@@ -48,8 +48,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-
-
 //api for booking
 Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
@@ -62,7 +60,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/admin/staffs', 'System\ScheduleTaskController@getStafffForSchdedule');
     Route::any('/api/admin/staffs/{staffid}/tasks', 'System\ScheduleTaskController@getServicesOfStaffForScheduling');
     Route::any('/api/admin/staffs/{staffid}/schedules', 'System\ScheduleTaskController@getScheduleForStaff');
-    Route::any('/api/admin/schedules/{staffid}/tasks', 'System\ScheduleTaskController@editSchedule');
+    Route::post('/api/admin/schedules/{staffid}/tasks', 'System\ScheduleTaskController@editSchedule');
 
 
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
@@ -85,7 +83,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
     //services
-    Route::any('api/admin/services', 'System\ServiceManageController@getAllServicesByVendor')  ;
+    Route::any('api/admin/services', 'System\ServiceManageController@getAllServicesByVendorForCrud')  ;
     Route::any('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
     Route::any('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 

@@ -156,6 +156,19 @@ class UserAdmin extends  MyModel
         return $this->decodeStd($queryState);
     }
 
+    function getStaffByVendorService($vendor,$service){
+        $queryState = DB::table('user')
+            ->join('users_services','user.id','=','users_services.user_id')
+            ->join('service','service.id','=','users_services.services_id')
+             ->select('users_services.user_id as user_id','user.name as user_name',
+                'users_services.services_id as service_id','service.service_name')
+            ->where('users_services.vendor_id',$vendor)
+            ->where('users_services.services_id',$service)
+            ->get();
+        return $this->decodeStd($queryState);
+
+    }
+
 
 
 
