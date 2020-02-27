@@ -54,7 +54,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
     Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
-    Route::any('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
+    Route::post('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
     Route::any('/api/booking/charge', 'Booking\AppointmentController@confirmCharge');
 
 
@@ -106,6 +106,9 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
     Route::any('tests3', 'System\UploadController@testS3');
+    Route::any('testmms', 'System\MarketingController@sendMMSForMkt');
+
+
 
 
 
