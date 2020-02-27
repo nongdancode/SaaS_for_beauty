@@ -39,10 +39,11 @@ class UploadController extends Controller
         if($request->hasFile('file')){
             $file = $request->file('file');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $url =  public_path("lash_image\ ". $filename );
+            $url2 = "lash_image\ ". $filename;
+            $url =  public_path( $url2 );
             $this->updateImage->make($file)->resize(300, 300)->save( $url  );
 
-            $returnData['url'] = $url;
+            $returnData['url'] = $url2;
             $returnData['code']=0;
 
             return  $returnData;
