@@ -198,7 +198,7 @@ class AppointmentController extends Controller
         if ($confirm->getResultCode() == 'Ok') {
             $this->Transaction->insertTransactionByVendor
             (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
-                $price,$this->VendorId,'online',$customer_phone);
+                $price,$this->VendorId,'deposit',$customer_phone);
             $date2 = date('m/d/Y h:i:s a', time());
 
             for ($i = 0; $i < sizeof($data['booking']['services']); $i++) {
