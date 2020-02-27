@@ -105,7 +105,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 
-
+    Route::any('tests3', 'System\UploadController@testS3');
 
 
 
