@@ -83,7 +83,7 @@ class ServiceManageController  extends Controller
 
     function  addServiceForCrud(Request $request){
         $serviveField = $request->all();
-        $serviceAddId = $this->ServiceModel->addServices($this->VendorId,$serviveField['name'],$serviveField['price'],$serviveField['duration']);
+        $serviceAddId = $this->ServiceModel->addServices($this->VendorId,$serviveField['name'],$serviveField['price'],$serviveField['stepping']);
         if( sizeof($serviveField['userIds'])>0){
             for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
                $this ->ServiceModel->addEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
@@ -93,6 +93,10 @@ class ServiceManageController  extends Controller
     }
 
     function updateServiceForCrud(Request $request){
+
+    }
+
+    function deleteServiceForCrud(Request $request){
 
     }
 
