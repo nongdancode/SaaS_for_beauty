@@ -20,9 +20,11 @@ use Illuminate\Http\Request;
 
 use App\User;
 
-use JWTAuth;
+use Tymon\JWTAuth\JWTAuth;
 use JWTAuthException;
 use Hash;
+
+
 
 class LoginController extends Controller
 {
@@ -57,7 +59,7 @@ class LoginController extends Controller
         }
 
         return response()->json([
-            'success' => true,
+            'code' => 200,
             'token' => $token,
         ]);
     }

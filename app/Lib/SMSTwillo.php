@@ -65,4 +65,23 @@ class SMSTwillo
             array('from' => $twilio_number, 'body' => $message));
     }
 
+    /**
+     * @param $message
+     * @param $number
+     * @param $link_media
+     * @throws \Twilio\Exceptions\ConfigurationException
+     * @throws \Twilio\Exceptions\TwilioException
+     */
+    public function SendMMSbyNumber($message, $number, $link_media){
+
+        $account_sid = getenv("TWILIO_SID");
+        $auth_token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio_number = getenv("TWILIO_NUMBER");
+        $client = new Client($account_sid, $auth_token);
+        $client->messages->create($number,
+            array('from' => $twilio_number, 'body' => $message, "mediaUrl" => array($link_media)));
+
+
+    }
+
 }

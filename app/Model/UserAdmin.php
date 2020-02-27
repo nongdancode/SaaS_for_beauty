@@ -112,6 +112,13 @@ class UserAdmin extends  MyModel
         return $this->decodeStd($queryState);
     }
 
+    function addStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
+        $queryState = DB::table('user')->updateOrInsert(['email'=>$email],
+            [ 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
+                'birthday'=>$birthday,'image'=>$image,'ssn'=>$ssn]
+        );
+    }
+
 
 
     function getTurnDayOfEmployeeForBooking($employeeId, $servicesId, $vendor)

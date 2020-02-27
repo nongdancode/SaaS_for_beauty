@@ -15,37 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/booking', function () {
-    return view('booking_template/booking2');
-});
-Route::get('/booking3', function () {
-    return view('booking_template/booking3');
-});
-Route::get('/checkin', function () {
-    return view('booking_template/checkin');
-});
 
-
-
-
-Route::get('/terms', function () {
-    return view('booking_template/term');
-});
-
-Route::any('/admin/login', function () {
-    return view('admin/login');
-});
-Route::any('/admin/admin_register_user', function () {
-    return view('admin/register_admin');
-});
-
-
-
-Route::any('/admin/sms2', 'System\SmsController@showSupplyCustomerPhone');
-Route::any('/admin/smsapi', 'System\SmsController@getCustomerByvendor');
-Route::any('/admin/sms', function () {
-    return view('admin/sms_sending2');
-});
 
 Route::get('/admin2', function () {
     return view('admin2/index');
@@ -65,10 +35,7 @@ Route::get('/admin', function () {
 });
 
 Route::any('/admin/admin_register_confirm', 'Auth\RegisterController@createUserAdminRole');
-Route::any('/test', 'System\SMSController@showSupplyCustomerPhone');
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
@@ -81,8 +48,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-
-Route::any('/usersxx', 'System\SmsController@test');
 
 
 //api for booking
@@ -102,6 +67,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
     Route::any('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
+    Route::any('/api/admin/mms_sending', 'System\MarketingController@sendMMSForMkt');
     Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
 
 
@@ -116,6 +82,8 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('api/admin/user-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
     Route::any('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
+
+
     //services
     Route::any('api/admin/services', 'System\ServiceManageController@getAllServicesByVendor')  ;
     Route::any('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
@@ -126,8 +94,13 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
 
 
-//calendar xxxxxxxxxxxxxxxxx
+//upload image
+    Route::any('api/admin/upload-image', 'System\UploadControllerr@updateImage');
 
+    
+
+
+    Route::any('api/admin/dendivsfaker', 'System\EmployeeManageController@getEmployeeForFakerNHOLAPHAIDELETECAIDOQUYNAY');
 });
 //Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
 //Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
