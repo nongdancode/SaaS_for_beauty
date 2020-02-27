@@ -70,11 +70,9 @@ class ServiceManageController  extends Controller
                 $user = $this->UserModel->getStaffByVendorService($this->VendorId,$data[$i]['id']);
                 if(sizeof($user) >0){
                     for($a= 0 ; $a< sizeof($user); $a++){
-                        $data[$i]['userIds'][] = $user[$a]['user_id'];
+                        $data[$i]['userIds'][] = (int)$user[$a]['user_id'];
                     }
                 }
-
-             
 
             }
         }
@@ -82,4 +80,10 @@ class ServiceManageController  extends Controller
 
         return $data;
     }
+
+    function  addServiceForCrud(){
+
+
+    }
+
 }
