@@ -13,6 +13,7 @@ use App\Lib\MyUtils;
 use App\Model\Customer;
 use App\Model\ServicesVendor;
 use App\Model\Transaction;
+use App\Model\UserAdmin;
 use Illuminate\Http\Request;
 
 class ServiceManageController  extends Controller
@@ -28,6 +29,7 @@ class ServiceManageController  extends Controller
     protected $VendorId = 1;
     protected $ServiceModel ;
     protected $dataRequest;
+    protected $UserModel;
 
 
 
@@ -39,6 +41,7 @@ class ServiceManageController  extends Controller
         $this->util = new MyUtils();
         $this->ServiceModel = new ServicesVendor();
         $this->SMSUser = $request->getContent();
+        $this->UserModel = new UserAdmin();
 
     }
 
@@ -58,5 +61,25 @@ class ServiceManageController  extends Controller
         for($i=0 ; $i< sizeof($UserFollow);$i++){
             $this->ServiceModel->addEmployeeForServies($this->VendorId, $ser_id,$UserFollow[$i]);
         }
+    }
+
+    function getAllServicesByVendorForCrud(){
+        $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
+        if(sizeof($data) > 0){
+            for($i= 0 ; $i< sizeof($data); $i++){
+                $user = $this->UserModel->getStaffByVendorService($this->VendorId,$data[$i]['id']);
+                if(sizeof($user) >0){
+                    for($a= 0 ; $a< sizeof($user); $a++){
+                        $data[$i]['userIds'][] = $user[$a]['user_id'];
+                    }
+                }
+
+             
+
+            }
+        }
+
+
+        return $data;
     }
 }
