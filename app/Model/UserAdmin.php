@@ -112,11 +112,19 @@ class UserAdmin extends  MyModel
         return $this->decodeStd($queryState);
     }
 
-    function addStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
-        $queryState = DB::table('user')->updateOrInsert(['email'=>$email],
-            [ 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
+    function AddStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
+        $queryState = DB::table('user')->insertGetId(
+            ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
                 'birthday'=>$birthday,'image'=>$image,'ssn'=>$ssn]
         );
+        return $queryState;
+    }
+    
+    function UpdateStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
+        $queryState = DB::table('user')->updateOrInsert(['email'=>$email],
+            ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
+                'birthday'=>$birthday,'image'=>$image,'ssn'=>$ssn]
+            );
     }
 
 
