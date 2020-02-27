@@ -77,8 +77,9 @@ class EmployeeManageController extends Controller
 
     function addEmployee(){
         $employeeFields = $this->Request;
-        dd($employeeFields);
-        exit();
+//        $this->UserModel->CreateEmployeeForVendor($employeeFields['email'],$employeeFields['name'],$employeeFields)
+
+
     }
 
 }
