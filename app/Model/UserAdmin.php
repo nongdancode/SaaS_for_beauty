@@ -62,6 +62,20 @@ class UserAdmin extends  MyModel
         return $this->decodeStd($queryState);
     }
 
+    function getStaffByALlServicesVer2($vendor){
+        $queryState = DB::table('user')
+            ->join('users_services','user.id','=','users_services.user_id')
+            ->join('service','service.id','=','users_services.services_id')
+            ->select('users_services.user_id as id','user.name','user.image as img',
+                'users_services.services_id as service_id','service.service_name')
+            ->where('users_services.vendor_id',$vendor)
+            ->groupBy('users_services.user_id','user.name','user.image',
+                'users_services.services_id','service.service_name')
+            ->get();
+
+        return $this->decodeStd($queryState);
+    }
+
     function getServicesByStaff($vendor,$staffId){
         $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
@@ -119,7 +133,7 @@ class UserAdmin extends  MyModel
         );
         return $queryState;
     }
-    
+
     function UpdateStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
         $queryState = DB::table('user')->updateOrInsert(['email'=>$email],
             ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
