@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 use App\Lib\SMSTwillo;
 use App\Model\Customer;
+use App\Model\Transaction;
 use Illuminate\Http\Request;
 
 class CustomerWaitlistController extends Controller
@@ -23,6 +24,7 @@ class CustomerWaitlistController extends Controller
     protected $SMSDatatable;
     protected $SMSUser;
     protected $VendorId = 1;
+    protected $TransactionModel;
 
 
 
@@ -33,6 +35,7 @@ class CustomerWaitlistController extends Controller
         $this->util = new MyUtils();
         $this->TwilloSMS = new SMSTwillo();
         $this->SMSUser = $request->getContent();
+        $this->TransactionModel = new Transaction();
 
     }
 
@@ -60,6 +63,26 @@ class CustomerWaitlistController extends Controller
 
 
      for($i=0; $i< sizeof($dataCus);$i++){
+         $deposit = 0;
+       $returnData[$i]['id'] = $dataCus[$i]['id'];
+       $returnData[$i]['name'] = $dataCus[$i]['name'];
+       $returnData[$i]['phone'] = $dataCus[$i]['phone_number'];
+         $returnData[$i]['phone'] = $dataCus[$i]['phone_number'];
+         $currentDate = date("Y-m-d");
+         $transactions = $this->TransactionModel->getTransactionForCus($this->VendorId,$returnData[$i]['id'], $currentDate);
+         if(sizeof($transactions)>0){
+             for($a=0; $a< sizeof($transactions);$a++){
+                 $deposit = $deposit + $transactions[$a]['amount'];
+             }
+         }
+         $returnData[$i]['deposit'] = $deposit;
+         $returnData[$i]['invoice'] = $invoiceInfo;
+
+
+
+
+
+
 
      }
 //     $returnData =

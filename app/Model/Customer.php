@@ -82,7 +82,7 @@ class Customer extends MyModel
         $data = DB::table('scheduletask')
             ->join('customer','customer.id','=','scheduletask.cus_id')
         ->select('scheduletask.status','scheduletask.task',
-            'customer.name','customer.phone_number','customer.id')
+            'customer.name','customer.phone_number','customer.id','customer.amount_paid as deposit')
         ->where('scheduletask.vendor',$vendor)
         ->where('scheduletask.task','=','checkin')
         ->get();

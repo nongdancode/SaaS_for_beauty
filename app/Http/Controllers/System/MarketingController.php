@@ -64,6 +64,8 @@ class MarketingController extends Controller
     }
     function sendMMSForMkt(){
 
+        $message =
+        $this->TwilloSMS-> SendMMSbyNumber("test MMS",'8327744593',"https://www.tom-milford-sound-night-fine-art-photography-new-zealand.jpg");
     }
 
 
