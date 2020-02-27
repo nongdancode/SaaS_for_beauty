@@ -79,11 +79,6 @@ class CustomerWaitlistController extends Controller
          $returnData[$i]['invoice'] = $invoiceInfo;
 
 
-
-
-
-
-
      }
 //     $returnData =
 

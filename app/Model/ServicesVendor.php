@@ -95,4 +95,18 @@ class ServicesVendor extends MyModel
             ->delete();
     }
 
+
+    function deleteService($vendorId,$servicesID){
+        $dbData = DB::table('users_services')
+            ->where('vendor_id',$vendorId)
+            ->where('services_id',$servicesID)
+            ->delete();
+
+        $dbData2 = DB::table('service')
+            ->where('vendor',$vendorId)
+            ->where('id',$servicesID)
+            ->delete();
+
+    }
+
 }

@@ -38,9 +38,9 @@ class UserAdmin extends  MyModel
         }
     }
 
-    function CreateEmployeeForVendor($email,$name,$ssn,$role,$vendor){
+    function CreateEmployeeForVendor($email,$name,$ssn,$role,$vendor,$phone_number){
         $queryState = DB::table('user')->insertGetId(
-            ['email' => $email, 'ssn'=> $ssn,'name'=>$name,'role'=> $role,'vendor'=>$vendor]
+            ['email' => $email, 'ssn'=> $ssn,'name'=>$name,'role'=> $role,'vendor'=>$vendor,'phone_number'=>$phone_number]
         );
         if($queryState){
             return "Success";
@@ -169,9 +169,15 @@ class UserAdmin extends  MyModel
 
     }
 
+    function addServiceForEmployee($vendorId,$servicesID,$employeeId)
+    {
+        $dbData = DB::table('users_services')->insertGetId(['vendor_id' => $vendorId, 'services_id' => $servicesID, 'user_id' => $employeeId
+        ]);
+
+        return $dbData;
 
 
+    }
 
 
-
-}
+    }
