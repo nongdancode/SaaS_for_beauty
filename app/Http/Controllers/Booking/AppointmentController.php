@@ -77,7 +77,7 @@ class AppointmentController extends Controller
     function getAllFromEmployee()
     {
 
-        $data = $this->UserModel->getStaffByAllServices(1);
+        $data = $this->UserModel->getStaffByALlServicesVer2($this->VendorId);
 
         for ($i = 0; $i < sizeof($data); $i++) {
 
@@ -87,7 +87,7 @@ class AppointmentController extends Controller
                 $data[$i]['available'][$subDay[$a]['day2']] =
 
                     $this->UserModel
-                        ->getAllEmployeeTurnInDayForBooking($data[$i]['id'], $data[$i]['service_id'], $subDay[$a]['day1'], 1);
+                        ->getAllEmployeeTurnInDayForBooking($data[$i]['id'], $data[$i]['service_id'], $subDay[$a]['day1'], $this->VendorId);
 
 
             }
