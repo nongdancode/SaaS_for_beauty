@@ -114,7 +114,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 
-    
+
 
     Route::any('api/admin/dendivsfaker', 'System\EmployeeManageController@getEmployeeForFakerNHOLAPHAIDELETECAIDOQUYNAY');
 });
