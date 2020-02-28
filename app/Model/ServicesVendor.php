@@ -66,7 +66,7 @@ class ServicesVendor extends MyModel
         return $dbData;
     }
 
-    function updateEmployeeForServies($vendorId,$servicesID,$employeeId){
+    function updateEmployeeOfServies($vendorId,$servicesID,$employeeId){
 
 
             $dbData = DB::table('users_services')
@@ -78,7 +78,7 @@ class ServicesVendor extends MyModel
         return $dbData;
     }
 
-    function listAllEmployeeIdForService($vendorId,$servicesID){
+    function listAllEmployeeIdOfService($vendorId,$servicesID){
         $dbData = DB::table('users_services')
             ->where('vendor_id',$vendorId)
             ->where('services_id',$servicesID)
@@ -87,7 +87,7 @@ class ServicesVendor extends MyModel
 
     }
 
-    function deleteEmployeForService($vendorId,$servicesID,$employeeId){
+    function deleteEmployeOfService($vendorId,$servicesID,$employeeId){
         $dbData = DB::table('users_services')
             ->where('vendor_id',$vendorId)
             ->where('services_id',$servicesID)

@@ -87,7 +87,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::get('api/admin/services', 'System\ServiceManageController@getAllServicesByVendorForCrud')  ;
     Route::post('api/admin/services', 'System\ServiceManageController@addServiceForCrud')  ;
     Route::put('api/admin/services', 'System\ServiceManageController@updateServiceForCrud')  ;
-    Route::delete('api/admin/services', 'System\ServiceManageController@deleteServiceForCrud')  ;
+    Route::delete('api/admin/services/{id}', 'System\ServiceManageController@deleteServiceForCrud')  ;
 
 
     //employee

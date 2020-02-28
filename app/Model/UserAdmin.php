@@ -143,7 +143,7 @@ class UserAdmin extends  MyModel
 
 
 
-    function getTurnDayOfEmployeeForBooking($employeeId, $servicesId, $vendor)
+    function getTurnDayOfEmployeeForBooking($employeeId, $servicesId, $vendor,$nowTime)
     {
         $queryState = DB::table('scheduletask')
 
@@ -151,6 +151,7 @@ class UserAdmin extends  MyModel
             ->where('services_ids', '=', $servicesId)
             ->where('user_ids', '=', $employeeId)
             ->where('vendor', '=', $vendor)
+            ->where('day','>=',$nowTime )
             ->get();
 
         return $this->decodeStd($queryState);
