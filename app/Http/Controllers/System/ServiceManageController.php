@@ -93,50 +93,86 @@ class ServiceManageController  extends Controller
     }
 
     function updateServiceForCrud(Request $request){
+        $fields = $request->all();
+        $listIdupdate = [];
+         $listStaff = $this->ServiceModel->listAllEmployeeIdOfService($this->VendorId,$fields['id']);
 
-        $serviveField = $request->all();
-        $serviceAddId = $this->ServiceModel->updateServiceForCrud($this->VendorId, $serviveField['id'],
-            $serviveField['name'],$serviveField['price'],$serviveField['stepping']);
-
-        $listEmployeeForservice = $this->ServiceModel->listAllEmployeeIdForService($this->VendorId,$serviveField['id']);
-
-
+        $listoldId = [];
+        $a = [];
 
 
-        if( sizeof($serviveField['userIds'])>=sizeof($listEmployeeForservice)){
-            for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
-                $this ->ServiceModel->updateEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
-            }
-        }
 
+         foreach ($listStaff as $staff){
+             array_push($listoldId,$staff['user_id']);
+         }
+        $listdiff = array_diff($listoldId,$fields['userIds']);
 
-        if( sizeof($serviveField['userIds'])<sizeof($listEmployeeForservice)){
-             if(sizeof($serviveField['userIds']) == 0){
-                 for($i= 0 ; $i< sizeof(  $listEmployeeForservice); $i++){
-                     $this ->ServiceModel->deleteEmployeForService($this->VendorId,
-                         $listEmployeeForservice[$i]['user_id'],$listEmployeeForservice[$i]['services_id']);
+         if(sizeof($listoldId) ==0){
+             foreach ($fields['userIds'] as $id){
+                 $this->ServiceModel->addEmployeeForServies(
+                     $this->VendorId,
+                     $fields['id'],
+                     $id);
+             }
+
+         }if (sizeof($fields['userIds']) ==0){
+             foreach ($listoldId as $id){
+                 $this->ServiceModel->deleteEmployeOfService(
+                     $this->VendorId,
+                     $fields['id'],
+                     $id
+                 );
+             }
+         }if (sizeof($fields['userIds']) !=0 && sizeof($listoldId) !=0){
+
+             foreach ($listdiff as $id){
+                 if(in_array($id, $listoldId)){
+                     $this->ServiceModel->deleteEmployeOfService(
+                         $this->VendorId,
+                         $fields['id'],
+                         $id
+                     );
+                 }
+                 if(in_array($id,$fields['userIds'])){
+                     $this->ServiceModel->addEmployeeForServies(
+                         $this->VendorId,
+                         $fields['id'],
+                         $id);
                  }
              }
-//             else{
-//                 for($i= 0 ; $i< sizeof($listEmployeeForservice) ;$i++){
-//                     if(empty($serviveField['userIds'][$i])){
-//                         $this ->ServiceModel->deleteEmployeForService($this->VendorId,
-//                           $listEmployeeForservice[$i]['services_id'],$listEmployeeForservice[$i]['user_id']);
-//                     } if(!empty($serviveField['userIds'][$i])){
-//                         $this ->ServiceModel->updateEmployeeForServies($this->VendorId,
-//                             $listEmployeeForservice[$i]['services_id'],$serviveField['userIds'][$i]);
-//                     }
+         }
+
+
+
+
+
+
+
 //
-//
-//                 }
-//             }
-        }
+
+        $this->ServiceModel->updateServiceForCrud(
+            $this->VendorId,
+            $fields['id'],
+            $fields['name'],
+            $fields['price'],
+            $fields['stepping']);
+
+
+
+
+
+
+        $dataReturn['code'] = 0;
+
+        return $listdiff;
+
+
     }
 
 
 
-    function deleteServiceForCrud($id){
-
+    function deleteServiceForCrud(Request $request){
+        $id = $request->id;
 
 
         $this->ServiceModel->deleteService($this->VendorId,$id);

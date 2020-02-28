@@ -78,12 +78,13 @@ class AppointmentController extends Controller
     {
 
         $data = $this->UserModel->getStaffByALlServicesVer2($this->VendorId);
-
+         $nowday = date("Y-m-d");
         for ($i = 0; $i < sizeof($data); $i++) {
 
-            $subDay = $this->UserModel->getTurnDayOfEmployeeForBooking($data[$i]['id'], $data[$i]['service_id'], $this->VendorId);
-
+            $subDay = $this->UserModel->getTurnDayOfEmployeeForBooking($data[$i]['id'], $data[$i]['service_id'], $this->VendorId,$nowday);
+            $data[$i]['available'] = [];
             for ($a = 0; $a < sizeof($subDay); $a++) {
+
                 $data[$i]['available'][$subDay[$a]['day2']] =
 
                     $this->UserModel
@@ -125,7 +126,7 @@ class AppointmentController extends Controller
             $services[$service_name[0]['name']]['phone_staff'] = $user_name[0]['phone_number'];
             $services[$service_name[0]['name']]['price'] =  $service_name[0]['price'];
 
-            $discontPrice =  $service_name[0]['price']/100*15;
+            $discontPrice =  $service_name[0]['price']/100*20;
             $servicesReturn[$service_name[0]['name']]['id'] = $service_name[0]['id'];
 
 
@@ -141,8 +142,6 @@ class AppointmentController extends Controller
                 $checkTimeValid = True;
             }
         }
-
-
         $servicesReturn['price'] = $price;
         $servicesReturn2['data']['price'] = $price;
 

@@ -26,7 +26,10 @@ class Transaction extends MyModel
     }
 
     public function getTransactionByVendorBytimStamp($vendor,$limit){
-        $dbData = DB::table($this->table)->select('card_type','status','amount',DB::raw('UNIX_TIMESTAMP(charge_at) as charge_at'))->   where("vendor", $vendor)->limit($limit)->get();
+        $dbData = DB::table($this->table)
+            ->select('card_type','status',
+                'amount',DB::raw('UNIX_TIMESTAMP(charge_at) as charge_at'))
+            ->   where("vendor", $vendor)->limit($limit)->get();
 
 
         return $this->decodeStd($dbData);
@@ -45,9 +48,14 @@ class Transaction extends MyModel
 
     public function insertTransactionByVendor($card_number,$card_type,$status,$name_on_card,$amount,$vendor,$type_charge,$user_phone){
         $dbData = DB::table('transaction')->insertGetId(
-            ['card_number' => $card_number, 'card_type'=> $card_type,'status'=>$status
-                ,'name_on_card'=> $name_on_card,'amount'=>$amount,
-                'charge_at'=>DB::raw('NOW()'),'vendor'=>$vendor,'type_charge'=>$type_charge,'user_phone'=>$user_phone]);
+            ['card_number' => $card_number,
+                'card_type'=> $card_type,'status'=>$status
+                ,'name_on_card'=> $name_on_card,
+                'amount'=>$amount,
+                'charge_at'=>DB::raw('NOW()'),
+                'vendor'=>$vendor,
+                'type_charge'=>$type_charge,
+                'user_phone'=>$user_phone]);
         return $dbData;
     }
 
