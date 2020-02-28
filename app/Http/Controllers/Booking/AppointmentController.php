@@ -111,6 +111,7 @@ class AppointmentController extends Controller
         $services = [];
         $servicesReturn = [];
         $checkTimeValid = false;
+        $priceHard = 20;
 
 
         for ($i = 0 ; $i < sizeof($data['services']);$i++ ){
@@ -143,7 +144,7 @@ class AppointmentController extends Controller
             }
         }
         $servicesReturn['price'] = $price;
-        $servicesReturn2['data']['price'] = $price;
+        $servicesReturn2['data']['price'] = $priceHard;
 
         if($checkTimeValid == True){
             $servicesReturn2['code']=0;
@@ -167,6 +168,7 @@ class AppointmentController extends Controller
         $messagesForStaff='';
         $messagesForVendor='';
         $price = 0;
+        $priceHard = 20;
         $services = [];
         $servicesReturn = [];
         $discountRate = 20;
@@ -176,7 +178,7 @@ class AppointmentController extends Controller
 
         $login_key = $key[0]['key1'];
         $trans_key = $key[0]['key3'];
-        $servicesReturn['price'] = $price;
+        $servicesReturn['price'] = $priceHard;
         $cardNumber = $data['payment']['cardNumber'];
         $cardEx = $data['payment']['cardExpiry'];
         $cardcvv = $data['payment']['cardCVV'];
@@ -193,7 +195,7 @@ class AppointmentController extends Controller
 
         }
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, $price);
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, $priceHard);
 
         if ($confirm->getResultCode() == 'Ok') {
             $this->Transaction->insertTransactionByVendor
@@ -220,7 +222,7 @@ class AppointmentController extends Controller
 
                 $servicesReturn[$service_name[0]['name']]['id'] = $service_name[0]['id'];
                 $price = $price + $discontPrice;
-                $this->Customer->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $price, 5);
+                $this->Customer->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $priceHard, 5);
 
                 $time1 = $data['booking']['services'][$i]['timeRange']['start'];
                 $time2  = $this->dateTimeUtil->convertUnixTSToLocalTX($time1,'Y-m-d H:i:s');
