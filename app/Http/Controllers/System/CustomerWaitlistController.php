@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 use App\Lib\SMSTwillo;
 use App\Model\Customer;
+use App\Model\ServiceWaitlistModel;
 use App\Model\Transaction;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,7 @@ class CustomerWaitlistController extends Controller
     protected $SMSUser;
     protected $VendorId = 1;
     protected $TransactionModel;
+    protected $ServiceModel;
 
 
 
@@ -36,6 +38,7 @@ class CustomerWaitlistController extends Controller
         $this->TwilloSMS = new SMSTwillo();
         $this->SMSUser = $request->getContent();
         $this->TransactionModel = new Transaction();
+        $this->ServiceModel = new ServiceWaitlistModel();
 
     }
 
@@ -43,10 +46,10 @@ class CustomerWaitlistController extends Controller
 
 
      $dataCus = $this->customerModel->getCustomerForWaitlist($this->VendorId);
-
      $CusNonBooking = $this->customerModel->getCusCheckinNonBooking($this->VendorId);
      $CusBooking =  $this->customerModel->getCusCheckinAndBooking($this->VendorId);
      $returnData = [];
+     $discount = 0;
 
      $invoiceInfo['id'] =rand(10,100000);
      $invoiceInfo['tax'] = 10;
@@ -63,12 +66,19 @@ class CustomerWaitlistController extends Controller
 
 
      for($i=0; $i< sizeof($dataCus);$i++){
-         $deposit = 0;
+         $deposit = $dataCus[$i]['deposit'];
        $returnData[$i]['id'] = $dataCus[$i]['id'];
        $returnData[$i]['name'] = $dataCus[$i]['name'];
        $returnData[$i]['phone'] = $dataCus[$i]['phone_number'];
          $returnData[$i]['phone'] = $dataCus[$i]['phone_number'];
-         $currentDate = date("Y-m-d");
+         if($deposit > 0){
+             $returnData[$i]['status'] = 'booking';
+         }else{
+             $returnData[$i]['status'] = 'checkin';
+         }
+
+
+         $currentDate = date('Y-m-d');
          $transactions = $this->TransactionModel->getTransactionForCus($this->VendorId,$returnData[$i]['id'], $currentDate);
          if(sizeof($transactions)>0){
              for($a=0; $a< sizeof($transactions);$a++){
@@ -77,13 +87,17 @@ class CustomerWaitlistController extends Controller
          }
          $returnData[$i]['deposit'] = $deposit;
          $returnData[$i]['invoice'] = $invoiceInfo;
+         $service = $this->ServiceModel->getServiceForWaitlistCheckout($this->VendorId,$returnData[$i]['id']);
+         for($a=0;$a< sizeof($service);$a++){
+             $returnData[$i]['invoice']['service'][$a]['name'] = $service[$a]['service_name'];
+             $returnData[$i]['invoice']['service'][$a]['discount'] = $discount;
+             $returnData[$i]['invoice']['service'][$a]['price'] = $service[$a]['price'];
+         }
 
 
      }
-//     $returnData =
 
-
-     return $dataCus;
+     return  $returnData;
 
     }
 

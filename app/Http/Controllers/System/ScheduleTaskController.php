@@ -121,10 +121,12 @@ class ScheduleTaskController extends Controller
 
                $date_end1 = date('yy-m-d', $end_time);
                $time_end1 = date('H:i:s', $end_time);
-               $schedule_delete = $this->CurrentSchedule->getScheduleOfStaffForCheckAdd($this->VendorId, $this->staffId, $start_time, $schedule_delete[$i]['id']);
-
+               $schedule_delete = $this->CurrentSchedule->getScheduleOfStaffForCheckAdd(
+                   $this->VendorId,
+                   $this->staffId,
+                   $start_time,
+                   $schedule_delete[$i]['id']);
                $this->CurrentSchedule->deleteScheduleTaskByCondition($schedule_delete[0]['id'],$this->VendorId);
-
            }
        }
 
