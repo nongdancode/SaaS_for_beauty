@@ -98,7 +98,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     //checkin-waitlist
     Route::any('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
-    Route::any('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
+    Route::get('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
 
 
 //upload image

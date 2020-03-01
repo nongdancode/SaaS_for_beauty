@@ -93,10 +93,10 @@ class Customer extends MyModel
     function getCusCheckinNonBooking($vendorId){
         $data =  DB::table('scheduletask')
             ->join('customer','customer.id','=','scheduletask.cus_id')
-            ->select('customer.id','customer.name','customer.phone','schedule.status')
-            ->where('schedule.task','=','checkin')
-            ->where('schedule.status','=','active')
-            ->where('schedule.vendor',$vendorId)
+            ->select('customer.id','customer.name','customer.phone_number','scheduletask.status')
+            ->where('scheduletask.task','=','checkin')
+            ->where('scheduletask.status','=','active')
+            ->where('scheduletask.vendor',$vendorId)
             ->get();
 
         return $this->decodeStd($data);
@@ -105,10 +105,10 @@ class Customer extends MyModel
     function getCusCheckinAndBooking($vendorId){
         $data =  DB::table('scheduletask')
             ->join('customer','customer.id','=','scheduletask.cus_id')
-            ->select('customer.id','customer.name','customer.phone','schedule.status')
-            ->where('schedule.task','=','checkin')
-            ->where('schedule.status','=','booking')
-            ->where('schedule.vendor',$vendorId)
+            ->select('customer.id','customer.name','customer.phone_number','scheduletask.status')
+            ->where('scheduletask.task','=','checkin')
+            ->where('scheduletask.status','=','booking')
+            ->where('scheduletask.vendor',$vendorId)
             ->get();
 
         return $this->decodeStd($data);
