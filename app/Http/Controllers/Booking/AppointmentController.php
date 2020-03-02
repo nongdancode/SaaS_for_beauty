@@ -194,8 +194,8 @@ class AppointmentController extends Controller
         }
 
         $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, $priceHard);
-       $confirm = 'Ok';
-        if ($confirm->getResultCode() == 'Ok') {
+//       $confirm = 'Ok';
+        if ($confirm == 'Ok') {
             $this->Transaction->insertTransactionByVendor
             (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
                 $price,$this->VendorId,'deposit',$customer_phone);
@@ -252,8 +252,8 @@ class AppointmentController extends Controller
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+//            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
 //            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 

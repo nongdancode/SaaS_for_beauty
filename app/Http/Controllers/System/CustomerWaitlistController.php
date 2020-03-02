@@ -51,21 +51,23 @@ class CustomerWaitlistController extends Controller
      $returnData = [];
      $discount = 0;
 
-     $invoiceInfo['id'] =rand(10,100000);
-     $invoiceInfo['tax'] = 10;
 
-
-     $aboutInfo['companyName']='The lash supply';
-        $aboutInfo['phone'] = '8327744593';
-        $address['street'] = 'Bellard';
-        $address['city'] = "Houston";
-        $address['stage'] = "Texas";
-        $aboutInfo['address'] = $address;
-        $invoiceInfo['about'] = $aboutInfo;
 
 
 
      for($i=0; $i< sizeof($dataCus);$i++){
+         $invoiceInfo['id'] =rand(10,100000);
+         $invoiceInfo['tax'] = 10;
+
+
+         $aboutInfo['companyName']='The lash supply';
+         $aboutInfo['phone'] = '8327744593';
+         $address['street'] = 'Bellard';
+         $address['city'] = "Houston";
+         $address['stage'] = "Texas";
+         $aboutInfo['address'] = $address;
+         $invoiceInfo['about'] = $aboutInfo;
+
          $deposit = $dataCus[$i]['deposit'];
        $returnData[$i]['id'] = $dataCus[$i]['id'];
        $returnData[$i]['name'] = $dataCus[$i]['name'];

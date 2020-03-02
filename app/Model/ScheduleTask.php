@@ -55,8 +55,8 @@ class ScheduleTask  extends MyModel
     }
 
     function addCusCheckin($vendorId,$cus_id){
-        DB::table('scheduletask')->updateOrInsert(['cus_id' => $cus_id],
-            ['vendor'=>$vendorId,'task'=>'checkin']
+        DB::table('scheduletask')->updateOrInsert(['cus_id' => $cus_id,'vendor'=>$vendorId],
+            ['task'=>'checkin']
         );
 
     }

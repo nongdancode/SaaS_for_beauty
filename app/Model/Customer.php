@@ -16,7 +16,8 @@ class Customer extends MyModel
 
     function getCustomerPhoneByVendor($vendor)
     {
-        $data = DB::table('customer')->select('name', 'phone_number')->where('vendor', $vendor)->get();
+        $data = DB::table('customer')
+            ->select('name', 'phone_number')->where('vendor', $vendor)->get();
 
 
         return $this->decodeStd($data);
@@ -45,7 +46,8 @@ class Customer extends MyModel
     }
 
     function getCustomerByIdVendor($cusId,$vendorID){
-        $data = DB::table('customer')->select('name', 'phone_number')
+        $data = DB::table('customer')
+            ->select('name', 'phone_number')
             ->where('vendor', $vendorID)
             ->where('id',$cusId)
             ->get();
@@ -55,13 +57,14 @@ class Customer extends MyModel
     }
 
     function addCustomerByBooking($vendorId,$phone_number , $name ,$amount_paid ,$point){
-        $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number],
-            ['vendor'=>$vendorId,'name'=> $name ,'amount_paid'=> $amount_paid,'point' => $point,'last_visit'=>DB::raw('NOW()')]);
+        $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number,'vendor'=>$vendorId],
+            ['name'=> $name ,'amount_paid'=> $amount_paid,'point' => $point,'last_visit'=>DB::raw('NOW()')]);
         return $data;
     }
 
     function getCusByPhoneVendor($vendor,$phone){
-        $data = DB::table('customer')->select('name', 'phone_number','id','amount_paid','birthday')
+        $data = DB::table('customer')
+            ->select('name', 'phone_number','id','amount_paid','birthday')
             ->where('vendor', $vendor)
             ->where('phone_number',$phone)
             ->get();
@@ -72,19 +75,29 @@ class Customer extends MyModel
     }
 
     function addCustomerCheckin($vendorId,$phone_number,$name){
-        $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number],
-            ['vendor'=>$vendorId,'name'=> $name ,'last_visit'=>DB::raw('NOW()')]
+        $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number,'vendor'=>$vendorId],
+            ['name'=> $name ,'last_visit'=>DB::raw('NOW()')]
         );
 
     }
 
     function getCustomerForWaitlist($vendor){
-        $data = DB::table('scheduletask')
-            ->join('customer','customer.id','=','scheduletask.cus_id')
-        ->select('scheduletask.status','scheduletask.task',
-            'customer.name','customer.phone_number','customer.id','customer.amount_paid as deposit')
+
+
+        $data = DB::table('customer')
+            ->leftJoin('transaction', function ($join) {
+                $join->on('transaction.user_phone', '=', 'customer.phone_number')
+                    ->where('transaction.type_charge', '=', 'deposit');
+            })
+
+            ->join('scheduletask','customer.id','=','scheduletask.cus_id')
+//            ->join('transaction','transaction.user_phone','=','customer.phone_number', 'left outer')
+
+            ->select('scheduletask.status','scheduletask.task',
+            'customer.name','customer.phone_number','customer.id','transaction.amount as deposit')
         ->where('scheduletask.vendor',$vendor)
         ->where('scheduletask.task','=','checkin')
+//            ->orWhere('transaction.type_charge','=','deposit')
         ->get();
 
         return $this->decodeStd($data);
