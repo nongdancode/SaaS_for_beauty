@@ -135,8 +135,8 @@ class UserAdmin extends  MyModel
     }
 
     function UpdateStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
-        $queryState = DB::table('user')->updateOrInsert(['email'=>$email],
-            ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
+        $queryState = DB::table('user')->updateOrInsert(['email'=>$email,'vendor'=>$vendor],
+            ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','phone_number'=>$phone_number,
                 'birthday'=>$birthday,'image'=>$image,'ssn'=>$ssn]
             );
     }

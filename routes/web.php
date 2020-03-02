@@ -51,6 +51,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //api for booking
 Route::group(['middleware' => ['cors','web']], function () {
     Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
+
     Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
     Route::post('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
     Route::post('/api/booking/charge', 'Booking\AppointmentController@confirmCharge');
@@ -80,6 +81,8 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('api/admin/user-listcommission', 'System\EmployeeManageController@showPaymentTypeOfStaff')  ;
     Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
     Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee')  ;
+    Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee')  ;
+    Route::delete('api/admin/employees', 'System\EmployeeManageController@deleteEmployee')  ;
 
 
 
