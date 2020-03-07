@@ -35,15 +35,17 @@ class Transaction extends MyModel
         return $this->decodeStd($dbData);
     }
 
-  public function getTransactionForCus($vendor,$cus_phone,$date){
+  public function getTransactionForCusDeposit($vendor,$cus_phone){
       $dbData = DB::table('transaction')
           ->where('vendor',$vendor)
           ->where('user_phone',$cus_phone)
           ->where('type_charge','=','deposit')
-          ->whereRaw('date(charge_at) = now()')
+
           ->get();
       return $this->decodeStd($dbData);
   }
+
+
 
 
     public function insertTransactionByVendor($card_number,$card_type,$status,$name_on_card,$amount,$vendor,$type_charge,$user_phone){

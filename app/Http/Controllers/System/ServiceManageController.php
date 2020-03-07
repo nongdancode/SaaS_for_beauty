@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 
 use App\Model\Customer;
+use App\Model\GroupService;
 use App\Model\ServicesVendor;
 use App\Model\Transaction;
 use App\Model\UserAdmin;
@@ -30,6 +31,7 @@ class ServiceManageController  extends Controller
     protected $ServiceModel ;
     protected $dataRequest;
     protected $UserModel;
+    protected $GroupService;
 
 
 
@@ -42,6 +44,7 @@ class ServiceManageController  extends Controller
         $this->ServiceModel = new ServicesVendor();
         $this->SMSUser = $request->getContent();
         $this->UserModel = new UserAdmin();
+        $this->GroupService = new GroupService();
 
     }
 
@@ -65,9 +68,17 @@ class ServiceManageController  extends Controller
 
     function getAllServicesByVendorForCrud(){
         $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
+
         if(sizeof($data) > 0){
+
             for($i= 0 ; $i< sizeof($data); $i++){
+                $data[$i]['groupIds'] = [];
                 $user = $this->UserModel->getStaffByVendorService($this->VendorId,$data[$i]['id']);
+                $GroupService = $this->GroupService->getGroupForService($this->VendorId,$data[$i]['id']);
+                 foreach ($GroupService as $g){
+                     $data[$i]['groupIds'][]=$g['id'];
+                 }
+
                 if(sizeof($user) >0){
                     for($a= 0 ; $a< sizeof($user); $a++){
                         $data[$i]['userIds'][] = (int)$user[$a]['user_id'];
@@ -88,6 +99,9 @@ class ServiceManageController  extends Controller
             for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
                $this ->ServiceModel->addEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
             }
+        }
+        foreach($serviveField['groupIds'] as $group){
+          $this->GroupService->assignGroupService($this->VendorId,$serviceAddId,$group);
         }
 
     }
@@ -143,13 +157,6 @@ class ServiceManageController  extends Controller
          }
 
 
-
-
-
-
-
-//
-
         $this->ServiceModel->updateServiceForCrud(
             $this->VendorId,
             $fields['id'],
@@ -158,28 +165,14 @@ class ServiceManageController  extends Controller
             $fields['stepping']);
 
 
-
-
-
-
         $dataReturn['code'] = 0;
-
         return $listdiff;
-
-
     }
-
-
 
     function deleteServiceForCrud(Request $request){
         $id = $request->id;
-
-
         $this->ServiceModel->deleteService($this->VendorId,$id);
-
-
     }
-
 
 
 }

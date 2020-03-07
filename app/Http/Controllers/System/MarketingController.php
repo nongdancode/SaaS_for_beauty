@@ -69,4 +69,9 @@ class MarketingController extends Controller
     }
 
 
+    function editCustomer(Request $request){
+
+    }
+
+
 }

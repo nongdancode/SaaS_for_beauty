@@ -22,9 +22,7 @@ class CreateServiceTable extends Migration
             $table->string( 'vendor')->nullable();
             $table->double('duration')->nullable();
             $table->string( 'user_ids')->nullable();
-
-
-
+            $table->string( 'group_service')->nullable();
         });
     }
 

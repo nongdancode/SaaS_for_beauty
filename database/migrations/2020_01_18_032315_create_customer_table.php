@@ -29,6 +29,7 @@ class CreateCustomerTable extends Migration
             $table->string('status')->nullable();
             $table->string('visit_count')->nullable();
             $table->string('amount_paid')->nullable();
+            $table->string('description')->nullable();
 
 
         });

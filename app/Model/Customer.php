@@ -85,18 +85,21 @@ class Customer extends MyModel
 
 
         $data = DB::table('customer')
-            ->leftJoin('transaction', function ($join) {
-                $join->on('transaction.user_phone', '=', 'customer.phone_number')
-                    ->where('transaction.type_charge', '=', 'deposit');
-            })
+//            ->leftJoin('transaction', function ($join) {
+//                $join->on('transaction.user_phone', '=', 'customer.phone_number')
+//                    ->where('transaction.type_charge', '=', 'deposit');
+//            })
 
             ->join('scheduletask','customer.id','=','scheduletask.cus_id')
 //            ->join('transaction','transaction.user_phone','=','customer.phone_number', 'left outer')
 
-            ->select('scheduletask.status','scheduletask.task',
-            'customer.name','customer.phone_number','customer.id','transaction.amount as deposit')
+            ->select('scheduletask.status as status','scheduletask.task',
+            'customer.name','customer.phone_number','customer.id')
         ->where('scheduletask.vendor',$vendor)
         ->where('scheduletask.task','=','checkin')
+            ->whereRaw('scheduletask.day = CURDATE()')
+            ->groupBy('scheduletask.status','scheduletask.task',
+                'customer.name','customer.phone_number','customer.id')
 //            ->orWhere('transaction.type_charge','=','deposit')
         ->get();
 
