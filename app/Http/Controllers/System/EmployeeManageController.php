@@ -18,12 +18,9 @@ use Lcobucci\JWT\Signature;
 class EmployeeManageController extends Controller
 {
     protected $salaryDefine;
-
     protected $VendorId = 1;
     protected $UserModel;
     protected $ServiceModel;
-
-
     function __construct(Request $request)
     {
 
@@ -69,8 +66,6 @@ class EmployeeManageController extends Controller
         }
         return $data;
     }
-
-
 
 
     function addEmployee(Request $request){
