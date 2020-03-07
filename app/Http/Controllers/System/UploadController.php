@@ -42,7 +42,9 @@ class UploadController extends Controller
             $name = time() . $file->getClientOriginalName();
             $filePath = $type2 . $name;
             $da = Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
-            return Storage::disk('s3')->url($filePath);
+            $return['code']= 0 ;
+                $return['data'] = Storage::disk('s3')->url($filePath);
+            return $return;
         }
     }
 
