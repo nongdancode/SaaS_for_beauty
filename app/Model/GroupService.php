@@ -46,7 +46,9 @@ class GroupService extends MyModel
 
     function getGroupForService($vendor,$service_id){
         $data = DB::table('groupservice')
+
             ->join('groupservice_service','groupservice_service.groupservice_id','=','groupservice.id')
+            ->select('groupservice.id as id','groupservice.name as name')
             ->where('groupservice_service.vendor',$vendor)
             ->where('groupservice_service.service_id',$service_id)
             ->get();
