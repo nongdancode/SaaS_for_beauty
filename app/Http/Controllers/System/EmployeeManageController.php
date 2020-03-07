@@ -79,4 +79,8 @@ class EmployeeManageController extends Controller
         }
     }
 
+    function editEmployee(Request $request){
+
+    }
+
 }

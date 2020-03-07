@@ -55,23 +55,32 @@ class ScheduleTask  extends MyModel
     }
 
     function addCusCheckin($vendorId,$cus_id){
-        DB::table('scheduletask')->updateOrInsert(['cus_id' => $cus_id,'vendor'=>$vendorId],
+        DB::table('scheduletask')->updateOrInsert(
+            ['cus_id' => $cus_id,'vendor'=>$vendorId,'day'=>DB::raw('CURDATE()')],
             ['task'=>'checkin']
         );
 
     }
+    function updateCusBooking($vendorId,$cus_id){
+        DB::table('scheduletask')
+            ->where('vendor','=',$vendorId)
+            ->where('cus_id',$cus_id)
+            ->whereRaw('day = CURDATE()')
+            ->update(['task'=>'checkin']);
 
-//    function getCusCheckinNonBooking($vendorId){
-//       $data =  DB::table('scheduletask')
-//        ->join('customer','customer.id','=','scheduletask.cus_id')
-//            ->select('customer.id','customer.name','customer.phone','schedule.status')
-//            ->where('schedule.task','=','checkin')
-//           ->where('schedule.status','=','active')
-//            ->where('schedule.vendor',$vendorId)
-//            ->get();
-//
-//        return $this->decodeStd($data);
-//    }
+    }
+
+    function getCusBooking($vendorId,$cusID){
+       $data =  DB::table('scheduletask')
+
+            ->where('scheduletask.status','=','booking')
+      ->where('scheduletask.cus_id','=',$cusID)
+           ->whereRaw('scheduletask.day = CURDATE()')
+            ->where('scheduletask.vendor',$vendorId)
+            ->get();
+
+        return $this->decodeStd($data);
+    }
 //
 //    function getCusCheckinAndBooking($vendorId){
 //        $data =  DB::table('scheduletask')
@@ -136,11 +145,17 @@ class ScheduleTask  extends MyModel
           ->delete();
   }
 
+    function deleteTaskForWaitlistCheckout($vendorID,$cusId,$service_id,$employee_id){
+        $data = DB::table('scheduletask')
+            ->where('vendor',$vendorID)
+            ->where('services_ids',$service_id)
+            ->where('cus_id',$cusId)
+            ->where('user_ids',$employee_id)
+            ->where('task','=','checkin')
+            ->where('status','=','booking')
+            ->whereRaw('day = CURDATE()')
+            ->delete();
 
-//    function getCusWaitlist($vendorId){
-//        $data = DB::table('scheduletask')
-//            ->join('service','service.id','=','scheduletask.services_ids')
-//            ->join('user','user.id','=','scheduletask.user_ids')
-//            ->select('')
-//    }
+        return $data;
+ }
 }

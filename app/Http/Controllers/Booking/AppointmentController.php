@@ -193,12 +193,12 @@ class AppointmentController extends Controller
             $price = $price + $discontPrice;
         }
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv, $priceHard);
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,0.1);
 //       $confirm = 'Ok';
-        if ($confirm == 'Ok') {
+        if ($confirm->getResultCode() == 'Ok') {
             $this->Transaction->insertTransactionByVendor
             (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
-                $price,$this->VendorId,'deposit',$customer_phone);
+                $priceHard,$this->VendorId,'deposit',$customer_phone);
             $date2 = date('m/d/Y h:i:s a', time());
 
             for ($i = 0; $i < sizeof($data['booking']['services']); $i++) {

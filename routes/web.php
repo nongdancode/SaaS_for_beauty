@@ -68,6 +68,10 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::post('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
     Route::post('/api/admin/mms_sending', 'System\MarketingController@sendMMSForMkt');
     Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
+    Route::put('api/admin/marketing/{id}', 'System\MarketingController@sendMMSForMkt');
+
+
+
 
 
     Route::any('/api/admin/customer_report', 'System\ReportController@apiCustomerReportByPieChart');
@@ -92,6 +96,11 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::put('api/admin/services', 'System\ServiceManageController@updateServiceForCrud')  ;
     Route::delete('api/admin/services/{id}', 'System\ServiceManageController@deleteServiceForCrud')  ;
 
+    //group servive
+    Route::get('api/admin/groups', 'System\GroupServiceController@listGroupService')  ;
+    Route::post('api/admin/groups', 'System\GroupServiceController@addGroupService')  ;
+    Route::put('api/admin/groups', 'System\GroupServiceController@editGroupService')  ;
+    Route::delete('api/admin/groups/{id}', 'System\GroupServiceController@deleteGroupService')  ;
 
     //employee
 
@@ -102,6 +111,9 @@ Route::group(['middleware' => ['cors','web']], function () {
     //checkin-waitlist
     Route::any('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
     Route::get('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
+    Route::post('api/admin/checkout/confirm', 'System\CustomerWaitlistController@confirmCheckoutWaitlist');
+
+
 
 
 //upload image
@@ -110,7 +122,8 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 
-
+//shift api
+    Route::post('api/admin/shifts', 'System\ShiftController@addShiftForEmployee');
 
 
 

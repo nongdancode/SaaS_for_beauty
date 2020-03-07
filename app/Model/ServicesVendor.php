@@ -17,8 +17,8 @@ class ServicesVendor extends MyModel
 
     public function getAllServicesByVendor($vendor){
         $dbData = DB::table($this->table)
-            ->select('id', 'image as img', 'service_name as name', 'duration as stepping','price')
-            ->where("vendor", $vendor)->get();
+            ->select('service.id as id', 'image as img', 'service_name as name', 'duration as stepping','price')
+            ->where("service.vendor", $vendor)->get();
 
         return $this->decodeStd($dbData);
 
@@ -68,7 +68,6 @@ class ServicesVendor extends MyModel
     }
 
     function updateEmployeeOfServies($vendorId,$servicesID,$employeeId){
-
 
             $dbData = DB::table('users_services')
                 ->where('vendor_id',$vendorId)
