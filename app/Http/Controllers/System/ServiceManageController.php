@@ -110,7 +110,6 @@ class ServiceManageController  extends Controller
         $fields = $request->all();
         $listIdupdate = [];
          $listStaff = $this->ServiceModel->listAllEmployeeIdOfService($this->VendorId,$fields['id']);
-
         $listoldId = [];
         $a = [];
 
