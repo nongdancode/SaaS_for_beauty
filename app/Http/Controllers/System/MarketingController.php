@@ -51,25 +51,41 @@ class MarketingController extends Controller
         $data = $this ->util->decodeJson($this->SMSUser);
         $nums = [];
         for($i = 0 ; $i < sizeof($data['customerIds']);$i++){
-          $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],1);
+          $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],$this->VendorId);
 
           $this->TwilloSMS->SendMessageByNumber($data['message'],$cus_phone[0]['phone_number']);
 //
 //          print($cus_phone2[0]['phone_number']);
 //            exit();
         }
+        $return['code'] = 0;
+        return $return;
 
 
 //          return $this->TwilloSMS->SendMessageByList($data['message'],$nums);
     }
-    function sendMMSForMkt(){
+    function sendMMSForMkt(Request $request){
+        $data = $request ->all();
 
-        $message =
-        $this->TwilloSMS-> SendMMSbyNumber("test MMS",'8327744593',"https://www.tom-milford-sound-night-fine-art-photography-new-zealand.jpg");
+      for($i = 0 ; $i < sizeof($data['customerIds']);$i++){
+
+          $media = $data['images'];
+          $message = $data['message'];
+
+          $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],$this->VendorId);
+          $this->TwilloSMS->SendMMSbyNumber($message,$cus_phone[0]['phone_number'],$media);
+
+
+    }
+
+        $return['code'] = 0;
+        return $return;
+
     }
 
 
     function editCustomer(Request $request){
+       $data = $request->all();
 
     }
 

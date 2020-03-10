@@ -58,8 +58,26 @@ class GroupService extends MyModel
     function assignGroupService($vendor,$service_id,$groupservice){
         $data = DB::table('groupservice_service')
             ->insertGetId(['service_id'=>$service_id,'groupservice_id'=>$groupservice,'vendor'=>$vendor]);
+        return $this->decodeStd($data);
+    }
 
+    function unassignGroupService($vendor,$service_id,$groupservice){
+        $data = DB::table('groupservice_service')
+            ->where('vendor',$vendor)
+            ->where('service_id',$service_id)
+            ->where('groupservice_id',$groupservice)
+            ->delete();
+        return $data;
+    }
 
+    function getServiceForGroup($vendor,$group_service){
+        $data = DB::table('groupservice')
+
+            ->join('groupservice_service','groupservice_service.groupservice_id','=','groupservice.id')
+            ->select('groupservice.id as id','groupservice.name as name')
+            ->where('groupservice_service.vendor',$vendor)
+            ->where('groupservice_service.groupservice_id',$group_service)
+            ->get();
         return $this->decodeStd($data);
     }
 }

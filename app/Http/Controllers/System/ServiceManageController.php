@@ -94,7 +94,8 @@ class ServiceManageController  extends Controller
 
     function  addServiceForCrud(Request $request){
         $serviveField = $request->all();
-        $serviceAddId = $this->ServiceModel->addServices($this->VendorId,$serviveField['name'],$serviveField['price'],$serviveField['stepping']);
+        $serviceAddId = $this->ServiceModel->addServices($this->VendorId,$serviveField['name'],$serviveField['price']
+            ,$serviveField['stepping'],$serviveField['img']);
         if( sizeof($serviveField['userIds'])>0){
             for($i= 0 ; $i< sizeof($serviveField['userIds']); $i++){
                $this ->ServiceModel->addEmployeeForServies($this->VendorId,$serviceAddId,$serviveField['userIds'][$i]);
@@ -108,17 +109,18 @@ class ServiceManageController  extends Controller
 
     function updateServiceForCrud(Request $request){
         $fields = $request->all();
-        $listIdupdate = [];
          $listStaff = $this->ServiceModel->listAllEmployeeIdOfService($this->VendorId,$fields['id']);
         $listoldId = [];
-        $a = [];
-
+        $count = 0;
 
 
          foreach ($listStaff as $staff){
-             array_push($listoldId,$staff['user_id']);
+             array_push($listoldId,(int)$staff['user_id']);
          }
-        $listdiff = array_diff($listoldId,$fields['userIds']);
+        $listdiff = array_values(array_diff($fields['userIds'],$listoldId));
+        $listdiff2 = array_values(array_diff($listoldId,$fields['userIds']));
+        $listdiff3 = $listdiff+$listdiff2;
+
 
          if(sizeof($listoldId) ==0){
              foreach ($fields['userIds'] as $id){
@@ -136,17 +138,18 @@ class ServiceManageController  extends Controller
                      $id
                  );
              }
-         }if (sizeof($fields['userIds']) !=0 && sizeof($listoldId) !=0){
+         }
+         if (sizeof($fields['userIds']) !=0 && sizeof($listoldId) !=0 && sizeof($listdiff3)!= 0){
 
-             foreach ($listdiff as $id){
-                 if(in_array($id, $listoldId)){
+             foreach ($listdiff3 as $id){
+                 if(in_array($id, $listoldId) == True && in_array($id, $fields['userIds'])== False){
                      $this->ServiceModel->deleteEmployeOfService(
                          $this->VendorId,
                          $fields['id'],
                          $id
                      );
                  }
-                 if(in_array($id,$fields['userIds'])){
+                 if(in_array($id,$fields['userIds'])== True &&in_array($id, $listoldId) == False ){
                      $this->ServiceModel->addEmployeeForServies(
                          $this->VendorId,
                          $fields['id'],
@@ -156,21 +159,59 @@ class ServiceManageController  extends Controller
          }
 
 
+         $listGroup = $this->GroupService->getGroupForService($this->VendorId,$fields['id']);
+         $oldGroup = [];
+
+        foreach ($listGroup as $group){
+            array_push($oldGroup ,(int)$group['id']);
+        }
+        $GroupDiffId = array_values(array_diff($fields['groupIds'],$oldGroup)) + array_values(array_diff($oldGroup,$fields['groupIds']));
+
+
+        if(sizeof($oldGroup) ==0) {
+            foreach ($fields['groupIds'] as $id) {
+                $this->GroupService->assignGroupService($this->VendorId
+                    , $fields['id'], $id);
+
+            }
+        }
+
+        if (sizeof($fields['groupIds']) ==0){
+            foreach ($oldGroup as $id){
+              $this->GroupService->unassignGroupService($this->VendorId,$fields['id'],$id);
+            }
+        }
+        if (sizeof($fields['groupIds']) !=0 && sizeof($oldGroup) !=0 && sizeof($GroupDiffId)!= 0){
+
+            foreach ($GroupDiffId as $id){
+                if(in_array($id, $oldGroup) == True && in_array($id, $fields['groupIds'])== False){
+
+                    $this->GroupService->unassignGroupService($this->VendorId,$fields['id'],$id);
+                    $count ++;
+                }
+                if(in_array($id,$fields['groupIds'])== True &&in_array($id, $oldGroup) == False){
+                    $this->GroupService->assignGroupService($this->VendorId
+                        , $fields['id'], $id);
+                }
+            }
+        }
+
         $this->ServiceModel->updateServiceForCrud(
             $this->VendorId,
             $fields['id'],
             $fields['name'],
             $fields['price'],
-            $fields['stepping']);
-
+            $fields['stepping'],
+        $fields['img']);
 
         $dataReturn['code'] = 0;
-        return $listdiff;
+        return $dataReturn;
     }
 
     function deleteServiceForCrud(Request $request){
         $id = $request->id;
         $this->ServiceModel->deleteService($this->VendorId,$id);
+
     }
 
 

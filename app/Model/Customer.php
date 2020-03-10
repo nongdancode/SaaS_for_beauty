@@ -129,6 +129,9 @@ class Customer extends MyModel
 
         return $this->decodeStd($data);
     }
+    function editCustomer($Vendor,$cusId,$PhoneNumber,$email,$birthday,$name){
+//        $data =  DB::table('customer')
+    }
 
 
 }

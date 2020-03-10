@@ -66,10 +66,10 @@ class UserAdmin extends  MyModel
         $queryState = DB::table('user')
             ->join('users_services','user.id','=','users_services.user_id')
             ->join('service','service.id','=','users_services.services_id')
-            ->select('users_services.user_id as id','user.name','user.image as img',
+            ->select('user.id as id','user.name','user.image as img',
                 'users_services.services_id as service_id','service.service_name')
             ->where('users_services.vendor_id',$vendor)
-            ->groupBy('users_services.user_id','user.name','user.image',
+            ->groupBy('user.id','user.name','user.image',
                 'users_services.services_id','service.service_name')
             ->get();
 
@@ -176,6 +176,37 @@ class UserAdmin extends  MyModel
         ]);
 
         return $dbData;
+
+
+    }
+
+    function editEmployee($email,$img,$password,$phone_number,$social_number,$vendor,$id)
+    {
+        $queryState = DB::table('user')
+
+            ->where('vendor',$vendor)
+            ->where('id',$id)
+            ->update(['email'=>$email,'img'=>$img,'password'=>$password,'phone_number'=>$phone_number,'ssn'=>$social_number]);
+
+        return $queryState;
+
+    }
+    function deleteEmployee($vendor,$employee_id){
+        $dbData = DB::table('users_services')
+            ->where('vendor_id',$vendor)
+            ->where('user_id',$employee_id)
+            ->delete();
+
+
+        $dbData2 = DB::table('user')
+            ->where('vendor',$vendor)
+            ->where('id',$employee_id)
+            ->delete();
+
+        $dbData3 = DB::table('scheduletask')
+            ->where('vendor',$vendor)
+            ->where('user_ids',$employee_id)
+            ->delete();
 
 
     }
