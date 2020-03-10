@@ -31,14 +31,15 @@ class ScheduleTask  extends MyModel
             ->get();
         return  $this->decodeStd($queryState);
     }
+
+
+
     function getBookingTurnForChecking($vendor,$user_id,$service_id,$start_timecheck){
         $data = DB::table('scheduletask')
-
-
             ->where('vendor',$vendor)
             ->where('user_ids',$user_id)
-            ->where('services_ids',$service_id)
-            ->where('status' ,'=','active')
+
+            ->where('status' ,'=','booking')
             ->whereRaw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day))*1000 = ?',[$start_timecheck])
             ->get();
         return $this->decodeStd($data);
@@ -81,40 +82,23 @@ class ScheduleTask  extends MyModel
 
         return $this->decodeStd($data);
     }
-//
-//    function getCusCheckinAndBooking($vendorId){
-//        $data =  DB::table('scheduletask')
-//            ->join('customer','customer.id','=','scheduletask.cus_id')
-//            ->select('customer.id','customer.name','customer.phone','schedule.status')
-//            ->where('schedule.task','=','checkin')
-//            ->where('schedule.status','=','booking')
-//            ->where('schedule.vendor',$vendorId)
-//            ->get();
-//
-//        return $this->decodeStd($data);
-//    }
 
 
   function getScheduleOfStaffForCheckingDelete($vendorId,$staffId){
       $data =  DB::table('scheduletask')
           ->where('vendor',$vendorId)
           ->where('user_ids',$staffId)
-
           ->get();
-
       return $this->decodeStd($data);
   }
 
   function getScheduleOfStaffForCheckAdd($vendorId,$staffId,$start_time,$service_id){
       $data =  DB::table('scheduletask')
-
           ->where('vendor',$vendorId)
           ->where('user_ids',$staffId)
           ->where('services_ids',$service_id)
-
           ->whereRaw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) = ?',[$start_time])
           ->get();
-
       return $this->decodeStd($data);
   }
 

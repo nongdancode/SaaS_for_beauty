@@ -119,14 +119,14 @@ class AppointmentController extends Controller
         $price = 0;
         $services = [];
         $servicesReturn = [];
-        $checkTimeValid = false;
+        $checkTimeValid = true;
         $priceHard = 20;
 
 
         for ($i = 0 ; $i < sizeof($data['services']);$i++ ){
 
             $user_name = $this->UserModel->getUserNameInfoById($data['services'][$i]['employeeId'],$this->VendorId);
-            $service_name = $this->ServiceModel->getServicesNameByIdandVendor(1,$data['services'][$i]['serviceId']);
+            $service_name = $this->ServiceModel->getServicesNameByIdandVendor($this->VendorId,$data['services'][$i]['serviceId']);
 
 
 
@@ -146,16 +146,14 @@ class AppointmentController extends Controller
             $time1 =   $data['services'][$i]['timeRange']['start'];
 
             $bookingturn2 = $this->scheduleTask->getBookingTurnForChecking($this->VendorId, $user_name[0]['id'],$service_name[0]['id'],$time1);
-
-
             if(sizeof($bookingturn2)>0){
-                $checkTimeValid = True;
+                $checkTimeValid = false;
             }
         }
         $servicesReturn['price'] = $price;
         $servicesReturn2['data']['price'] = $priceHard;
 
-        if($checkTimeValid == True){
+        if($checkTimeValid == true){
             $servicesReturn2['code']=0;
             return \response( $servicesReturn2);
         }
