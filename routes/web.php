@@ -56,6 +56,8 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::post('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
     Route::post('/api/booking/charge', 'Booking\AppointmentController@confirmCharge');
 
+    Route::get('/api/booking/list_groups', 'Booking\AppointmentController@listGroupService');
+
 
 //calendar admin
     Route::any('/api/admin/staffs', 'System\ScheduleTaskController@getStafffForSchdedule');
@@ -64,11 +66,19 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::post('/api/admin/schedules/{staffid}/tasks', 'System\ScheduleTaskController@editSchedule');
 
 
+    //calendar ver2
+    Route::post('/api/admin/shifts', 'System\ShiftController@addShiftForEmployee');
+    Route::get(' /api/admin/schedules/{employeeId}/shifts', 'System\ShiftController@listShiftForEmployee');
+    Route::get(' /api/admin/shifts/{id}/tasks', 'System\ShiftController@listShiftDetail');
+
+
+
+
     Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
     Route::post('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
     Route::post('/api/admin/mms_sending', 'System\MarketingController@sendMMSForMkt');
     Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
-    Route::put('api/admin/marketing/{id}', 'System\MarketingController@sendMMSForMkt');
+    Route::put('api/admin/marketing/{id}', 'System\MarketingController@editCustomer');
 
 
 
@@ -86,7 +96,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
     Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee')  ;
     Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee')  ;
-    Route::delete('api/admin/employees', 'System\EmployeeManageController@deleteEmployee')  ;
+    Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee')  ;
 
 
 

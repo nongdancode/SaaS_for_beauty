@@ -72,14 +72,26 @@ class EmployeeManageController extends Controller
         $employeeFields = $request->all();
         $userAddId = $this->UserModel->CreateEmployeeForVendor($employeeFields['email'],$employeeFields['name'],
             $employeeFields['social_sn'], 'staff',$this->VendorId,$employeeFields['phone_number']);
-        if(sizeof($employeeFields['services']) >0){
-            for($i = 0 ; $i<sizeof($employeeFields['services']);$i++){
-                $this->UserModel->addServiceForEmployee($this->VendorId,$employeeFields['services'][$i],$userAddId);
-            }
-        }
+
+        $return['code'] = 0;
+        return $return;
+
     }
 
     function editEmployee(Request $request){
+        $field = $request->all();
+        $this->UserModel->editEmployee( $field['email'],$field['password'],
+            $field['image'],$field['phone_number'],$field['social_sn'],$this->VendorId,$field['id']);
+
+        $return['code'] = 0;
+        return $return;
+    }
+
+    function deleteEmployee(Request $request){
+       $id  = $request->id;
+       $this->UserModel->deleteEmployee($this->VendorId,$id);
+        $return['code'] = 0;
+        return $return;
 
     }
 

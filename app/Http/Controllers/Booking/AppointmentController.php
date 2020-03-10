@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 use App\Model\BookingTurn;
 use App\Model\Customer;
+use App\Model\GroupService;
 use App\Model\ScheduleTask;
 use App\Model\ServicesVendor;
+use App\Model\ShiftModel;
 use App\Model\Transaction;
 use App\Model\UserAdmin;
 use App\Model\Vendor;
@@ -43,25 +45,26 @@ class AppointmentController extends Controller
     protected  $scheduleTask;
     protected  $services;
     protected $Transaction;
+    protected $GroupService;
+    protected $ShiftModel;
 
     public function __construct(Request $request)
     {
-
         $this->ServiceModel = new ServicesVendor();
         $this->Customer = new Customer();
-
         $this->UserModel = new UserAdmin();
         $this->Twillo = new SMSTwillo();
         $this->util = new MyUtils();
         $this->requestBooking = $request->all();
         $this->BookingTurn = new BookingTurn();
-
         $this->dateTime = new DateTime();
         $this->dateTimeUtil = new DateTimeUtils();
         $this->AuthorizePayment = new AuthorizePayment();
         $this->Vendor = new Vendor();
         $this->Transaction = new Transaction();
         $this->scheduleTask = new ScheduleTask();
+        $this->GroupService = new GroupService();
+        $this->ShiftModel = new ShiftModel();
     }
 
 
@@ -69,33 +72,39 @@ class AppointmentController extends Controller
     {
 
         $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
+        for($i =0 ; $i< sizeof($data);$i++){
+           $groupService = $this->GroupService->getGroupForService($this->VendorId,$data[$i]['id']);
+           foreach ($groupService as $g){
+               $data[$i]['groupIds'][] = $g['id'];
+           }
+        }
 
         return $data;
 
     }
+
+    function listGroupService(){
+        $data = $this->GroupService->listServiceGroup($this->VendorId);
+      return $data;
+    }
+
+
 
     function getAllFromEmployee()
     {
 
         $data = $this->UserModel->getStaffByALlServicesVer2($this->VendorId);
          $nowday = date("Y-m-d");
+
         for ($i = 0; $i < sizeof($data); $i++) {
 
-            $subDay = $this->UserModel->getTurnDayOfEmployeeForBooking($data[$i]['id'], $data[$i]['service_id'], $this->VendorId,$nowday);
-            $data[$i]['available'] = [];
-            for ($a = 0; $a < sizeof($subDay); $a++) {
-
-                $data[$i]['available'][$subDay[$a]['day2']] =
-
-                    $this->UserModel
-                        ->getAllEmployeeTurnInDayForBooking($data[$i]['id'], $data[$i]['service_id'], $subDay[$a]['day1'], $this->VendorId);
-
-
-            }
+           $shifts =  $this->ShiftModel->listShiftForEmployee($this->VendorId,$data[$i]['id']);
+           for($a= 0;$a <sizeof($shifts);$a ++){
+               $data[$i]['available'][$a]['start'] =  $shifts[$a]['start'];
+               $data[$i]['available'][$a]['end'] =  $shifts[$a]['end'];
+           }
 
         }
-
-
         return $data;
     }
 

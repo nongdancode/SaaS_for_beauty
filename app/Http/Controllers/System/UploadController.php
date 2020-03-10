@@ -39,6 +39,11 @@ class UploadController extends Controller
                 $type2 = 'MMS_image/';
             }
 
+            if($type = '{"type":"service"}'){
+                $type2 = 'services_img/';
+            }
+
+
             $name = time() . $file->getClientOriginalName();
             $filePath = $type2 . $name;
             $da = Storage::disk('s3')->put($filePath, file_get_contents($file),'public');

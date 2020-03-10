@@ -79,7 +79,7 @@ class SMSTwillo
         $twilio_number = getenv("TWILIO_NUMBER");
         $client = new Client($account_sid, $auth_token);
         $client->messages->create($number,
-            array('from' => $twilio_number, 'body' => $message, "mediaUrl" => array($link_media)));
+            array('from' => $twilio_number, 'body' => $message, "mediaUrl" => $link_media));
 
 
     }

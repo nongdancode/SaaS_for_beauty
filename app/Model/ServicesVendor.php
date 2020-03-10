@@ -47,9 +47,9 @@ class ServicesVendor extends MyModel
 
     }
 
-    function addServices($vendorId, $servicenName,$servicePrice,$duration){
+    function addServices($vendorId, $servicenName,$servicePrice,$duration,$img){
         $dbData = DB::table('service')->insertGetId( ['vendor' => $vendorId, 'service_name'=> $servicenName,'duration'=>$duration,'price'=> $servicePrice
-           ]);
+          ,'image'=>$img ]);
         return $dbData;
     }
     function addEmployeeForServies($vendorId,$servicesID,$employeeId){
@@ -59,11 +59,11 @@ class ServicesVendor extends MyModel
         return $dbData;
     }
 
-    function updateServiceForCrud($vendorId,$servicesID,$servicenName,$servicePrice,$duration){
+    function updateServiceForCrud($vendorId,$servicesID,$servicenName,$servicePrice,$duration,$image){
         $dbData = DB::table('service')
             ->where('id', $servicesID)
             ->where('vendor',$vendorId)
-            ->update(['service_name' => $servicenName,'price'=>$servicePrice,'duration'=>$duration]);
+            ->update(['service_name' => $servicenName,'price'=>$servicePrice,'duration'=>$duration,'image'=>$image]);
         return $dbData;
     }
 
@@ -102,7 +102,13 @@ class ServicesVendor extends MyModel
             ->where('services_id',$servicesID)
             ->delete();
 
+
         $dbData2 = DB::table('service')
+            ->where('vendor',$vendorId)
+            ->where('id',$servicesID)
+            ->delete();
+
+        $dbData3 = DB::table('groupservice_service')
             ->where('vendor',$vendorId)
             ->where('id',$servicesID)
             ->delete();
