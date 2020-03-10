@@ -130,7 +130,10 @@ class Customer extends MyModel
         return $this->decodeStd($data);
     }
     function editCustomer($Vendor,$cusId,$PhoneNumber,$email,$birthday,$name){
-//        $data =  DB::table('customer')
+        $data =  DB::table('customer')
+            ->where('vendor',$Vendor)
+            ->where('id',$cusId)
+            ->update(['phone_number'=>$PhoneNumber,'email'=>$email,'birthday'=>$birthday,'name'=>$name]);
     }
 
 
