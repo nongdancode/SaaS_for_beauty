@@ -48,7 +48,7 @@ class Transaction extends MyModel
 
 
 
-    public function insertTransactionByVendor($card_number,$card_type,$status,$name_on_card,$amount,$vendor,$type_charge,$user_phone){
+    public function insertTransactionByVendor($card_number,$card_type,$status,$name_on_card,$amount,$vendor,$type_charge,$user_phone,$ref_id){
         $dbData = DB::table('transaction')->insertGetId(
             ['card_number' => $card_number,
                 'card_type'=> $card_type,'status'=>$status
@@ -57,7 +57,8 @@ class Transaction extends MyModel
                 'charge_at'=>DB::raw('NOW()'),
                 'vendor'=>$vendor,
                 'type_charge'=>$type_charge,
-                'user_phone'=>$user_phone]);
+                'user_phone'=>$user_phone,
+                'ref_id'=>$ref_id]);
         return $dbData;
     }
 

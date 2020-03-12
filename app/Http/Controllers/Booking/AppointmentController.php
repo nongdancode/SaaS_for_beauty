@@ -166,7 +166,7 @@ class AppointmentController extends Controller
             return \response($servicesReturn2);
 //            return \response(  "error");
         }
-        
+
     }
 
     function confirmCharge(){
@@ -203,12 +203,12 @@ class AppointmentController extends Controller
             $price = $price + $discontPrice;
         }
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,0.1);
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,$priceHard);
 //       $confirm = 'Ok';
-        if ($confirm->getResultCode() == 'Ok') {
+        if ($confirm->getMessages()->getResultCode() == 'Ok') {
             $this->Transaction->insertTransactionByVendor
             (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
-                $priceHard,$this->VendorId,'deposit',$customer_phone);
+                $priceHard,$this->VendorId,'deposit',$customer_phone,$confirm->getRefId());
             $date2 = date('m/d/Y h:i:s a', time());
 
             for ($i = 0; $i < sizeof($data['booking']['services']); $i++) {

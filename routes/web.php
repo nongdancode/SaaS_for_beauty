@@ -70,6 +70,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::post('/api/admin/shifts', 'System\ShiftController@addShiftForEmployee');
     Route::get(' /api/admin/schedules/{employeeId}/shifts', 'System\ShiftController@listShiftForEmployee');
     Route::get(' /api/admin/shifts/{id}/tasks', 'System\ShiftController@listShiftDetail');
+    Route::get(' /api/admin/shifts', 'System\ShiftController@showFullCalendar');
 
 
 
