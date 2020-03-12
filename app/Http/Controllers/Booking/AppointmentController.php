@@ -140,12 +140,16 @@ class AppointmentController extends Controller
             $servicesReturn[$service_name[0]['name']]['id'] = $service_name[0]['id'];
 
 
+            $date_start1 = date('yy-m-d', $data['services'][$i]['timeRange']['start']);
+            $time_start1 = date('H:i:s',$data['services'][$i]['timeRange']['start']);
+            $time_end1 = date('H:i:s', $data['services'][$i]['timeRange']['start']);
+
             $price = $price + $discontPrice;
 
 
             $time1 =   $data['services'][$i]['timeRange']['start'];
 
-            $bookingturn2 = $this->scheduleTask->getBookingTurnForChecking($this->VendorId, $user_name[0]['id'],$service_name[0]['id'],$time1);
+            $bookingturn2 = $this->scheduleTask->getBookingTurnForChecking($this->VendorId, $user_name[0]['id'], $time_start1, $time_end1,$date_start1);
             if(sizeof($bookingturn2)>0){
                 $checkTimeValid = false;
             }
@@ -162,8 +166,7 @@ class AppointmentController extends Controller
             return \response($servicesReturn2);
 //            return \response(  "error");
         }
-
-
+        
     }
 
     function confirmCharge(){

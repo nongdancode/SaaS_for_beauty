@@ -92,6 +92,10 @@ class ShiftController  extends Controller
 
     }
 
+    function showFullCalendar(){
+        
+    }
+
 
 
 

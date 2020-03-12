@@ -34,13 +34,14 @@ class ScheduleTask  extends MyModel
 
 
 
-    function getBookingTurnForChecking($vendor,$user_id,$service_id,$start_timecheck){
+    function getBookingTurnForChecking($vendor,$user_id,$start_time,$end_time,$day){
         $data = DB::table('scheduletask')
             ->where('vendor',$vendor)
             ->where('user_ids',$user_id)
-
+            ->where('day','=',$day)
             ->where('status' ,'=','booking')
-            ->whereRaw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day))*1000 = ?',[$start_timecheck])
+            ->where('start_time','<=',$end_time)
+            ->where('end_time','>=',$start_time)
             ->get();
         return $this->decodeStd($data);
     }
