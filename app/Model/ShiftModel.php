@@ -63,5 +63,18 @@ class ShiftModel  extends MyModel
        return  $this->decodeStd($queryState);
    }
 
+   function listShiftForAllEmployee($vendor ){
+       $data = DB::table('scheduletask')
+           ->select( 'id','user_ids as employee_id',
+               'scheduletask.services_ids','scheduletask.status'
+               ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
+               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))
+           ->whereRaw('day >= CURDATE()')
+           ->where('vendor',$vendor)
+           ->where('status','=','em_shift')
+           ->get();
+       return $this->decodeStd($data);
+   }
+
 
 }
