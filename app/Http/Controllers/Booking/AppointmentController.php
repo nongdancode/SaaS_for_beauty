@@ -142,7 +142,7 @@ class AppointmentController extends Controller
 
             $date_start1 = date('yy-m-d', $data['services'][$i]['timeRange']['start']);
             $time_start1 = date('H:i:s',$data['services'][$i]['timeRange']['start']);
-            $time_end1 = date('H:i:s', $data['services'][$i]['timeRange']['start']);
+            $time_end1 = date('H:i:s', $data['services'][$i]['timeRange']['end']);
 
             $price = $price + $discontPrice;
 
@@ -203,9 +203,12 @@ class AppointmentController extends Controller
             $price = $price + $discontPrice;
         }
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,$priceHard);
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,0.1);
 //       $confirm = 'Ok';
-        if ($confirm->getMessages()->getResultCode() == 'Ok') {
+
+        $code = $confirm->getMessages()->getResultCode();
+
+        if ($code == 'Ok') {
             $this->Transaction->insertTransactionByVendor
             (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
                 $priceHard,$this->VendorId,'deposit',$customer_phone,$confirm->getRefId());
@@ -250,7 +253,12 @@ class AppointmentController extends Controller
 
                 $cusId2 =$cusId[0]['id'];
 
-                $this->scheduleTask->confirmBooking($this->VendorId,$user_name[0]['id'],$service_name[0]['id'],$time1,$cusId2);
+                $date_start1 = date('yy-m-d',$data['booking']['services'][$i]['timeRange']['start']/1000);
+                $time_start1 = date('H:i:s',$data['booking']['services'][$i]['timeRange']['start']/1000);
+                $time_end1 = date('H:i:s', $data['booking']['services'][$i]['timeRange']['end']/1000);
+
+
+                $this->scheduleTask->confirmBooking($this->VendorId,$cusId2,$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1);
 
 
                 $messagesForcus = $messagesForcus . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
@@ -262,9 +270,9 @@ class AppointmentController extends Controller
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-//            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
-//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
+            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
         }

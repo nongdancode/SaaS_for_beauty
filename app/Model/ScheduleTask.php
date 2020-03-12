@@ -46,14 +46,12 @@ class ScheduleTask  extends MyModel
         return $this->decodeStd($data);
     }
 
-    function confirmBooking($vendorid,$cus_id,$service_id,$start_time,$cusId){
-        DB::table('scheduletask')
-            ->where('services_ids', '=',$service_id)
-            ->where('user_ids','=',$cus_id)
-            ->where('vendor','=',$vendorid)
-            ->whereRaw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day))*1000 = ?',[$start_time])
-            ->update(['status'=>'booking','cus_id'=>$cusId]);
+    function confirmBooking($vendorid,$cus_id,$service_id,$employee_id,$start_time,$end_time,$day){
+      $data =   DB::table('scheduletask')
+          ->insertGetId(['vendor'=>$vendorid,'user_ids'=>$employee_id,'cus_id'=>$cus_id,
+              'services_ids'=>$service_id,'day'=>$day,'start_time'=>$start_time,'end_time'=>$end_time,'status'=>'booking']);
 
+        return $data;
     }
 
     function addCusCheckin($vendorId,$cus_id){

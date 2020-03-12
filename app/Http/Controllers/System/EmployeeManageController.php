@@ -21,6 +21,7 @@ class EmployeeManageController extends Controller
     protected $VendorId = 1;
     protected $UserModel;
     protected $ServiceModel;
+    protected $SalaryDefineModel;
     function __construct(Request $request)
     {
 
@@ -30,6 +31,8 @@ class EmployeeManageController extends Controller
         $this->UserModel = new UserAdmin();
         $this->ServiceModel = new ServicesVendor();
         $this->Request = $request->all();
+        $this->SalaryDefineModel = new StaffSalary();
+
 
 
     }
@@ -49,8 +52,12 @@ class EmployeeManageController extends Controller
     function getAllEmployeeFromVendor(){
 
         $data = $this->UserModel->getStaffByVendor($this->VendorId);
+
         for($i = 0 ; $i<sizeof($data);$i++){
-            $serviceInfo = $this->ServiceModel->getservicesByStaff($this->VendorId,$data[$i],$data[$i]['id']);
+
+            $serviceInfo = $this->ServiceModel->getservicesByStaff($this->VendorId,$data[$i]['id']);
+            $paymentType = $this->SalaryDefineModel->listPaymentTypleForStaff();
+            $data[$i]['payment_type'] = $paymentType[0]['payment_type'];
             for($a = 0 ; $a<sizeof($serviceInfo);$a++){
                 $data[$i]['services'][] = $serviceInfo[$a]['id'];
             }

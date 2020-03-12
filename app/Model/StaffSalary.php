@@ -19,18 +19,30 @@ class StaffSalary extends MyModel
    public function listPaymentTypleForStaff(){
        $dbData = DB::table($this->SalaryDefine)
            ->select('description as payment_type')
-           ->where('salary_type','payment')
+           ->where('salary_type','payment_type')
            ->groupby('description')
            ->get();
 
        return $this->decodeStd($dbData);
    }
 
-   public function listCommissionTypeForStaff(){
+   public function listCommissionForStaff($vendor,$employeeId){
        $dbData = DB::table($this->SalaryDefine)
            ->select('description as commission')
-           ->where('salary_type','commission_type')
-           ->groupby('description')
+           ->where('salary_type','commission')
+           ->where('vendor',$vendor)
+           ->where('user_id',$employeeId)
+           ->get();
+
+       return $this->decodeStd($dbData);
+   }
+
+   public function listBaseSalaryForStaff($vendor,$employeeId){
+       $dbData = DB::table($this->SalaryDefine)
+           ->select('description as base_salary')
+           ->where('salary_type','salary')
+           ->where('vendor',$vendor)
+           ->where('user_id',$employeeId)
            ->get();
 
        return $this->decodeStd($dbData);
