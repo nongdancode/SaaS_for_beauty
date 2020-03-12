@@ -65,7 +65,7 @@ class ShiftModel  extends MyModel
 
    function listShiftForAllEmployee($vendor ){
        $data = DB::table('scheduletask')
-           ->select( 'id','user_ids as staffId',
+           ->select( 'id','user_ids as employee_id',
                'scheduletask.services_ids','scheduletask.status'
                ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
                DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))
@@ -74,6 +74,22 @@ class ShiftModel  extends MyModel
            ->where('status','=','em_shift')
            ->get();
        return $this->decodeStd($data);
+   }
+
+   function deleteShift($vendor,$employeeId,$shiftId,$star_time,$end_time,$day){
+       $data = DB::table('scheduletask')
+           ->where('vendor',$vendor)
+           ->where('user_ids',$employeeId)
+           ->where('id',$shiftId)
+           ->where('status','=','em_shift')
+           ->delete();
+
+       $data2 = DB::table('scheduletask')
+           ->where('vendor',$vendor)
+           ->where('user_ids',$employeeId)
+           ->where('id',$shiftId)
+           ->where('status','=','booking')
+           ->delete();
    }
 
 

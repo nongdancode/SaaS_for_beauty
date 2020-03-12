@@ -14,8 +14,10 @@ use App\Model\Customer;
 use App\Model\GroupService;
 use App\Model\InternalTransaction;
 use App\Model\ScheduleTask;
+use App\Model\ServicesVendor;
 use App\Model\ServiceWaitlistModel;
 use App\Model\Transaction;
+use App\Model\UserAdmin;
 use Illuminate\Http\Request;
 
 class CustomerWaitlistController extends Controller
@@ -34,6 +36,8 @@ class CustomerWaitlistController extends Controller
     protected $Tax = 10;
     protected $ScheduleTask;
     protected $GroupService;
+    protected $userModel;
+    protected $serviceModel;
 
 
 
@@ -50,6 +54,8 @@ class CustomerWaitlistController extends Controller
         $this->InternalTransaction = new InternalTransaction();
         $this->ScheduleTask = new ScheduleTask();
         $this->GroupService = new GroupService();
+        $this->serviceModel = new ServicesVendor();
+        $this->userModel = new UserAdmin();
 
     }
 
@@ -71,24 +77,28 @@ class CustomerWaitlistController extends Controller
 
          $aboutInfo['companyName']='The lash supply';
          $aboutInfo['phone'] = '8327744593';
-         $address['street'] = 'Bellard';
+         $address['streetAddress'] = '250 Bellard';
          $address['city'] = "Houston";
-         $address['stage'] = "Texas";
+         $address['state'] = "Texas";
          $aboutInfo['address'] = $address;
-         $invoiceInfo['about'] = $aboutInfo;
 
 
-       $returnData[$i]['id'] = $dataCus[$i]['id'];
+
+         $returnData[$i]['id'] = $dataCus[$i]['id'];
        $returnData[$i]['name'] = $dataCus[$i]['name'];
        $returnData[$i]['phone'] = $dataCus[$i]['phone_number'];
          $returnData[$i]['phone'] = $dataCus[$i]['phone_number'];
 //check cus is booking or checkin
          if($dataCus[$i]['status'] == 'booking'){
+
              $returnData[$i]['status'] = 'booking';
              $deposit2 = $this->TransactionModel->getTransactionForCusDeposit($this->VendorId,$dataCus[$i]['phone_number']);
              if(sizeof($deposit2)>0){
                  $deposit = $deposit2[0]['amount'];
              }
+             $invoiceInfo['about'] = $aboutInfo;
+             $invoiceInfo['about']['customer']['name'] = $dataCus[$i]['name'];
+             $invoiceInfo['about']['customer']['phone'] = $dataCus[$i]['phone_number'];
          }else{
              $returnData[$i]['status'] = 'checkin';
              $deposit = 0;
@@ -118,11 +128,26 @@ class CustomerWaitlistController extends Controller
     function CheckinToCheckoutWaitlist(Request $request){
         $billInfo  = $request->all();
         $check = [];
+        $checkTimeValid = true;
 
         foreach($billInfo['services'] as $service){
+
+            $user_name = $this->userModel->getUserNameInfoById($service['employeeId'],$this->VendorId);
+            $service_name = $this->serviceModel->getServicesNameByIdandVendor($this->VendorId,$service['servicesId']);
+
+
             $date_start1 = date('yy-m-d', $service['timeRange']['start']);
             $time_start1 = date('H:i:s', $service['timeRange']['start']);
             $time_end1 = date('H:i:s', $service['timeRange']['end']);
+            $bookingturn2 = $this->ScheduleTask->getBookingTurnForChecking($this->VendorId, $user_name[0]['id'], $time_start1, $time_end1,$date_start1);
+            if(sizeof($bookingturn2)>0){
+                $checkTimeValid = false;
+            }
+
+        }
+
+        if($checkTimeValid == true){
+//            $this->customerModel->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $priceHard, 5);
         }
 
     }

@@ -54,6 +54,7 @@ class CheckinController extends Controller
         $CustomerId = $CustomerData[0]['id'];
 
 
+
         if(sizeof($CustomerDataOFBooking) >0){
             foreach($CustomerDataOFBooking as $cus){
               $this->ScheduleTaskModel->updateCusBooking($this->VendorId,$cus['cus_id']);
