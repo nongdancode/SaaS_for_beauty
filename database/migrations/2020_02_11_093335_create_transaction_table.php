@@ -25,6 +25,7 @@ class CreateTransactionTable extends Migration
             $table->string('vendor')->nullable();
             $table->string('type_charge')->nullable();
             $table->string('user_phone')->nullable();
+            $table->string('ref_id')->nullable();
 
 
         });

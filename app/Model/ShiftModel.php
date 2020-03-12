@@ -65,7 +65,7 @@ class ShiftModel  extends MyModel
 
    function listShiftForAllEmployee($vendor ){
        $data = DB::table('scheduletask')
-           ->select( 'id','user_ids as employee_id',
+           ->select( 'id','user_ids as staffId',
                'scheduletask.services_ids','scheduletask.status'
                ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
                DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))

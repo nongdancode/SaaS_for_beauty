@@ -63,6 +63,10 @@ class ShiftController  extends Controller
          return $return;
 
         }
+        if($date_start1 != $date_end1){
+            $return['code'] = 1;
+            return $return;
+        }
         else{
             $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
             $return['code'] = 0;
@@ -76,7 +80,7 @@ class ShiftController  extends Controller
         $listShift = $this->ShiftModel->listShiftForEmployee($this->VendorId,$employeeId);
         for($i = 0 ;$i< sizeof($listShift);$i++){
 
-            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$listShift[$i]['services_ids']);
+            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$listShift[$i]['employee_id']);
             $listShift[$i]['count']['booking'] = sizeof($booking);
         }
 
@@ -93,7 +97,14 @@ class ShiftController  extends Controller
     }
 
     function showFullCalendar(){
-        
+        $InfoShift =  $this->ShiftModel->listShiftForAllEmployee($this->VendorId);
+        for($i = 0 ;$i< sizeof($InfoShift);$i++){
+
+            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$InfoShift[$i]['staffId']);
+            $InfoShift[$i]['count']['booking'] = sizeof($booking);
+        }
+        return $InfoShift;
+
     }
 
 
