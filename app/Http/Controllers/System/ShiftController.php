@@ -13,6 +13,7 @@ use App\Model\BookingTurn;
 use App\Model\ScheduleTask;
 use App\Model\ServicesVendor;
 use App\Model\ShiftModel;
+use DateTimeZone;
 use Illuminate\Http\Request;
 
 use App\Model\UserAdmin;
@@ -41,6 +42,8 @@ class ShiftController  extends Controller
         $this->staffId = $request->staffid;
         $this->requestData = $request->all();
         $this->ShiftModel = new ShiftModel();
+        $tz = new DateTimeZone('America/Chicago');
+        date_default_timezone_set('America/Chicago');
 
     }
 
@@ -48,8 +51,9 @@ class ShiftController  extends Controller
     function addShiftForEmployee(Request $request){
          $info = $request->all();
          $timestamp_start = $info['date'];
+
          $timestamp_end = $timestamp_start + 60*60*$info['duration'];
-        $date_start1 = date('yy-m-d', $timestamp_start);
+        $date_start1 = date('yy-m-d', $timestamp_start);;
         $time_start1 = date('H:i:s', $timestamp_start);
 
         $date_end1 = date('yy-m-d', $timestamp_end);
@@ -60,16 +64,28 @@ class ShiftController  extends Controller
 
         if(sizeof($dupShift) > 0){
          $return['code'] = 1;
+            $return['dup'] = $dupShift;
          return $return;
 
         }
         if($date_start1 != $date_end1){
             $return['code'] = 1;
+            $return['dup'] = $dupShift;
+            $return['start'] =  $date_start1;
+            $return['end'] = $date_end1;
+            $return['start2'] =   $timestamp_start;
+            $return['start3'] =   $time_start1;
+            $return['end3'] =   $time_end1;
+
+
+            $return['end2'] = $timestamp_end;
+
             return $return;
         }
         else{
             $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
             $return['code'] = 0;
+            $return['dup'] = $dupShift;
             return $return;
         }
     }
@@ -78,9 +94,17 @@ class ShiftController  extends Controller
     {
         $employeeId = $request->employeeId;
         $listShift = $this->ShiftModel->listShiftForEmployee($this->VendorId,$employeeId);
+//        dd($listShift);
+//        exit();
         for($i = 0 ;$i< sizeof($listShift);$i++){
+            $serviceInfo = $this->staffServices->getservicesByStaff($this->VendorId,$employeeId);
 
-            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$listShift[$i]['employee_id']);
+            $date_start1 = date('yy-m-d', $listShift[$i]['start']);;
+            $time_start1 = date('H:i:s', $listShift[$i]['start']);
+            $date_end1 = date('yy-m-d',$listShift[$i]['end']);
+            $time_end1 = date('H:i:s', $listShift[$i]['end']);
+
+            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$listShift[$i]['employee_id'],$date_start1,$time_start1);
             $listShift[$i]['count']['booking'] = sizeof($booking);
         }
 
@@ -90,18 +114,26 @@ class ShiftController  extends Controller
 
     function listShiftDetail(Request $request)
     {
-        $detail = $request->all();
-        dd($detail);
-        exit();
+        $shiftId = $request->id;
+        $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$shiftId);
+        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['user_ids'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time']);
+
+        return $booking;
 
     }
 
     function showFullCalendar(){
         $InfoShift =  $this->ShiftModel->listShiftForAllEmployee($this->VendorId);
         for($i = 0 ;$i< sizeof($InfoShift);$i++){
+            $employee = $this->Staff->getInforStaff($this->VendorId,$InfoShift[$i]['employee_id']);
             $InfoShift[$i]['employee_id'] = (int)$InfoShift[$i]['employee_id'] ;
+            $InfoShift[$i]['name'] = $employee[0]['name'] ;
+            $date_start1 = date('yy-m-d', $InfoShift[$i]['start']);;
+            $time_start1 = date('H:i:s', $InfoShift[$i]['start']);
+            $date_end1 = date('yy-m-d',$InfoShift[$i]['end']);
+            $time_end1 = date('H:i:s', $InfoShift[$i]['end']);
 
-            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$InfoShift[$i]['employee_id']);
+            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$InfoShift[$i]['employee_id'],$date_start1,$time_start1);
             $InfoShift[$i]['count']['booking'] = sizeof($booking);
         }
         return $InfoShift;

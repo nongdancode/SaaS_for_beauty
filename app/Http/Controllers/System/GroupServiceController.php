@@ -31,6 +31,8 @@ class GroupServiceController extends Controller
         $this->Request = $request->all();
         $this->GroupService = new GroupService();
 
+        date_default_timezone_set('America/Chicago');
+
     }
 
     function listGroupService(){

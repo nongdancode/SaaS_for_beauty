@@ -40,6 +40,7 @@ class ScheduleTaskController extends Controller
         $this->CurrentSchedule= new ScheduleTask();
         $this->staffId = $request->staffid;
         $this->requestData = $request->all();
+        date_default_timezone_set('America/Chicago');
 
 
     }

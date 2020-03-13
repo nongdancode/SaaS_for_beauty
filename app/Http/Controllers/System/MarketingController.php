@@ -34,6 +34,7 @@ class MarketingController extends Controller
         $this->util = new MyUtils();
         $this->TwilloSMS = new SMSTwillo();
         $this->SMSUser = $request->getContent();
+        date_default_timezone_set('America/Chicago');
 
 
     }

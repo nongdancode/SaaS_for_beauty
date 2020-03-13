@@ -57,6 +57,8 @@ class CustomerWaitlistController extends Controller
         $this->serviceModel = new ServicesVendor();
         $this->userModel = new UserAdmin();
 
+        date_default_timezone_set('America/Chicago');
+
     }
 
     function getWaitlist(){
@@ -129,11 +131,14 @@ class CustomerWaitlistController extends Controller
         $billInfo  = $request->all();
         $check = [];
         $checkTimeValid = true;
+//        dd($billInfo);
+//        exit();
+        $cusInfo = $this->customerModel->getCusByPhoneVendor($this->VendorId,$billInfo['phone']);
 
         foreach($billInfo['services'] as $service){
 
             $user_name = $this->userModel->getUserNameInfoById($service['employeeId'],$this->VendorId);
-            $service_name = $this->serviceModel->getServicesNameByIdandVendor($this->VendorId,$service['servicesId']);
+            $service_name = $this->serviceModel->getServicesNameByIdandVendor($this->VendorId,$service['serviceId']);
 
 
             $date_start1 = date('yy-m-d', $service['timeRange']['start']);
@@ -147,7 +152,22 @@ class CustomerWaitlistController extends Controller
         }
 
         if($checkTimeValid == true){
-//            $this->customerModel->addCustomerByBooking($this->VendorId,$customer_phone, $customer_name, $priceHard, 5);
+            foreach($billInfo['services'] as $service){
+                $user_name = $this->userModel->getUserNameInfoById($service['employeeId'],$this->VendorId);
+                $service_name = $this->serviceModel->getServicesNameByIdandVendor($this->VendorId,$service['serviceId']);
+                $date_start1 = date('yy-m-d', $service['timeRange']['start']);
+                $time_start1 = date('H:i:s', $service['timeRange']['start']);
+                $time_end1 = date('H:i:s', $service['timeRange']['end']);
+                $this->ScheduleTask->confirmCheckin($this->VendorId,$cusInfo[0]['id'],$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1);
+            }
+
+//            $this->ScheduleTask->confirmBooking($this->VendorId,$cusId2,$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1);
+            $response['code'] = 0;
+            return $response;
+        }
+        else{
+            $response['code'] = 1;
+            return $response;
         }
 
     }

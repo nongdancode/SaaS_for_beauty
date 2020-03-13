@@ -65,6 +65,8 @@ class AppointmentController extends Controller
         $this->scheduleTask = new ScheduleTask();
         $this->GroupService = new GroupService();
         $this->ShiftModel = new ShiftModel();
+
+        date_default_timezone_set('America/Chicago');
     }
 
 
@@ -262,17 +264,17 @@ class AppointmentController extends Controller
 
 
                 $messagesForcus = $messagesForcus . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
-                $messagesForStaff =      $messagesForStaff ." You have booking at " . $time2  . " for service ". $s ;
-                $messagesForVendor = $messagesForVendor . "  " . $s2 . " have booking at: ". $time2;
+                $messagesForStaff =      $messagesForStaff ." You have booking "  . "  at " . $time2  . " for service ". $s ;
+                $messagesForVendor = $messagesForVendor . "  " . $s2 . " have booking "    . "  at: ". $time2 . " for service ". $s ;
 
             }
 
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
+//            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
         }

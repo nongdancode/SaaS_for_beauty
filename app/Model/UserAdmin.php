@@ -38,9 +38,9 @@ class UserAdmin extends  MyModel
         }
     }
 
-    function CreateEmployeeForVendor($email,$name,$ssn,$role,$vendor,$phone_number){
+    function CreateEmployeeForVendor($email,$name,$ssn,$role,$vendor,$phone_number,$img){
         $queryState = DB::table('user')->insertGetId(
-            ['email' => $email, 'ssn'=> $ssn,'name'=>$name,'role'=> $role,'vendor'=>$vendor,'phone_number'=>$phone_number]
+            ['email' => $email, 'ssn'=> $ssn,'name'=>$name,'role'=> $role,'vendor'=>$vendor,'phone_number'=>$phone_number,'image'=>$img]
         );
         if($queryState){
             return "Success";
@@ -180,13 +180,21 @@ class UserAdmin extends  MyModel
 
     }
 
+    function getInforStaff($vendor,$employee){
+        $queryState = DB::table('user')
+            ->where('vendor',$vendor)
+            ->where('id',$employee)
+            ->get();
+        return $this->decodeStd($queryState);
+    }
+
     function editEmployee($email,$img,$password,$phone_number,$social_number,$vendor,$id)
     {
         $queryState = DB::table('user')
 
             ->where('vendor',$vendor)
             ->where('id',$id)
-            ->update(['email'=>$email,'img'=>$img,'password'=>$password,'phone_number'=>$phone_number,'ssn'=>$social_number]);
+            ->update(['email'=>$email,'image'=>$img,'password'=>$password,'phone_number'=>$phone_number,'ssn'=>$social_number]);
 
         return $queryState;
 
