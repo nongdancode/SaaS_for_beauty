@@ -32,6 +32,16 @@ class ShiftModel  extends MyModel
        return $this->decodeStd( $data);
    }
 
+   function getShiftDetailById($vendor,$shiftId){
+       $data = DB::table('scheduletask')
+
+           ->where('scheduletask.vendor','=',$vendor)
+           ->where('scheduletask.id','=',$shiftId)
+           ->get();
+       return $this->decodeStd($data);
+
+   }
+
    function listShiftForEmployee($vendor,$employeeId){
        $data = DB::table('scheduletask')
            ->select( 'id','user_ids as employee_id',
@@ -46,7 +56,7 @@ class ShiftModel  extends MyModel
        return $this->decodeStd($data);
    }
 
-   function getBoookingForShift($vendor,$employeeId){
+   function getBoookingForShift($vendor,$employeeId,$day,$start_time){
        $queryState = DB::table('scheduletask')
 
            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
@@ -57,11 +67,14 @@ class ShiftModel  extends MyModel
            ->where('scheduletask.vendor',  $vendor)
            ->where('scheduletask.user_ids',  $employeeId)
            ->where('scheduletask.status',  '=' ,'booking')
-           ->whereRaw('day >= CURDATE()')
+           ->where('day',$day)
+           ->where('end_time','<=',$start_time)
 
            ->get();
        return  $this->decodeStd($queryState);
    }
+
+
 
    function listShiftForAllEmployee($vendor ){
        $data = DB::table('scheduletask')

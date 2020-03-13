@@ -25,6 +25,7 @@ class PaymentController extends Controller
 
         $this->util = new MyUtils();
         $this->transactionModel = new Transaction();
+        date_default_timezone_set('America/Chicago');
 
 
 //        MySession::set("fromDate", $this->fromDate);

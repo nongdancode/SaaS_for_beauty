@@ -35,6 +35,7 @@ class LoginController extends Controller
 
         $this->util = new MyUtils();
         $this->Staff = new UserAdmin();
+        date_default_timezone_set('America/Chicago');
 
 
 

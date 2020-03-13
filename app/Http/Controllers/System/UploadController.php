@@ -22,6 +22,7 @@ class UploadController extends Controller
     {
         $this->dataRequest =$request->all();
         $this->updateImage = New ImageManager();
+        date_default_timezone_set('America/Chicago');
 
 
     }
@@ -41,6 +42,9 @@ class UploadController extends Controller
 
             if($type = '{"type":"service"}'){
                 $type2 = 'services_img/';
+            }
+            if($type = ' {"type":"user"}'){
+                $type2 = 'employee_img/';
             }
 
 

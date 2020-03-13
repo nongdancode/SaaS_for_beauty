@@ -38,6 +38,7 @@ class ServiceManageController  extends Controller
 
     function __construct(Request $request)
     {
+        date_default_timezone_set('America/Chicago');
         $this->dataRequest =$request->all();
         $this->customerModel = new Customer();
         $this->util = new MyUtils();

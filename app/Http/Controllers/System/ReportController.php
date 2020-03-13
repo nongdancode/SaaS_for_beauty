@@ -24,6 +24,7 @@ class ReportController  extends Controller
 
         $this->customerModel = new Customer();
         $this->paymentModel = new Transaction();
+        date_default_timezone_set('America/Chicago');
 
 
 

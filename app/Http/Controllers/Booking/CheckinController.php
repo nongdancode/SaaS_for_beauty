@@ -33,6 +33,7 @@ class CheckinController extends Controller
     protected $ScheduleTaskModel;
 
 
+
     public function __construct(Request $request)
     {
         $this->Customer = new Customer();
@@ -40,6 +41,8 @@ class CheckinController extends Controller
         $this->util = new MyUtils();
         $this->requestCheckin = $request->all();
         $this->ScheduleTaskModel = new ScheduleTask();
+
+        date_default_timezone_set('America/Chicago');
     }
 
   function CustomerChecking(){

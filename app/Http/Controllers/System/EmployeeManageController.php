@@ -33,11 +33,13 @@ class EmployeeManageController extends Controller
         $this->Request = $request->all();
         $this->SalaryDefineModel = new StaffSalary();
 
+        date_default_timezone_set('America/Chicago');
+
 
 
     }
   function showCommissionTypeOfStaff(){
-       $data =  $this->salaryDefine->listCommissionTypeForStaff();
+       $data =  $this->salaryDefine->listCommissionForStaff();
 
         return $data;
   }
@@ -78,7 +80,7 @@ class EmployeeManageController extends Controller
     function addEmployee(Request $request){
         $employeeFields = $request->all();
         $userAddId = $this->UserModel->CreateEmployeeForVendor($employeeFields['email'],$employeeFields['name'],
-            $employeeFields['social_sn'], 'staff',$this->VendorId,$employeeFields['phone_number']);
+            $employeeFields['social_sn'], 'staff',$this->VendorId,$employeeFields['phone_number'],$employeeFields['image']);
 
         $return['code'] = 0;
         return $return;
@@ -87,8 +89,8 @@ class EmployeeManageController extends Controller
 
     function editEmployee(Request $request){
         $field = $request->all();
-        $this->UserModel->editEmployee( $field['email'],$field['password'],
-            $field['image'],$field['phone_number'],$field['social_sn'],$this->VendorId,$field['id']);
+        $this->UserModel->editEmployee( $field['email'],$field['image'],
+            $field['password'],$field['phone_number'],$field['social_sn'],$this->VendorId,$field['id']);
 
         $return['code'] = 0;
         return $return;
