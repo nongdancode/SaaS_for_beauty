@@ -59,7 +59,14 @@ class EmployeeManageController extends Controller
 
             $serviceInfo = $this->ServiceModel->getservicesByStaff($this->VendorId,$data[$i]['id']);
             $paymentType = $this->SalaryDefineModel->listPaymentTypleForStaff();
+            $basesalary = $this->SalaryDefineModel->listBaseSalaryForStaff($this->VendorId,$data[$i]['id']);
+            if(sizeof($basesalary) ==0){
+                $basesalary[0]['base_salary'] = 0;
+            }
+            $data[$i]['social_sn'] = $data[$i]['ssn'];
             $data[$i]['payment_type'] = $paymentType[0]['payment_type'];
+
+            $data[$i]['base_salary'] = (int)$basesalary[0]['base_salary'];
             for($a = 0 ; $a<sizeof($serviceInfo);$a++){
                 $data[$i]['services'][] = $serviceInfo[$a]['id'];
             }
