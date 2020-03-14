@@ -25,7 +25,7 @@ class InternalTransaction  extends MyModel
               ->join('customer','customer.id','=','internaltransaction.cus_id')
               ->select('internaltransaction.type_transaction as type_transaction','internaltransaction.amount as total'
               ,'internaltransaction.note as note','customer.name as customer_name','customer.phone_number as customer_phone',
-                  'internaltransaction.invoice_number as invoice_number', 'internaltransaction.created_at as created_at')
+                  'internaltransaction.invoice_number as invoice_number', 'internaltransaction.created_at as created_at','internaltransaction.id as id')
               ->where('internaltransaction.vendor_id',$vendor)
               ->where('internaltransaction.status','=','summary_bill')
               ->get();
@@ -43,6 +43,8 @@ class InternalTransaction  extends MyModel
          ->get();
      return $this->decodeStd($data);
  }
+
+
 
 
 

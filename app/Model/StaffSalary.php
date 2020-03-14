@@ -16,21 +16,25 @@ class StaffSalary extends MyModel
    protected $SalaryDefine = 'salarydefine';
 
 
-   public function listPaymentTypleForStaff(){
+   public function listPaymentTypleForStaff($vendor,$employeeId){
        $dbData = DB::table($this->SalaryDefine)
            ->select('description as payment_type')
            ->where('salary_type','payment_type')
-           ->groupby('description')
+           ->where('vendor_id',$vendor)
+           ->where('user_id',$employeeId)
+
            ->get();
 
        return $this->decodeStd($dbData);
    }
 
+
+
    public function listCommissionForStaff($vendor,$employeeId){
        $dbData = DB::table($this->SalaryDefine)
            ->select('description as commission')
            ->where('salary_type','commission')
-           ->where('vendor',$vendor)
+           ->where('vendor_id',$vendor)
            ->where('user_id',$employeeId)
            ->get();
 
@@ -46,5 +50,26 @@ class StaffSalary extends MyModel
            ->get();
 
        return $this->decodeStd($dbData);
+   }
+
+   function addEmployeeSalaryDefine($vendor,$employeeId,$payment_type,$commission_type,$base_salary){
+       $dbData = DB::table($this->SalaryDefine)->insertGetId(['user_id'=>$employeeId,
+           'vendor_id'=>$vendor,'salary_type'=>'payment_type','description'=>$payment_type]);
+       $dbData2 = DB::table($this->SalaryDefine)->insertGetId(['user_id'=>$employeeId,
+           'vendor_id'=>$vendor,'salary_type'=>'commission','description'=>$commission_type]);
+
+       $dbData3 = DB::table($this->SalaryDefine)->insertGetId(['user_id'=>$employeeId,
+           'vendor_id'=>$vendor,'salary_type'=>'salary','description'=>$base_salary]);
+
+   }
+
+   function editEmployeeSalaryDefine($vendor,$employeeId,$payment_type,$commission_type,$base_salary){
+       $dbData = DB::table($this->SalaryDefine)->updateOrInsert(['user_id'=>$employeeId,
+           'vendor_id'=>$vendor,'salary_type'=>'payment_type','description'=>$payment_type]);
+       $dbData2 = DB::table($this->SalaryDefine)->updateOrInsert(['user_id'=>$employeeId,
+           'vendor_id'=>$vendor,'salary_type'=>'commission','description'=>$commission_type]);
+
+       $dbData3 = DB::table($this->SalaryDefine)->updateOrInsert(['user_id'=>$employeeId,
+           'vendor_id'=>$vendor,'salary_type'=>'salary','description'=>$base_salary]);
    }
 }
