@@ -216,6 +216,11 @@ class UserAdmin extends  MyModel
             ->where('user_ids',$employee_id)
             ->delete();
 
+        $dbData4 = DB::table('salarydefine')
+            ->where('vendor_id',$vendor)
+            ->where('user_id',$employee_id)
+            ->delete();
+
 
     }
 
