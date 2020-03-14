@@ -121,7 +121,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
     //checkin-waitlist
-    Route::any('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
+    Route::post('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
     Route::get('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
     Route::post('api/admin/checkout/confirm', 'System\CustomerWaitlistController@confirmCheckoutWaitlist');
     Route::post('api/admin/checkin/confirm', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');

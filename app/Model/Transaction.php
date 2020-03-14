@@ -40,7 +40,7 @@ class Transaction extends MyModel
           ->where('vendor',$vendor)
           ->where('user_phone',$cus_phone)
           ->where('type_charge','=','deposit')
-
+///
           ->get();
       return $this->decodeStd($dbData);
   }
