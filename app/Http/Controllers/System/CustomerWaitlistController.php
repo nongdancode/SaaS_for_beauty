@@ -69,6 +69,7 @@ class CustomerWaitlistController extends Controller
      $CusBooking =  $this->customerModel->getCusCheckinAndBooking($this->VendorId);
      $returnData = [];
      $discount = 0;
+     $deposit = 0;
 
 
 
@@ -83,6 +84,7 @@ class CustomerWaitlistController extends Controller
          $address['city'] = "Houston";
          $address['state'] = "Texas";
          $aboutInfo['address'] = $address;
+
 
 
 
@@ -177,14 +179,14 @@ class CustomerWaitlistController extends Controller
         $deposit = $billInfo['invoice']['deposit'];
         $totalDiscount = 0;
         $check = [];
-        $total = 0;
+        $total = $billInfo['invoice']['total'];
 
         foreach ($billInfo['invoice']['services'] as $ser){
             $totalDiscount = $totalDiscount +$ser['discount'];
             $this->InternalTransaction->saveTransactionForCheckout($this->VendorId,$billInfo['id'],
                 $billInfo['invoice']['id'],$ser['discount'],$ser['service_id'], $ser['employee_id'],$billInfo['paymentType'],
                 'split_bill',$billInfo['note'],$ser['price']);
-            $total = $total +$ser['price'] ;
+
             $this->ScheduleTask->deleteTaskForWaitlistCheckout($this->VendorId, $billInfo['id'],$ser['service_id'],$ser['employee_id']);
 
         }

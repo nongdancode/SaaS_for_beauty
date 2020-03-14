@@ -104,7 +104,7 @@ class ShiftController  extends Controller
             $date_end1 = date('yy-m-d',$listShift[$i]['end']);
             $time_end1 = date('H:i:s', $listShift[$i]['end']);
 
-            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$listShift[$i]['employee_id'],$date_start1,$time_start1);
+            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$employeeId,$date_start1,$time_start1,$time_end1);
             $listShift[$i]['count']['booking'] = sizeof($booking);
         }
 
@@ -116,7 +116,7 @@ class ShiftController  extends Controller
     {
         $shiftId = $request->id;
         $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$shiftId);
-        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['user_ids'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time']);
+        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['user_ids'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
 
         return $booking;
 
@@ -133,14 +133,28 @@ class ShiftController  extends Controller
             $date_end1 = date('yy-m-d',$InfoShift[$i]['end']);
             $time_end1 = date('H:i:s', $InfoShift[$i]['end']);
 
-            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$InfoShift[$i]['employee_id'],$date_start1,$time_start1);
+            $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$InfoShift[$i]['employee_id'],$date_start1,$time_start1,$time_end1);
             $InfoShift[$i]['count']['booking'] = sizeof($booking);
         }
         return $InfoShift;
 
     }
 
-    function deleteShift($vendor,$employeeId){
+    function deleteShift(Request $request){
+        $shiftId = $request->shiftid;
+        $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$shiftId);
+        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['user_ids'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
+        foreach ($booking  as $b){
+          $this->ShiftModel->deleteBookingInShift($this->VendorId,$shiftInfo[0]['user_ids'],$b['schedule_id']);
+        }
+        $this->ShiftModel->deleteShift($this->VendorId,$shiftInfo[0]['user_ids'],$shiftId);
+
+        $return['code'] = 0;
+
+        return $return;
+
+
+
 
     }
 

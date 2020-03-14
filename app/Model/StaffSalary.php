@@ -41,7 +41,7 @@ class StaffSalary extends MyModel
        $dbData = DB::table($this->SalaryDefine)
            ->select('description as base_salary')
            ->where('salary_type','salary')
-           ->where('vendor',$vendor)
+           ->where('vendor_id',$vendor)
            ->where('user_id',$employeeId)
            ->get();
 

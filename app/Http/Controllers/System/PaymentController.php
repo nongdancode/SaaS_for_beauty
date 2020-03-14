@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 use App\Lib\SMSTwillo;
 use App\Model\Customer;
+use App\Model\InternalTransaction;
 use App\Model\Transaction;
 use Illuminate\Http\Request;
 class PaymentController extends Controller
@@ -19,25 +20,64 @@ class PaymentController extends Controller
 
     protected $util;
     protected $transactionModel;
+    protected $vendorId = 1;
+    protected $InternalTransaction;
     function __construct(Request $request)
     {
 
 
         $this->util = new MyUtils();
         $this->transactionModel = new Transaction();
+        $this->InternalTransaction = new InternalTransaction();
         date_default_timezone_set('America/Chicago');
 
 
-//        MySession::set("fromDate", $this->fromDate);
-//        MySession::set("toDate", $this->toDate);
-//        MySession::set("gameCode", "luckyWingabar");
-
     }
-   function getTransactionByVendor(){
-       $data = $this->transactionModel->getTransactionByVendor(1,100);
+     function getBillTransactionByVendor(){
+        $data = $this->InternalTransaction->listBillTransaction($this->vendorId);
+        $deposit = 0;
+        $tax = 10;
+        $return = [];
+         $aboutInfo['companyName']='The lash supply';
+         $aboutInfo['phone'] = '8327744593';
+         $address['streetAddress'] = '250 Bellard';
+         $address['city'] = "Houston";
+         $address['state'] = "Texas";
+         $aboutInfo['address'] = $address;
 
-        return $data;
-   }
+        for($i = 0;$i< sizeof($data);$i++){
+
+            $return[$i]['type'] = $data[$i]['type_transaction'];
+            $return[$i]['invoice']['id'] = $data[$i]['invoice_number'];
+            $return[$i]['created'] = strtotime($data[$i]['created_at'])*1000;
+            $return[$i]['invoice']['deposit'] = $deposit;
+            $return[$i]['invoice']['tax'] = $tax;
+            $return[$i]['invoice']['total'] = $data[$i]['total'];
+            $return[$i]['invoice']['customer']['name'] = $data[$i]['customer_name'];
+            $return[$i]['invoice']['customer']['phone'] = $data[$i]['customer_phone'];
+            $return[$i]['invoice']['about'] = $aboutInfo;
+
+            $billparts = $this->InternalTransaction->listPartBillTransaction($this->vendorId,$data[$i]['invoice_number']);
+
+            for($a=0 ;$a<sizeof($billparts) ;$a++){
+                $return[$i]['invoice']['services'][$a]['name'] = $billparts[$a]['service_name'];
+                $return[$i]['invoice']['services'][$a]['price'] = $billparts[$a]['service_price'];
+                $return[$i]['invoice']['services'][$a]['discount'] = $billparts[$a]['service_price'];
+//                $return[$i]['invoice']['services'][$a]['employee_id'] = $billparts[$a]['employee_id'];
+//                $return[$i]['invoice']['services'][$a]['service_id'] = $billparts[$a]['service_id'];
+            }
+//            foreach ($billparts as $part){
+//                $return[$i]['invoice']['services']['name'] = $part['service_name'];
+//                $return[$i]['invoice']['services']['price'] = $part['service_price'];
+//                $return[$i]['invoice']['services']['discount'] = $part['service_price'];
+//                $return[$i]['invoice']['services']['employee_id'] = $part['employee_id'];
+//                $return[$i]['invoice']['services']['service_id'] = $part['service_id'];
+//
+//            }
+        }
+
+        return $return;
+     }
 
 
 
