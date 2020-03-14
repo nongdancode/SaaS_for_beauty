@@ -50,9 +50,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //api for booking
 Route::group(['middleware' => ['cors','web']], function () {
-    Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
+    Route::get('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
 
-    Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
+    Route::get('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
     Route::post('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
     Route::post('/api/booking/charge', 'Booking\AppointmentController@confirmCharge');
 
@@ -77,10 +77,10 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 
-    Route::any('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
+    Route::get('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
     Route::post('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
     Route::post('/api/admin/mms_sending', 'System\MarketingController@sendMMSForMkt');
-    Route::any('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
+    Route::get('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
     Route::put('/api/admin/marketing', 'System\MarketingController@editCustomer');
 
 
@@ -94,7 +94,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     //employee
 
-    Route::any('api/admin/user-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
+    Route::get('api/admin/user-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
 
     Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
     Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee')  ;
@@ -117,11 +117,11 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     //employee
 
-    Route::any('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
-    Route::any('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
+    Route::post('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
+    Route::get('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
     //checkin-waitlist
-    Route::any('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
+    Route::post('api/checkin/customer', 'Booking\CheckinController@CustomerChecking');
     Route::get('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
     Route::post('api/admin/checkout/confirm', 'System\CustomerWaitlistController@confirmCheckoutWaitlist');
     Route::post('api/admin/checkin/confirm', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');
