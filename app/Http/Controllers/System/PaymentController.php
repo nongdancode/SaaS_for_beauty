@@ -54,9 +54,10 @@ class PaymentController extends Controller
             $return[$i]['invoice']['deposit'] = $deposit;
             $return[$i]['invoice']['tax'] = $tax;
             $return[$i]['invoice']['total'] = $data[$i]['total'];
-            $return[$i]['invoice']['customer']['name'] = $data[$i]['customer_name'];
-            $return[$i]['invoice']['customer']['phone'] = $data[$i]['customer_phone'];
+
             $return[$i]['invoice']['about'] = $aboutInfo;
+            $return[$i]['invoice']['about']['customer']['name'] = $data[$i]['customer_name'];
+            $return[$i]['invoice']['about']['customer']['phone'] = $data[$i]['customer_phone'];
 
             $billparts = $this->InternalTransaction->listPartBillTransaction($this->vendorId,$data[$i]['invoice_number']);
 

@@ -65,11 +65,11 @@ class StaffSalary extends MyModel
 
    function editEmployeeSalaryDefine($vendor,$employeeId,$payment_type,$commission_type,$base_salary){
        $dbData = DB::table($this->SalaryDefine)->updateOrInsert(['user_id'=>$employeeId,
-           'vendor_id'=>$vendor,'salary_type'=>'payment_type','description'=>$payment_type]);
+           'vendor_id'=>$vendor,'salary_type'=>'payment_type'],['description'=>$payment_type]);
        $dbData2 = DB::table($this->SalaryDefine)->updateOrInsert(['user_id'=>$employeeId,
-           'vendor_id'=>$vendor,'salary_type'=>'commission','description'=>$commission_type]);
+           'vendor_id'=>$vendor,'salary_type'=>'commission'],['description'=>$commission_type]);
 
        $dbData3 = DB::table($this->SalaryDefine)->updateOrInsert(['user_id'=>$employeeId,
-           'vendor_id'=>$vendor,'salary_type'=>'salary','description'=>$base_salary]);
+           'vendor_id'=>$vendor,'salary_type'=>'salary'],['description'=>$base_salary]);
    }
 }
