@@ -48,6 +48,7 @@ class PaymentController extends Controller
         for($i = 0;$i< sizeof($data);$i++){
 
             $return[$i]['type'] = $data[$i]['type_transaction'];
+            $return[$i]['id'] = $data[$i]['id'];
             $return[$i]['invoice']['id'] = $data[$i]['invoice_number'];
             $return[$i]['created'] = strtotime($data[$i]['created_at'])*1000;
             $return[$i]['invoice']['deposit'] = $deposit;
@@ -63,17 +64,9 @@ class PaymentController extends Controller
                 $return[$i]['invoice']['services'][$a]['name'] = $billparts[$a]['service_name'];
                 $return[$i]['invoice']['services'][$a]['price'] = $billparts[$a]['service_price'];
                 $return[$i]['invoice']['services'][$a]['discount'] = $billparts[$a]['service_price'];
-//                $return[$i]['invoice']['services'][$a]['employee_id'] = $billparts[$a]['employee_id'];
-//                $return[$i]['invoice']['services'][$a]['service_id'] = $billparts[$a]['service_id'];
+
             }
-//            foreach ($billparts as $part){
-//                $return[$i]['invoice']['services']['name'] = $part['service_name'];
-//                $return[$i]['invoice']['services']['price'] = $part['service_price'];
-//                $return[$i]['invoice']['services']['discount'] = $part['service_price'];
-//                $return[$i]['invoice']['services']['employee_id'] = $part['employee_id'];
-//                $return[$i]['invoice']['services']['service_id'] = $part['service_id'];
-//
-//            }
+
         }
 
         return $return;
