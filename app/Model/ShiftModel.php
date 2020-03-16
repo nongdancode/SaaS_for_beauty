@@ -34,6 +34,12 @@ class ShiftModel  extends MyModel
 
    function getShiftDetailById($vendor,$shiftId){
        $data = DB::table('scheduletask')
+           ->select( 'id','user_ids as employee_id','scheduletask.day as day',
+               'scheduletask.services_ids','scheduletask.status','scheduletask.start_time as start_time', 'scheduletask.end_time as end_time'
+//               ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start')
+               ,DB::raw('concat(scheduletask.day, \' \', scheduletask.start_time) as start'),
+//               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'),
+               DB::raw('concat(scheduletask.day, \' \', scheduletask.end_time) as end'))
 
            ->where('scheduletask.vendor','=',$vendor)
            ->where('scheduletask.id','=',$shiftId)
@@ -44,15 +50,21 @@ class ShiftModel  extends MyModel
 
    function listShiftForEmployee($vendor,$employeeId){
        $data = DB::table('scheduletask')
+
+
            ->select( 'id','user_ids as employee_id',
                'scheduletask.services_ids','scheduletask.status'
-               ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
-               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))
+//               ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start')
+               ,DB::raw('concat(scheduletask.day, \' \', scheduletask.start_time) as start'),
+//               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'),
+               DB::raw('concat(scheduletask.day, \' \', scheduletask.end_time) as end'))
            ->whereRaw('day >= CURDATE()')
            ->where('vendor',$vendor)
            ->where('user_ids',$employeeId)
            ->where('status','=','em_shift')
            ->get();
+
+
        return $this->decodeStd($data);
    }
 
@@ -61,16 +73,16 @@ class ShiftModel  extends MyModel
 
            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
            ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img','scheduletask.id as schedule_id',
-               'service.duration as stepping','service.image as img','scheduletask.status'
-               ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
-               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))
+               'service.duration as stepping','service.image as img','scheduletask.status',
+//               DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
+//               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'),
+               DB::raw('concat(scheduletask.day, \' \', scheduletask.start_time) as start'),
+               DB::raw('concat(scheduletask.day, \' \', scheduletask.end_time) as end'))
            ->where('scheduletask.vendor',  $vendor)
            ->where('scheduletask.user_ids',  $employeeId)
            ->where('scheduletask.status',  '=' ,'booking')
-           ->where('day',$day)
-//           ->where('end_time','>=',$start_time)
-//           ->where('start_time','<=',$start_time)
-//           ->whereBetween('scheduletask.start_time',[$start_time,$end_time])
+           ->where('day','=',$day)
+
            ->where('scheduletask.start_time','>=',$start_time)
            ->where('scheduletask.end_time','<=',$end_time)
 
@@ -83,9 +95,11 @@ class ShiftModel  extends MyModel
    function listShiftForAllEmployee($vendor ){
        $data = DB::table('scheduletask')
            ->select( 'id','user_ids as employee_id',
-               'scheduletask.services_ids','scheduletask.status'
-               ,DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
-               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))
+               'scheduletask.services_ids','scheduletask.status',
+//               DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
+//               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end')
+              DB::raw('concat(scheduletask.day, \' \', scheduletask.start_time) as start'),
+               DB::raw('concat(scheduletask.day, \' \', scheduletask.end_time) as end'))
            ->whereRaw('day >= CURDATE()')
            ->where('vendor',$vendor)
            ->where('status','=','em_shift')

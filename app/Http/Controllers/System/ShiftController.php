@@ -42,7 +42,7 @@ class ShiftController  extends Controller
         $this->staffId = $request->staffid;
         $this->requestData = $request->all();
         $this->ShiftModel = new ShiftModel();
-        $tz = new DateTimeZone('America/Chicago');
+
         date_default_timezone_set('America/Chicago');
 
     }
@@ -63,6 +63,13 @@ class ShiftController  extends Controller
         $return = [];
 
         if(sizeof($dupShift) > 0){
+            $return['dup'] = $dupShift;
+            $return['start'] =  $date_start1;
+            $return['end_end'] = $date_end1;
+            $return['start2'] =   $timestamp_start;
+            $return['start3'] =   $time_start1;
+            $return['end_time1'] =   $time_end1;
+            $return['end_time2'] =   $timestamp_end;
          $return['code'] = 1;
             $return['dup'] = $dupShift;
          return $return;
@@ -72,20 +79,26 @@ class ShiftController  extends Controller
             $return['code'] = 1;
             $return['dup'] = $dupShift;
             $return['start'] =  $date_start1;
-            $return['end'] = $date_end1;
+            $return['end_end'] = $date_end1;
             $return['start2'] =   $timestamp_start;
             $return['start3'] =   $time_start1;
-            $return['end3'] =   $time_end1;
-
-
-            $return['end2'] = $timestamp_end;
+            $return['end_time1'] =   $time_end1;
+            $return['end_time2'] =   $timestamp_end;
 
             return $return;
         }
         else{
             $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
-            $return['code'] = 0;
+
             $return['dup'] = $dupShift;
+            $return['start'] =  $date_start1;
+            $return['end_end'] = $date_end1;
+            $return['start2'] =   $timestamp_start;
+            $return['start3'] =   $time_start1;
+            $return['end_time1'] =   $time_end1;
+            $return['end_time2'] =   $timestamp_end;
+            $return['code'] = 0;
+
             return $return;
         }
     }
@@ -94,11 +107,19 @@ class ShiftController  extends Controller
     {
         $employeeId = $request->employeeId;
         $listShift = $this->ShiftModel->listShiftForEmployee($this->VendorId,$employeeId);
+
 //        dd($listShift);
 //        exit();
         for($i = 0 ;$i< sizeof($listShift);$i++){
             $serviceInfo = $this->staffServices->getservicesByStaff($this->VendorId,$employeeId);
 
+
+
+
+
+
+            $listShift[$i]['start'] = strtotime($listShift[$i]['start']);
+            $listShift[$i]['end'] = strtotime($listShift[$i]['end']);
             $date_start1 = date('yy-m-d', $listShift[$i]['start']);;
             $time_start1 = date('H:i:s', $listShift[$i]['start']);
             $date_end1 = date('yy-m-d',$listShift[$i]['end']);
@@ -106,6 +127,7 @@ class ShiftController  extends Controller
 
             $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$employeeId,$date_start1,$time_start1,$time_end1);
             $listShift[$i]['count']['booking'] = sizeof($booking);
+
         }
 
         return $listShift;
@@ -116,7 +138,34 @@ class ShiftController  extends Controller
     {
         $shiftId = $request->id;
         $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$shiftId);
-        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['user_ids'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
+
+
+        $shiftInfo[0]['start'] = strtotime($shiftInfo[0]['start']);
+        $shiftInfo[0]['end'] = strtotime($shiftInfo[0]['end']);
+        $date_start1 = date('yy-m-d', $shiftInfo[0]['start']);;
+        $time_start1 = date('H:i:s', $shiftInfo[0]['start']);
+        $date_end1 = date('yy-m-d',$shiftInfo[0]['end']);
+        $time_end1 = date('H:i:s', $shiftInfo[0]['end']);
+
+
+        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$shiftInfo[0]['employee_id'],$date_start1,$time_start1,$time_end1);
+//        $return['shiftinfo'] = $shiftInfo;
+//        $return['booking'] = $booking;
+//        $return['start'] =  $date_start1;
+//        $return['end_end'] = $date_end1;
+//
+//        $return['start3'] =   $time_start1;
+//        $return['end_time1'] =   $time_end1;
+
+        $return['user'] = $shiftInfo[0]['employee_id'];
+
+        $timexx1 = strtotime($booking[0]['start']);
+        $timexx2 = strtotime($booking[0]['end']);
+
+        $booking[0]['start'] = $timexx1;
+        $booking[0]['end'] = $timexx2;
+
+
 
         return $booking;
 
@@ -128,6 +177,10 @@ class ShiftController  extends Controller
             $employee = $this->Staff->getInforStaff($this->VendorId,$InfoShift[$i]['employee_id']);
             $InfoShift[$i]['employee_id'] = (int)$InfoShift[$i]['employee_id'] ;
             $InfoShift[$i]['name'] = $employee[0]['name'] ;
+
+            $InfoShift[$i]['start'] = strtotime($InfoShift[$i]['start']);
+            $InfoShift[$i]['end'] = strtotime($InfoShift[$i]['end']);
+
             $date_start1 = date('yy-m-d', $InfoShift[$i]['start']);;
             $time_start1 = date('H:i:s', $InfoShift[$i]['start']);
             $date_end1 = date('yy-m-d',$InfoShift[$i]['end']);
@@ -136,6 +189,8 @@ class ShiftController  extends Controller
             $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$InfoShift[$i]['employee_id'],$date_start1,$time_start1,$time_end1);
             $InfoShift[$i]['count']['booking'] = sizeof($booking);
         }
+
+
         return $InfoShift;
 
     }
@@ -143,11 +198,11 @@ class ShiftController  extends Controller
     function deleteShift(Request $request){
         $shiftId = $request->shiftid;
         $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$shiftId);
-        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['user_ids'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
+        $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['employee_id'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
         foreach ($booking  as $b){
-          $this->ShiftModel->deleteBookingInShift($this->VendorId,$shiftInfo[0]['user_ids'],$b['schedule_id']);
+          $this->ShiftModel->deleteBookingInShift($this->VendorId,$shiftInfo[0]['employee_id'],$b['schedule_id']);
         }
-        $this->ShiftModel->deleteShift($this->VendorId,$shiftInfo[0]['user_ids'],$shiftId);
+        $this->ShiftModel->deleteShift($this->VendorId,$shiftInfo[0]['employee_id'],$shiftId);
 
         $return['code'] = 0;
 
