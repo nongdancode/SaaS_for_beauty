@@ -53,9 +53,15 @@ class ScheduleTask  extends MyModel
     }
 
     function confirmCheckin($vendorid,$cus_id,$service_id,$employee_id,$start_time,$end_time,$day){
-        DB::table('scheduletask')->updateOrInsert(
-            ['cus_id' => $cus_id,'vendor'=>$vendorid,'day'=>DB::raw('CURDATE()')],
-            ['task'=>'checkin','services_ids'=>$service_id,'start_time'=>$start_time,'end_time'=>$end_time,'status'=>'booking','user_ids'=>$employee_id]
+        DB::table('scheduletask')
+            ->where('cus_id',$cus_id)
+            ->whereRaw('scheduletask.day = CURDATE()')
+            ->where('status','=',null)
+            ->delete();
+
+        DB::table('scheduletask')->insertGetId(
+            ['cus_id' => $cus_id,'vendor'=>$vendorid,'day'=>DB::raw('CURDATE()'),'task'=>'checkin',
+            'services_ids'=>$service_id,'start_time'=>$start_time,'end_time'=>$end_time,'status'=>'booking','user_ids'=>$employee_id]
         );
     }
 
