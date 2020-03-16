@@ -64,7 +64,7 @@ class Customer extends MyModel
 
     function getCusByPhoneVendor($vendor,$phone){
         $data = DB::table('customer')
-            ->select('name', 'phone_number','id','amount_paid','birthday')
+            ->select('name', 'phone_number','id','amount_paid','birthday','visit_count')
             ->where('vendor', $vendor)
             ->where('phone_number',$phone)
             ->get();
