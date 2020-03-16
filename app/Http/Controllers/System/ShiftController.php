@@ -158,13 +158,15 @@ class ShiftController  extends Controller
 //        $return['end_time1'] =   $time_end1;
 
         $return['user'] = $shiftInfo[0]['employee_id'];
+        if(sizeof($booking)>0){
+            for($i = 0 ; $i< sizeof($booking);$i++){
+                $timexx1 = strtotime($booking[$i]['start']);
+                $timexx2 = strtotime($booking[$i]['end']);
+                $booking[$i]['start'] = $timexx1;
+                $booking[$i]['end'] = $timexx2;
 
-        $timexx1 = strtotime($booking[0]['start']);
-        $timexx2 = strtotime($booking[0]['end']);
-
-        $booking[0]['start'] = $timexx1;
-        $booking[0]['end'] = $timexx2;
-
+            }
+        }
 
 
         return $booking;

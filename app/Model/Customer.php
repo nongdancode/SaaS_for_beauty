@@ -47,7 +47,7 @@ class Customer extends MyModel
 
     function getCustomerByIdVendor($cusId,$vendorID){
         $data = DB::table('customer')
-            ->select('name', 'phone_number')
+            ->select('name', 'phone_number','email','visit_count','amount_paid','birthday')
             ->where('vendor', $vendorID)
             ->where('id',$cusId)
             ->get();
@@ -135,6 +135,28 @@ class Customer extends MyModel
             ->where('id',$cusId)
             ->update(['phone_number'=>$PhoneNumber,'email'=>$email,'birthday'=>$birthday,'name'=>$name]);
     }
+    function updateVisitCountForCustomer($vendor,$cusId,$visit_count){
+        $data =  DB::table('customer')
+            ->where('vendor',$vendor)
+            ->where('id',$cusId)
+            ->update(['visit_count'=>$visit_count]);
+    }
+
+    function showCustomerHistory($vendor,$cusId){
+        $data = DB::table('customer')
+            ->join('internaltransaction','internaltransaction.cus_id','=','customer.id')
+            ->join('service','service.id','=','internaltransaction.service_id')
+            ->join('user','user.id','=','internaltransaction.employee_id')
+            ->select('customer.id as id','service.service_name as service_name','user.name as staff'
+                ,'customer.visit_count as count','internaltransaction.note as note')
+            ->where('internaltransaction.status','=','split_bill')
+            ->orderBy('internaltransaction.created_at')
+            ->limit(10)
+            ->get();
+
+        return $this->decodeStd($data);
+    }
+
 
 
 }
