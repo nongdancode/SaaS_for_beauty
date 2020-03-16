@@ -175,6 +175,8 @@ class ShiftController  extends Controller
 
     function showFullCalendar(){
         $InfoShift =  $this->ShiftModel->listShiftForAllEmployee($this->VendorId);
+        dd( $InfoShift);
+        exit();
         for($i = 0 ;$i< sizeof($InfoShift);$i++){
             $employee = $this->Staff->getInforStaff($this->VendorId,$InfoShift[$i]['employee_id']);
             $InfoShift[$i]['employee_id'] = (int)$InfoShift[$i]['employee_id'] ;
