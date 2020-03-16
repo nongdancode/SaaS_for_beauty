@@ -19,7 +19,6 @@ class ScheduleTask  extends MyModel
 
     function getScheduleForStaff($employeeId,$vendor){
         $queryState = DB::table('scheduletask')
-
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
             ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img',
                 'service.duration as stepping','service.image as img','scheduletask.status'
@@ -27,7 +26,6 @@ class ScheduleTask  extends MyModel
                 DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'))
             ->where('scheduletask.vendor',  $vendor)
             ->where('scheduletask.user_ids',  $employeeId)
-
             ->get();
         return  $this->decodeStd($queryState);
     }

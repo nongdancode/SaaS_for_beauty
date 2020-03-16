@@ -70,22 +70,17 @@ class ShiftModel  extends MyModel
 
    function getBoookingForShift($vendor,$employeeId,$day,$start_time,$end_time){
        $queryState = DB::table('scheduletask')
-
            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
            ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img','scheduletask.id as schedule_id',
                'service.duration as stepping','service.image as img','scheduletask.status',
-//               DB::raw('(TIME_TO_SEC(scheduletask.start_time) +  UNIX_TIMESTAMP(scheduletask.day)) as start'),
-//               DB::raw('(TIME_TO_SEC(scheduletask.end_time) +  UNIX_TIMESTAMP(scheduletask.day)) as end'),
                DB::raw('concat(scheduletask.day, \' \', scheduletask.start_time) as start'),
                DB::raw('concat(scheduletask.day, \' \', scheduletask.end_time) as end'))
            ->where('scheduletask.vendor',  $vendor)
            ->where('scheduletask.user_ids',  $employeeId)
            ->where('scheduletask.status',  '=' ,'booking')
            ->where('day','=',$day)
-
            ->where('scheduletask.start_time','>=',$start_time)
            ->where('scheduletask.end_time','<=',$end_time)
-
            ->get();
        return  $this->decodeStd($queryState);
    }
