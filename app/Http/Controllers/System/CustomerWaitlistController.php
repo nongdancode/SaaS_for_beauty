@@ -190,6 +190,11 @@ class CustomerWaitlistController extends Controller
         $total = $billInfo['invoice']['total'];
 
         foreach ($billInfo['invoice']['services'] as $ser){
+            if(!isset($ser['service_id'])){
+                $ser['service_id'] = '';
+                $ser['employee_id'] ='';
+        
+            }
             $totalDiscount = $totalDiscount +$ser['discount'];
             $this->InternalTransaction->saveTransactionForCheckout($this->VendorId,$billInfo['id'],
                 $billInfo['invoice']['id'],$ser['discount'],$ser['service_id'], $ser['employee_id'],$billInfo['paymentType'],
