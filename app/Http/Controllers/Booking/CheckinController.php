@@ -55,8 +55,8 @@ class CheckinController extends Controller
         $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
         $CustomerDataOFBooking = $this->ScheduleTaskModel->getCusBooking($this->VendorId,$CustomerData[0]['id']);
         $CustomerId = $CustomerData[0]['id'];
-
-
+        $visit_count = $CustomerData[0]['visit_count']+1;
+        $this->Customer->updateVisitCountForCustomer($this->VendorId,$CustomerId,$visit_count);
 
         if(sizeof($CustomerDataOFBooking) >0){
             foreach($CustomerDataOFBooking as $cus){

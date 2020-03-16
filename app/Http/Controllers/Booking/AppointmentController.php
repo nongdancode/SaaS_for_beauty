@@ -102,8 +102,8 @@ class AppointmentController extends Controller
 
            $shifts =  $this->ShiftModel->listShiftForEmployee($this->VendorId,$data[$i]['id']);
            for($a= 0;$a <sizeof($shifts);$a ++){
-               $data[$i]['available'][$a]['start'] =  $shifts[$a]['start'];
-               $data[$i]['available'][$a]['end'] =  $shifts[$a]['end'];
+               $data[$i]['available'][$a]['start'] =  strtotime($shifts[$a]['start']);
+               $data[$i]['available'][$a]['end'] =  strtotime($shifts[$a]['end']);
            }
 
         }
