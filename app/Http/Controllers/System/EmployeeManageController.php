@@ -73,7 +73,7 @@ class EmployeeManageController extends Controller
             }
             $data[$i]['social_sn'] = $data[$i]['ssn'];
             $data[$i]['payment_type'] = $paymentType[0]['payment_type'];
-            $data[$i]['commission_type'] =  $commissionType[0]['commission'];
+            $data[$i]['commission_type'] =  (int)$commissionType[0]['commission'];
 
             $data[$i]['base_salary'] = (int)$basesalary[0]['base_salary'];
             for($a = 0 ; $a<sizeof($serviceInfo);$a++){
