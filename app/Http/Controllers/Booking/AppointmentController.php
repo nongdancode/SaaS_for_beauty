@@ -205,7 +205,7 @@ class AppointmentController extends Controller
             $price = $price + $discontPrice;
         }
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,0.1);
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,$priceHard);
 //       $confirm = 'Ok';
 
         $code = $confirm->getMessages()->getResultCode();
@@ -272,8 +272,8 @@ class AppointmentController extends Controller
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-//            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
 //            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
