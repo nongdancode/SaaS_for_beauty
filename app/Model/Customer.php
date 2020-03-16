@@ -150,6 +150,8 @@ class Customer extends MyModel
             ->select('customer.id as id','service.service_name as service_name','user.name as staff'
                 ,'customer.visit_count as count','internaltransaction.note as note')
             ->where('internaltransaction.status','=','split_bill')
+            ->where('internaltransaction.vendor_id','=',$vendor)
+            ->where('internaltransaction.cus_id','=',$cusId)
             ->orderBy('internaltransaction.created_at')
             ->limit(10)
             ->get();

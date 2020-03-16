@@ -64,7 +64,7 @@ class PaymentController extends Controller
             for($a=0 ;$a<sizeof($billparts) ;$a++){
                 $return[$i]['invoice']['services'][$a]['name'] = $billparts[$a]['service_name'];
                 $return[$i]['invoice']['services'][$a]['price'] = $billparts[$a]['service_price'];
-                $return[$i]['invoice']['services'][$a]['discount'] = $billparts[$a]['service_price'];
+                $return[$i]['invoice']['services'][$a]['discount'] = $billparts[$a]['discount'];
 
             }
 

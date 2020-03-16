@@ -40,7 +40,10 @@ class CustomerManagementController extends Controller
 
     function showCustomerHistory(Request $request){
         $cus_id = $request->id;
+
         $data = $this->customerModel->showCustomerHistory($this->vendorId,$cus_id);
+
+
         if(sizeof($data)>0){
             for ($i = 0 ; $i<sizeof($data);$i++){
                 $data[$i]['count'] = (int)$data[$i]['count'];
