@@ -99,6 +99,8 @@ class CustomerWaitlistController extends Controller
              $deposit2 = $this->TransactionModel->getTransactionForCusDeposit($this->VendorId,$dataCus[$i]['phone_number']);
              if(sizeof($deposit2)>0){
                  $deposit = $deposit2[0]['amount'];
+             }else{
+                 $deposit = 0;
              }
              $invoiceInfo['about'] = $aboutInfo;
              $invoiceInfo['about']['customer']['name'] = $dataCus[$i]['name'];
