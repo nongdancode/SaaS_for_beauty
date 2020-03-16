@@ -82,6 +82,7 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::post('/api/admin/mms_sending', 'System\MarketingController@sendMMSForMkt');
     Route::get('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
     Route::put('/api/admin/marketing', 'System\MarketingController@editCustomer');
+    Route::get('/api/admin/history-customer/{id}', 'System\CustomerManagementController@showCustomerHistory');
 
 
 

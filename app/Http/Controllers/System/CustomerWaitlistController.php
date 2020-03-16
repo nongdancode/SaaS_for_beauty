@@ -165,9 +165,15 @@ class CustomerWaitlistController extends Controller
 
 //            $this->ScheduleTask->confirmBooking($this->VendorId,$cusId2,$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1);
             $response['code'] = 0;
+            $response['start_time'] = $time_start1;
+            $response['date'] = $date_start1;
+            $response['end_time'] = $time_end1;
             return $response;
         }
         else{
+            $response['start_time'] = $time_start1;
+            $response['date'] = $date_start1;
+            $response['end_time'] = $time_end1;
             $response['code'] = 1;
             return $response;
         }
