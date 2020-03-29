@@ -155,11 +155,11 @@ Route::group(['middleware' => ['cors','web']], function () {
 
 
 
-   //Salary
-
+   //SalaryApi
     Route::get('api/admin/income', 'System\SalaryController@calculateSalary');
 
-
+   //BannerConfig
+    Route::get('api/client/banner-promotion', 'System\ConfigVendorController@getClientBannerConfig');
 
 
 
