@@ -102,9 +102,11 @@ class AppointmentController extends Controller
 
         for ($i = 0; $i < sizeof($data); $i++) {
             $data[$i]['id'] = (int)$data[$i]['id'];
+            $data[$i]['service_id'] = (int)$data[$i]['service_id'];
 
            $shifts =  $this->ShiftModel->listShiftForEmployee($this->VendorId,$data[$i]['id']);
            for($a= 0;$a <sizeof($shifts);$a ++){
+
                $data[$i]['available'][$a]['start'] =  strtotime($shifts[$a]['start']);
                $data[$i]['available'][$a]['end'] =  strtotime($shifts[$a]['end']);
            }
@@ -276,8 +278,8 @@ class AppointmentController extends Controller
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
 //            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
-//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 
         }
