@@ -29,7 +29,7 @@ class ConfigVendorController extends Controller
 
   function getVendorConfig(){
         $data = $this->ConfigModel->getConfig($this->Vendor_id);
-        return $data;
+        return $data[0]['content'];
   }
 
     function setVendorConfig(Request $request){
