@@ -22,5 +22,19 @@ class ConfigVendorModel extends MyModel
           ->updateOrInsert(['vendor_id'=>$vendor,'key_type'=>'banner_client_promotion'],['description'=>$content]);
   }
 
+ function getConfig($vendor){
+     $data = DB::table('vendor_key')
+         ->select( 'description as content')
+         ->where('vendor_id', $vendor)
+         ->where('key_type','=','vendor_config')
+         ->get();
 
+
+     return $this->decodeStd($data);
+ }
+
+ function setConfig($vendor,$content){
+     $data = DB::table('vendor_key')
+         ->updateOrInsert(['vendor_id'=>$vendor,'key_type'=>'vendor_config'],['description'=>$content]);
+ }
 }
