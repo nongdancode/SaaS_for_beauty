@@ -170,6 +170,7 @@ class ShiftController  extends Controller
                 $timexx1 = strtotime($booking[$i]['start']);
                 $timexx2 = strtotime($booking[$i]['end']);
                 $booking[$i]['start'] = $timexx1;
+                $booking[$i]['id'] = (int) $booking[$i]['id'];
                 $booking[$i]['end'] = $timexx2;
 
             }
