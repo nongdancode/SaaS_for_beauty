@@ -162,6 +162,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('api/client/banner-promotion', 'System\ConfigVendorController@getClientBannerConfig');
 
     Route::get('/api/admin/configs', 'System\ConfigVendorController@getVendorConfig');
+    Route::post('/api/admin/configs', 'System\ConfigVendorController@setVendorConfig');
 
 
 
