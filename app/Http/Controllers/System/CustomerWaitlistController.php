@@ -116,15 +116,15 @@ class CustomerWaitlistController extends Controller
 
 
          $returnData[$i]['invoice'] = $invoiceInfo;
-         $returnData[$i]['invoice']['deposit'] = $deposit;
+         $returnData[$i]['invoice']['deposit'] =(double) $deposit;
          //get data of services for checkout step
          $service = $this->ServiceModel->getServiceForWaitlistCheckout($this->VendorId,$returnData[$i]['id']);
          for($a=0;$a< sizeof($service);$a++){
              $returnData[$i]['invoice']['services'][$a]['name'] = $service[$a]['service_name'];
-             $returnData[$i]['invoice']['services'][$a]['discount'] = $discount;
-             $returnData[$i]['invoice']['services'][$a]['price'] = $service[$a]['price'];
-             $returnData[$i]['invoice']['services'][$a]['employee_id'] = $service[$a]['user_ids'];
-             $returnData[$i]['invoice']['services'][$a]['service_id'] = $service[$a]['id'];
+             $returnData[$i]['invoice']['services'][$a]['discount'] = (double)$discount;
+             $returnData[$i]['invoice']['services'][$a]['price'] = (double) $service[$a]['price'];
+             $returnData[$i]['invoice']['services'][$a]['employee_id'] = (int)$service[$a]['user_ids'];
+             $returnData[$i]['invoice']['services'][$a]['service_id'] = (int)$service[$a]['id'];
 
          }
      }
