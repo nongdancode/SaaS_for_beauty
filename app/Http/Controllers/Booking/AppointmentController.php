@@ -102,7 +102,7 @@ class AppointmentController extends Controller
 
         for ($i = 0; $i < sizeof($data); $i++) {
             $data[$i]['id'] = (int)$data[$i]['id'];
-            $data[$i]['service_id'] = (int)$data[$i]['service_id'];
+        
 
            $shifts =  $this->ShiftModel->listShiftForEmployee($this->VendorId,$data[$i]['id']);
            for($a= 0;$a <sizeof($shifts);$a ++){
