@@ -149,9 +149,15 @@ Route::group(['middleware' => ['cors','web']], function () {
     Route::any('testmms', 'System\MarketingController@sendMMSForMkt');
 
 
+    //login jwt
+
+    Route::get('system/login', 'System\LoginController@login');
 
 
 
+   //Salary
+
+    Route::get('api/admin/income', 'System\SalaryController@calculateSalary');
 
 
 

@@ -77,7 +77,7 @@ class AppointmentController extends Controller
         for($i =0 ; $i< sizeof($data);$i++){
            $groupService = $this->GroupService->getGroupForService($this->VendorId,$data[$i]['id']);
            foreach ($groupService as $g){
-               $data[$i]['groupIds'][] = $g['id'];
+               $data[$i]['groupIds'][] = (int)$g['id'];
            }
         }
 
@@ -87,6 +87,8 @@ class AppointmentController extends Controller
 
     function listGroupService(){
         $data = $this->GroupService->listServiceGroup($this->VendorId);
+
+
       return $data;
     }
 
@@ -99,6 +101,7 @@ class AppointmentController extends Controller
          $nowday = date("Y-m-d");
 
         for ($i = 0; $i < sizeof($data); $i++) {
+            $data[$i]['id'] = (int)$data[$i]['id'];
 
            $shifts =  $this->ShiftModel->listShiftForEmployee($this->VendorId,$data[$i]['id']);
            for($a= 0;$a <sizeof($shifts);$a ++){
@@ -205,7 +208,7 @@ class AppointmentController extends Controller
             $price = $price + $discontPrice;
         }
 
-        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,$priceHard);
+        $confirm = $payemnt->handleonlinepay($login_key, $trans_key, "", $cardNumber, $cardEx, $cardcvv,0.2);
 //       $confirm = 'Ok';
 
         $code = $confirm->getMessages()->getResultCode();
@@ -271,9 +274,9 @@ class AppointmentController extends Controller
 
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
-            $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+//            $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
+//            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
 //            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
 

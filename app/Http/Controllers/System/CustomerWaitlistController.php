@@ -70,6 +70,8 @@ class CustomerWaitlistController extends Controller
      $returnData = [];
      $discount = 0;
      $deposit = 0;
+//     dd($dataCus);
+//     exit();
 
 
 
@@ -193,8 +195,9 @@ class CustomerWaitlistController extends Controller
             if(!isset($ser['service_id'])){
                 $ser['service_id'] = '';
                 $ser['employee_id'] ='';
-        
+
             }
+            $ser['discount'] = (int) $ser['discount'];
             $totalDiscount = $totalDiscount +$ser['discount'];
             $this->InternalTransaction->saveTransactionForCheckout($this->VendorId,$billInfo['id'],
                 $billInfo['invoice']['id'],$ser['discount'],$ser['service_id'], $ser['employee_id'],$billInfo['paymentType'],
