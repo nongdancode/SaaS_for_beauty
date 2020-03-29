@@ -164,7 +164,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('api/admin/configs', 'System\ConfigVendorController@getVendorConfig');
     Route::post('api/admin/configs', 'System\ConfigVendorController@setVendorConfig');
 
-
+    Route::get('api/booking/configs', 'System\ConfigVendorController@getVendorConfig');
+    Route::post('api/booking/configs', 'System\ConfigVendorController@setVendorConfig');
 
 
 
