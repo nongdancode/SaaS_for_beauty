@@ -27,17 +27,12 @@ class ConfigVendorController extends Controller
 
     }
 
-    function setClientBannerConfig(Request $request){
+  function getVendorConfig(){
+        $data = $this->ConfigModel->getConfig($this->Vendor_id);
+        return $data;
+  }
 
-    }
 
-    function getClientConfig(){
-
-    }
-
-    function setClientConfig(){
-
-    }
 
 
 }
