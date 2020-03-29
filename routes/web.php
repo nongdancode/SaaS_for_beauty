@@ -49,7 +49,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 //api for booking
-Route::group(['middleware' => ['cors','web']], function () {
+Route::group(['middleware' => ['web']], function () {
     Route::get('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
 
     Route::get('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');

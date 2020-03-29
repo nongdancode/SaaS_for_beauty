@@ -31,5 +31,13 @@ class ConfigVendorController extends Controller
 
     }
 
+    function getClientConfig(){
+
+    }
+
+    function setClientConfig(){
+
+    }
+
 
 }
