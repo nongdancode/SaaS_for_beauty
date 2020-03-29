@@ -99,18 +99,22 @@ class StaffSalary extends MyModel
    function getSalaryInfoForAllEmployee($vendor){
        $dbData = DB::table('salarydefine')
            ->join('user','user.id','=','salarydefine.user_id')
-
            ->where('vendor_id',$vendor)
            ->get();
        return $this->decodeStd($dbData);
    }
 
-   function getComissionIncomInMonthForEmployee($Vendor,$employeeId)
+   function getIncomeMonthByMonthForEmployee($Vendor)
    {
-//       $dbData = DB::table('internaltransaction')
-//           ->join('salarydefine','salarydefine.user_id','=','internaltransaction.employee_id')
-//           ->select('internaltransaction.amount as amount')
-
+       $dbData = DB::table('internaltransaction')
+           ->join('user','user.id','=','internaltransaction.employee_id')
+         ->selectRaw('DATE_FORMAT(internaltransaction.created_at,\'%Y-%m\') as month_salary,sum(internaltransaction.amount) as income_service,user.name as employee_name,user.id as employee_id')
+           ->where('internaltransaction.vendor_id','=',$Vendor)
+           ->groupBy('month_salary','user.name','user.id')
+           ->get();
+       return $this->decodeStd($dbData);
    }
+
+
 
 }

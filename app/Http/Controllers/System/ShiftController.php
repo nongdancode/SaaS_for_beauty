@@ -50,57 +50,64 @@ class ShiftController  extends Controller
 
     function addShiftForEmployee(Request $request){
          $info = $request->all();
-         $timestamp_start = $info['date'];
 
-         $timestamp_end = $timestamp_start + 60*60*$info['duration'];
-        $date_start1 = date('yy-m-d', $timestamp_start);;
-        $time_start1 = date('H:i:s', $timestamp_start);
+         foreach($info['date'] as $shift){
 
-        $date_end1 = date('yy-m-d', $timestamp_end);
-        $time_end1 = date('H:i:s', $timestamp_end);
+             $date_start1 = date('yy-m-d', $shift['start']);;
+             $time_start1 = date('H:i:s', $shift['start']);
 
-        $dupShift = $this->ShiftModel->returnDupShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
-        $return = [];
+             $date_end1 = date('yy-m-d', $shift['end']);
+             $time_end1 = date('H:i:s', $shift['end']);
 
-        if(sizeof($dupShift) > 0){
-            $return['dup'] = $dupShift;
-            $return['start'] =  $date_start1;
-            $return['end_end'] = $date_end1;
-            $return['start2'] =   $timestamp_start;
-            $return['start3'] =   $time_start1;
-            $return['end_time1'] =   $time_end1;
-            $return['end_time2'] =   $timestamp_end;
-         $return['code'] = 1;
-            $return['dup'] = $dupShift;
-         return $return;
+             $dupShift = $this->ShiftModel->returnDupShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
+             $return = [];
 
-        }
-        if($date_start1 != $date_end1){
-            $return['code'] = 1;
-            $return['dup'] = $dupShift;
-            $return['start'] =  $date_start1;
-            $return['end_end'] = $date_end1;
-            $return['start2'] =   $timestamp_start;
-            $return['start3'] =   $time_start1;
-            $return['end_time1'] =   $time_end1;
-            $return['end_time2'] =   $timestamp_end;
+             if(sizeof($dupShift) > 0){
+                 $return['dup'] = $dupShift;
+                 $return['start'] =  $date_start1;
+                 $return['end_end'] = $date_end1;
+                 $return['start2'] =   $shift['start'];
+                 $return['start3'] =   $time_start1;
+                 $return['end_time1'] =   $time_end1;
+                 $return['end_time2'] =   $shift['end'];
+                 $return['code'] = 1;
+                 $return['dup'] = $dupShift;
+                 return $return;
 
-            return $return;
-        }
-        else{
-            $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
+             }
+             if($date_start1 != $date_end1){
+                 $return['code'] = 1;
 
-            $return['dup'] = $dupShift;
-            $return['start'] =  $date_start1;
-            $return['end_end'] = $date_end1;
-            $return['start2'] =   $timestamp_start;
-            $return['start3'] =   $time_start1;
-            $return['end_time1'] =   $time_end1;
-            $return['end_time2'] =   $timestamp_end;
-            $return['code'] = 0;
+                 $return['start'] =  $date_start1;
+                 $return['end_end'] = $date_end1;
+                 $return['start2'] =   $shift['start'];
+                 $return['start3'] =   $time_start1;
+                 $return['end_time1'] =   $time_end1;
+                 $return['end_time2'] =   $shift['end'];
+                 $return['code'] = 1;
+                 $return['dup'] = $dupShift;
 
-            return $return;
-        }
+                 return $return;
+             }
+             else{
+                 $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
+
+//                 $return['start'] =  $date_start1;
+//                 $return['end_end'] = $date_end1;
+//                 $return['start2'] =   $shift['start'];
+//                 $return['start3'] =   $time_start1;
+//                 $return['end_time1'] =   $time_end1;
+//                 $return['end_time2'] =   $shift['end'];
+//                 $return['code'] = 1;
+//                 $return['dup'] = $dupShift;
+//                 $return['code'] = 0;
+//
+//                 return $return;
+             }
+         }
+                 $return['code'] = 0;
+
+                 return $return;
     }
 
     function listShiftForEmployee(Request $request)
