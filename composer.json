@@ -19,6 +19,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "nexmo/client": "^2.0",
         "twilio/sdk": "^5.42",
+
         "vlucas/phpdotenv": "^3.3",
         "yajra/laravel-datatables": "1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
