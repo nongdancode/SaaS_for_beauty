@@ -151,7 +151,7 @@ Route::group(['middleware' => ['cors','web']], function () {
 
     //login jwt
 
-    Route::get('system/login', 'System\LoginController@login');
+//    Route::get('system/login', 'System\LoginController@login');
 
 
 
