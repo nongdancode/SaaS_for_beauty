@@ -129,6 +129,7 @@ Route::group(['middleware' => ['web']], function () {
 
     //transaction
     Route::get('/api/admin/transaction', 'System\PaymentController@getBillTransactionByVendor');
+    Route::post('api/admin/sms-bill', 'System\PaymentController@sendBillSMS');
 
 
 
