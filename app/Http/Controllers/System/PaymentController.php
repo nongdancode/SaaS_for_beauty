@@ -22,6 +22,7 @@ class PaymentController extends Controller
     protected $transactionModel;
     protected $vendorId = 1;
     protected $InternalTransaction;
+    protected $Twillo;
     function __construct(Request $request)
     {
 
@@ -29,6 +30,7 @@ class PaymentController extends Controller
         $this->util = new MyUtils();
         $this->transactionModel = new Transaction();
         $this->InternalTransaction = new InternalTransaction();
+        $this->Twillo = new SMSTwillo();
         date_default_timezone_set('America/Chicago');
 
 
@@ -74,6 +76,16 @@ class PaymentController extends Controller
      }
 
     function sendBillSMS(Request $request){
+       $info = $request->all();
+       $cusName = $info['about']['customer']['name'];
+       $cusPhone = $info['about']['customer']['phone'];
+       $totalAmount = $info['total'];
+
+       $message = "Thank You ". $cusName." we received the payment amount: ". $totalAmount . " $";
+       $this->Twillo->SendMessageByNumber($message,$cusPhone);
+
+       $return['code'] = 0;
+       return $return;
 
     }
 
