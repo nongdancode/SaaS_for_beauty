@@ -10,6 +10,7 @@ namespace App\Http\Controllers\System;
 use App\Http\Controllers\Controller;
 use App\Lib\MyUtils;
 use App\Model\BookingTurn;
+use App\Model\Customer;
 use App\Model\ScheduleTask;
 use App\Model\ServicesVendor;
 use App\Model\ShiftModel;
@@ -29,6 +30,7 @@ class ShiftController  extends Controller
     protected $CurrentSchedule;
     protected $requestData;
     protected $ShiftModel;
+    protected $CustomerModel;
 
 
     function __construct(Request $request)
@@ -42,6 +44,7 @@ class ShiftController  extends Controller
         $this->staffId = $request->staffid;
         $this->requestData = $request->all();
         $this->ShiftModel = new ShiftModel();
+        $this->CustomerModel= new Customer();
 
         date_default_timezone_set('America/Chicago');
 
@@ -156,6 +159,8 @@ class ShiftController  extends Controller
 
 
         $booking = $this->ShiftModel->getBoookingForShift($this->VendorId,$shiftInfo[0]['employee_id'],$date_start1,$time_start1,$time_end1);
+
+
 //        $return['shiftinfo'] = $shiftInfo;
 //        $return['booking'] = $booking;
 //        $return['start'] =  $date_start1;
@@ -167,8 +172,18 @@ class ShiftController  extends Controller
         $return['user'] = $shiftInfo[0]['employee_id'];
         if(sizeof($booking)>0){
             for($i = 0 ; $i< sizeof($booking);$i++){
+                $cusInfo = $this->CustomerModel->getCustomerByIdVendor($booking[$i]['cus_id'],$this->VendorId);
+                $cusNote = $this->CustomerModel->showCustomerHistory($this->VendorId,$booking[$i]['cus_id']);
                 $timexx1 = strtotime($booking[$i]['start']);
                 $timexx2 = strtotime($booking[$i]['end']);
+                $booking[$i]['cus_name'] = $cusInfo[0]['name'];
+                $booking[$i]['cus_phone'] = $cusInfo[0]['phone_number'];
+                if(sizeof($cusNote)>0){
+                    $booking[$i]['cus_note'] = $cusNote[0]['note'];
+                }
+                else{
+                    $booking[$i]['cus_note'] = '';
+                }
                 $booking[$i]['start'] = $timexx1;
                 $booking[$i]['id'] = (int) $booking[$i]['id'];
                 $booking[$i]['end'] = $timexx2;

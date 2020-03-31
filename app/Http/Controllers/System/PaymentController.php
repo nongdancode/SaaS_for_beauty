@@ -73,6 +73,10 @@ class PaymentController extends Controller
         return $return;
      }
 
+    function sendBillSMS(Request $request){
+
+    }
+
 
 
 }
