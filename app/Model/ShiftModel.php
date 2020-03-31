@@ -72,7 +72,7 @@ class ShiftModel  extends MyModel
        $queryState = DB::table('scheduletask')
            ->join('service', 'scheduletask.services_ids', '=', 'service.id')
            ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img','scheduletask.id as schedule_id',
-               'service.duration as stepping','service.image as img','scheduletask.status',
+               'service.duration as stepping','service.image as img','scheduletask.status','scheduletask.cus_id as cus_id',
                DB::raw('concat(scheduletask.day, \' \', scheduletask.start_time) as start'),
                DB::raw('concat(scheduletask.day, \' \', scheduletask.end_time) as end'))
            ->where('scheduletask.vendor',  $vendor)
