@@ -37,7 +37,7 @@ class ReportController  extends Controller
 
     function apiCustomerReportByPieChart(){
         $data = $this ->customerModel->getCustomerByDemandandTimeSteamp(120);
-        return $data ;
+
     }
 
     function apiPaymentReportByPieChart(){

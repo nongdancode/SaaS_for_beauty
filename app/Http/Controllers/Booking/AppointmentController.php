@@ -81,7 +81,7 @@ class AppointmentController extends Controller
            }
         }
 
-        return $data;
+        return $this->util->returnHttps($data,'0','');
 
     }
 
@@ -89,7 +89,7 @@ class AppointmentController extends Controller
         $data = $this->GroupService->listServiceGroup($this->VendorId);
 
 
-      return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
 
@@ -112,7 +112,7 @@ class AppointmentController extends Controller
            }
 
         }
-        return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
 
@@ -165,12 +165,14 @@ class AppointmentController extends Controller
         $servicesReturn2['data']['price'] = $priceHard;
 
         if($checkTimeValid == true){
-            $servicesReturn2['code']=0;
-            return \response( $servicesReturn2);
+//            $servicesReturn2['code']=0;
+//            return \response( $servicesReturn2);
+            return $this->util->returnHttps($data,0,'');
         }
         else{
-            $servicesReturn2['code']=1;
-            return \response($servicesReturn2);
+            return $this->util->returnHttps('',1,'your service is busy');
+//            $servicesReturn2['code']=1;
+//            return \response($servicesReturn2);
 //            return \response(  "error");
         }
 
@@ -278,17 +280,18 @@ class AppointmentController extends Controller
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
 //            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'3463290285');
             $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
-            $response['code'] = 0;
+//            $response['code'] = 0;
+            return $this->util->returnHttps($data,0,'');
 
         }
         else{
-            $response['code'] = 1;
+            return $this->util->returnHttps('',1,'your payment failed and not be charged');
         }
 
 
-       return \response($response);
+//       return \response($response);
 
 
 

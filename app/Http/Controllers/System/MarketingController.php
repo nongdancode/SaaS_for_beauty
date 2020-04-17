@@ -43,7 +43,7 @@ class MarketingController extends Controller
     {
         $cus1 = $this->customerModel->getCustomerByDemand(400,$this->VendorId);
 
-        return $cus1;
+        return $this->util->returnHttps( $cus1,0,'');
 
     }
 
@@ -59,8 +59,8 @@ class MarketingController extends Controller
 //          print($cus_phone2[0]['phone_number']);
 //            exit();
         }
-        $return['code'] = 0;
-        return $return;
+//        $return['code'] = 0;
+        return $this->util->returnHttps( '',0,'');
 
 
 //          return $this->TwilloSMS->SendMessageByList($data['message'],$nums);
@@ -79,9 +79,9 @@ class MarketingController extends Controller
 
     }
 
-        $return['code'] = 0;
-        return $return;
-
+//        $return['code'] = 0;
+//        return $return;
+        return $this->util->returnHttps( '',0,'');
     }
 
 
@@ -89,8 +89,9 @@ class MarketingController extends Controller
        $data = $request->all();
 
        $this->customerModel->editCustomer($this->VendorId,$data['id'],$data['phone_number'],$data['email'],$data['birthday'],$data['name']);
-        $return['code'] = 0;
-        return $return;
+//        $return['code'] = 0;
+//        return $return;
+        return $this->util->returnHttps( '',0,'');
     }
 
 

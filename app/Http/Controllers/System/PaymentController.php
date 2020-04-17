@@ -72,7 +72,7 @@ class PaymentController extends Controller
 
         }
 
-        return $return;
+        return $this->util->returnHttps($return,0,'');
      }
 
     function sendBillSMS(Request $request){
@@ -85,7 +85,7 @@ class PaymentController extends Controller
        $this->Twillo->SendMessageByNumber($message,$cusPhone);
 
        $return['code'] = 0;
-       return $return;
+        return $this->util->returnHttps('',0,'');
 
     }
 

@@ -67,9 +67,9 @@ class CheckinController extends Controller
         }
 
 
-        $returnData['code'] = 0;
 
-        return   $returnData;
+
+        return   $this->util->returnHttps('',0,'') ;
 
 
 
