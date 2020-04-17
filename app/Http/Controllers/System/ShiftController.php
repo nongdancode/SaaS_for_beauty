@@ -31,6 +31,7 @@ class ShiftController  extends Controller
     protected $requestData;
     protected $ShiftModel;
     protected $CustomerModel;
+    protected $util;
 
 
     function __construct(Request $request)
@@ -75,7 +76,7 @@ class ShiftController  extends Controller
                  $return['end_time2'] =   $shift['end'];
                  $return['code'] = 1;
                  $return['dup'] = $dupShift;
-                 return $return;
+                 return $this->util->returnHttps($return,1,'duplicate time of shift');
 
              }
              if($date_start1 != $date_end1){
@@ -90,7 +91,7 @@ class ShiftController  extends Controller
                  $return['code'] = 1;
                  $return['dup'] = $dupShift;
 
-                 return $return;
+                 return $this->util->returnHttps($return,1,'time of a shift must in a day');
              }
              else{
                  $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
@@ -108,9 +109,9 @@ class ShiftController  extends Controller
 //                 return $return;
              }
          }
-                 $return['code'] = 0;
 
-                 return $return;
+
+                 return $this->util->returnHttps($return,0,'');
     }
 
     function listShiftForEmployee(Request $request)
@@ -122,11 +123,6 @@ class ShiftController  extends Controller
 //        exit();
         for($i = 0 ;$i< sizeof($listShift);$i++){
             $serviceInfo = $this->staffServices->getservicesByStaff($this->VendorId,$employeeId);
-
-
-
-
-
 
             $listShift[$i]['start'] = strtotime($listShift[$i]['start']);
             $listShift[$i]['end'] = strtotime($listShift[$i]['end']);
@@ -140,7 +136,7 @@ class ShiftController  extends Controller
 
         }
 
-        return $listShift;
+        return $this->util->returnHttps($listShift,0,'');
 
     }
 
@@ -192,7 +188,7 @@ class ShiftController  extends Controller
         }
 
 
-        return $booking;
+        return $this->util->returnHttps($booking,0,'');
 
     }
 
@@ -218,7 +214,7 @@ class ShiftController  extends Controller
         }
 
 
-        return $InfoShift;
+        return $this->util->returnHttps($InfoShift,0,'');
 
     }
 
@@ -233,7 +229,7 @@ class ShiftController  extends Controller
 
         $return['code'] = 0;
 
-        return $return;
+        return $this->util->returnHttps('',0,'');
 
 
 

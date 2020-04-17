@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\System;
 
+use App\Lib\MyUtils;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,8 +19,10 @@ use Intervention\Image\ImageManager;
 class UploadController extends Controller
 {
  protected $UploadImage;
+ protected  $util;
     function __construct(Request $request)
     {
+        $this->util = new MyUtils();
         $this->dataRequest =$request->all();
         $this->updateImage = New ImageManager();
         date_default_timezone_set('America/Chicago');
@@ -51,9 +54,9 @@ class UploadController extends Controller
             $name = time() . $file->getClientOriginalName();
             $filePath = $type2 . $name;
             $da = Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
-            $return['code']= 0 ;
+//            $return['code']= 0 ;
                 $return['data'] = Storage::disk('s3')->url($filePath);
-            return $return;
+            return $this->util->returnHttps($return,0,'');
         }
     }
 

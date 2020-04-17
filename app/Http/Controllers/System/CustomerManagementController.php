@@ -50,7 +50,7 @@ class CustomerManagementController extends Controller
             }
         }
 
-        return $data;
+        return $this->util->returnHttps($data ,0,'');
 
     }
 

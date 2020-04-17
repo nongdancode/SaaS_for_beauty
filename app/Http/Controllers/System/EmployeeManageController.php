@@ -22,6 +22,7 @@ class EmployeeManageController extends Controller
     protected $UserModel;
     protected $ServiceModel;
     protected $SalaryDefineModel;
+    protected $util;
     function __construct(Request $request)
     {
 
@@ -41,13 +42,13 @@ class EmployeeManageController extends Controller
   function showCommissionTypeOfStaff(){
        $data =  $this->salaryDefine->listCommissionForStaff();
 
-        return $data;
+        return $this->util->returnHttps($data,0,'');
   }
 
   function showPaymentTypeOfStaff(){
       $data =  $this->salaryDefine->listPaymentTypleForStaff();
 
-      return $data;
+      return $this->util->returnHttps($data,0,'');
   }
 
 
@@ -81,7 +82,7 @@ class EmployeeManageController extends Controller
             }
         }
 
-        return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
     function getEmployeeForFakerNHOLAPHAIDELETECAIDOQUYNAY(){
@@ -89,7 +90,7 @@ class EmployeeManageController extends Controller
         for($i = 0 ; $i<sizeof($data);$i++){
             $data[$i]['password'] = '123123@';
         }
-        return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
 
@@ -100,8 +101,8 @@ class EmployeeManageController extends Controller
          $this->salaryDefine->addEmployeeSalaryDefine($this->VendorId,$userAddId,$employeeFields['payment_type'],
             $employeeFields['commission_type'],$employeeFields['base_salary']);
 
-        $return['code'] = 0;
-        return $return;
+//        $return['code'] = 0;
+        return $this->util->returnHttps('',0,'');
 
     }
 
@@ -111,15 +112,16 @@ class EmployeeManageController extends Controller
             $field['password'],$field['phone_number'],$field['social_sn'],$this->VendorId,$field['id']);
         $this->salaryDefine->editEmployeeSalaryDefine($this->VendorId,$field['id'],$field['payment_type'],
             $field['commission_type'],$field['base_salary']);
-        $return['code'] = 0;
-        return $return;
+//        $return['code'] = 0;
+        return $this->util->returnHttps('',0,'');
     }
 
     function deleteEmployee(Request $request){
        $id  = $request->id;
        $this->UserModel->deleteEmployee($this->VendorId,$id);
-        $return['code'] = 0;
-        return $return;
+//        $return['code'] = 0;
+        return $this->util->returnHttps('',0,'');
+
 
     }
 

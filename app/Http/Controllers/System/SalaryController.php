@@ -77,6 +77,6 @@ class SalaryController
 
 
         }
-        return $StaffSalarys;
+        return $this->util->returnHttps($StaffSalarys,0,'');
     }
 }

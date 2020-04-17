@@ -52,7 +52,7 @@ class ServiceManageController  extends Controller
 
     function getAllServicesByVendor(){
         $data = $this->ServiceModel->getAllServicesByVendor($this->VendorId);
-        return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
     function addServices(Request $request){
@@ -65,6 +65,7 @@ class ServiceManageController  extends Controller
         for($i=0 ; $i< sizeof($UserFollow);$i++){
             $this->ServiceModel->addEmployeeForServies($this->VendorId, $ser_id,$UserFollow[$i]);
         }
+        return $this->util->returnHttps('',0,'');
     }
 
     function getAllServicesByVendorForCrud(){
@@ -90,7 +91,7 @@ class ServiceManageController  extends Controller
         }
 
 
-        return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
     function  addServiceForCrud(Request $request){
@@ -105,6 +106,7 @@ class ServiceManageController  extends Controller
         foreach($serviveField['groupIds'] as $group){
           $this->GroupService->assignGroupService($this->VendorId,$serviceAddId,$group);
         }
+        return $this->util->returnHttps('',0,'');
 
     }
 
@@ -205,14 +207,14 @@ class ServiceManageController  extends Controller
             $fields['stepping'],
         $fields['img']);
 
-        $dataReturn['code'] = 0;
-        return $dataReturn;
+//        $dataReturn['code'] = 0;
+        return $this->util->returnHttps('',0,'');
     }
 
     function deleteServiceForCrud(Request $request){
         $id = $request->id;
         $this->ServiceModel->deleteService($this->VendorId,$id);
-
+        return $this->util->returnHttps('',0,'');
     }
 
 

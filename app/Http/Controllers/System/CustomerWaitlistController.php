@@ -79,7 +79,6 @@ class CustomerWaitlistController extends Controller
          //info vendor
          $invoiceInfo['id'] =rand(10,100000);
          $invoiceInfo['tax'] = $this->Tax;
-
          $aboutInfo['companyName']='The lash supply';
          $aboutInfo['phone'] = '8327744593';
          $address['streetAddress'] = '250 Bellard';
@@ -129,7 +128,7 @@ class CustomerWaitlistController extends Controller
          }
      }
 
-     return  $returnData;
+     return  $this->util->returnHttps($returnData,0,'');
 
     }
 
@@ -168,18 +167,18 @@ class CustomerWaitlistController extends Controller
             }
 
 //            $this->ScheduleTask->confirmBooking($this->VendorId,$cusId2,$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1);
-            $response['code'] = 0;
+
             $response['start_time'] = $time_start1;
             $response['date'] = $date_start1;
             $response['end_time'] = $time_end1;
-            return $response;
+            return  $this->util->returnHttps($response,0,'');
         }
         else{
             $response['start_time'] = $time_start1;
             $response['date'] = $date_start1;
             $response['end_time'] = $time_end1;
-            $response['code'] = 1;
-            return $response;
+
+            return  $this->util->returnHttps($response,1,'duplicate time');
         }
 
     }
@@ -209,9 +208,9 @@ class CustomerWaitlistController extends Controller
         $this->InternalTransaction->saveTransactionForCheckout($this->VendorId,$billInfo['id'],
             $billInfo['invoice']['id'],$totalDiscount,'','',$billInfo['paymentType'],'summary_bill',$billInfo['note'],$total);
 //        $this->InternalTransaction->saveTransactionForCheckout($this->VendorId,$billInfo['id'],$billInfo['invoice']['id'],)
-        $return['code'] = 0;
+//        $return['code'] = 0;
 
-       return $return;
+       return $this->util->returnHttps('',0,'');
     }
 
 }
