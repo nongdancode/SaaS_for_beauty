@@ -28,6 +28,7 @@ class ScheduleTaskController extends Controller
     protected $bookingTurn;
     protected $CurrentSchedule;
     protected $requestData;
+    protected $util;
 
 
     function __construct(Request $request)
@@ -47,7 +48,7 @@ class ScheduleTaskController extends Controller
 
     function getStafffForSchdedule(){
         $data = $this->Staff->getStaffByVendor($this->VendorId);
-        return $data;
+        return $this->util->returnHttps($data,0,'');
     }
 
 
