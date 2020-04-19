@@ -55,8 +55,8 @@ class UploadController extends Controller
             $filePath = $type2 . $name;
             $da = Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
 //            $return['code']= 0 ;
-                $return['data'] = Storage::disk('s3')->url($filePath);
-            return $this->util->returnHttps($return,0,'');
+                $data = Storage::disk('s3')->url($filePath);
+            return $this->util->returnHttps($data,0,'');
         }
     }
 
