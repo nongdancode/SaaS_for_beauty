@@ -90,7 +90,9 @@ class AppointmentController extends Controller
         $data = $this->GroupService->listServiceGroup($this->VendorId);
 
 
-        return $this->util->returnHttps($data,0,'');
+//        return $this->util->returnHttps($data,0,'');
+        return $data;
+
 
     }
 
@@ -114,8 +116,8 @@ class AppointmentController extends Controller
            }
 
         }
-//        return $this->util->returnHttps($data,0,'');
-        return $data;
+        return $this->util->returnHttps($data,0,'');
+//        return $data;
     }
 
 
