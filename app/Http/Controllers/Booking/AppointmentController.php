@@ -81,7 +81,7 @@ class AppointmentController extends Controller
            }
         }
 
-        return $this->util->returnHttps($data,'0','');
+        return $this->util->returnHttps($data,0,'');
 
     }
 
