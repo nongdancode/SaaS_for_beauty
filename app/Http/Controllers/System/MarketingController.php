@@ -41,7 +41,7 @@ class MarketingController extends Controller
 
     function flectCustomerForMarketing()
     {
-        $cus1 = $this->customerModel->getCustomerByDemand(400,$this->VendorId);
+        $cus1 = $this->customerModel->getCustomerByDemand(1000,$this->VendorId);
 
         return $this->util->returnHttps( $cus1,0,'');
 
