@@ -81,9 +81,9 @@ class AppointmentController extends Controller
            }
         }
 
-//        return $this->util->returnHttps($data,0,'');
+        return $this->util->returnHttps($data,0,'');
 
-return $data;
+
     }
 
     function listGroupService(){
@@ -175,7 +175,7 @@ return $data;
             return $this->util->returnHttps($data,0,'');
         }
         else{
-            return $this->util->returnHttps('',1,'your service is busy');
+            return $this->util->returnHttps('',1,'your service is not avaiable , please pick again');
 //            $servicesReturn2['code']=1;
 //            return \response($servicesReturn2);
 //            return \response(  "error");
