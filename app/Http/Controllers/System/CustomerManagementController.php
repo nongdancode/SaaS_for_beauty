@@ -22,6 +22,7 @@ class CustomerManagementController extends Controller
 
     protected $vendorId = 1;
     protected $customerModel;
+    protected $util;
 
 
 
