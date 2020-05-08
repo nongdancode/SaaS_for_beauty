@@ -27,9 +27,10 @@ class GroupService extends MyModel
 
   }
 
-  function editGroupService($vendor,$name){
+  function editGroupService($vendor,$id,$name){
       $data = DB::table('groupservice')
           ->where('vendor',$vendor)
+          ->where('id',$id)
           ->update(['name'=>$name]);
 
       return $data;

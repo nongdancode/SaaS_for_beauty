@@ -50,7 +50,7 @@ class GroupServiceController extends Controller
     }
     function editGroupService(Request $request){
         $GroupServiceField = $request->all();
-        $this->GroupService->editGroupService($this->VendorID,$GroupServiceField['name']);
+        $this->GroupService->editGroupService($this->VendorID,$GroupServiceField['id'],$GroupServiceField['name']);
 //        $return['code'] = 0;
         return $this->util->returnHttps('',0,'');
     }
