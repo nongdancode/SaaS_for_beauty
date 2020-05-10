@@ -236,6 +236,9 @@ class ShiftController  extends Controller
 
     }
 
+    function deleteWholeShiftInMonth(){
+      }
+
 
 
 
