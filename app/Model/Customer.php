@@ -74,9 +74,9 @@ class Customer extends MyModel
 
     }
 
-    function addCustomerCheckin($vendorId,$phone_number,$name){
+    function addCustomerCheckin($vendorId,$phone_number,$name,$dob){
         $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number,'vendor'=>$vendorId],
-            ['name'=> $name ,'last_visit'=>DB::raw('NOW()')]
+            ['name'=> $name ,'last_visit'=>DB::raw('NOW()'),'birthday'=>$dob]
         );
 
     }

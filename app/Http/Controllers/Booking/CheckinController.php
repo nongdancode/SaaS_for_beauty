@@ -31,6 +31,7 @@ class CheckinController extends Controller
     protected $Customer;
     protected $requestCheckin;
     protected $ScheduleTaskModel;
+    protected $util;
 
 
 
@@ -50,12 +51,23 @@ class CheckinController extends Controller
         $cusName = $dataCus['name'];
         $cusPhone = $dataCus['phone'];
 
-        $this->Customer->addCustomerCheckin($this->VendorId,$cusPhone,$cusName);
+        if(isset($dataCus['birthday'])){
+            $cusDob = $dataCus['birthday'];
+        }else{
+            $cusDob  = '';
+        }
 
+        $this->Customer->addCustomerCheckin($this->VendorId,$cusPhone,$cusName,$cusDob);
         $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
         $CustomerDataOFBooking = $this->ScheduleTaskModel->getCusBooking($this->VendorId,$CustomerData[0]['id']);
         $CustomerId = $CustomerData[0]['id'];
-        $visit_count = $CustomerData[0]['visit_count']+1;
+        if($cusDob  != ''){
+            $visit_count = $CustomerData[0]['visit_count']+1;
+        }
+        else{
+            $visit_count = 0;
+        }
+
         $this->Customer->updateVisitCountForCustomer($this->VendorId,$CustomerId,$visit_count);
 
         if(sizeof($CustomerDataOFBooking) >0){
@@ -67,9 +79,7 @@ class CheckinController extends Controller
         }
 
 
-
-
-        return   $this->util->returnHttps('',0,'') ;
+        return   $this->util->returnHttps($CustomerData,0,'') ;
 
 
 

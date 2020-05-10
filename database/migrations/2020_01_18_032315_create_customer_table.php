@@ -21,7 +21,7 @@ class CreateCustomerTable extends Migration
 
             $table->dateTime('last_visit')->nullable();
             $table->double('point')->nullable();
-            $table->date('birthday')->nullable();
+            $table->string('birthday')->nullable();
             $table->string('level')->nullable();
             $table->longText('image')->nullable();
             $table->string('email')->nullable();
