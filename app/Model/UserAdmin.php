@@ -188,13 +188,13 @@ class UserAdmin extends  MyModel
         return $this->decodeStd($queryState);
     }
 
-    function editEmployee($email,$img,$password,$phone_number,$social_number,$vendor,$id)
+    function editEmployee($name,$email,$img,$password,$phone_number,$social_number,$vendor,$id)
     {
         $queryState = DB::table('user')
 
             ->where('vendor',$vendor)
             ->where('id',$id)
-            ->update(['email'=>$email,'image'=>$img,'password'=>$password,'phone_number'=>$phone_number,'ssn'=>$social_number]);
+            ->update(['name'=>$name,'email'=>$email,'image'=>$img,'password'=>$password,'phone_number'=>$phone_number,'ssn'=>$social_number]);
 
         return $queryState;
 

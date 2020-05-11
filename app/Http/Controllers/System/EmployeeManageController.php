@@ -108,8 +108,9 @@ class EmployeeManageController extends Controller
 
     function editEmployee(Request $request){
         $field = $request->all();
-        $this->UserModel->editEmployee( $field['email'],$field['image'],
+        $this->UserModel->editEmployee($field['name'], $field['email'],$field['image'],
             $field['password'],$field['phone_number'],$field['social_sn'],$this->VendorId,$field['id']);
+
         $this->salaryDefine->editEmployeeSalaryDefine($this->VendorId,$field['id'],$field['payment_type'],
             $field['commission_type'],$field['base_salary']);
 //        $return['code'] = 0;
