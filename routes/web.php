@@ -116,8 +116,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::put('api/admin/groups', 'System\GroupServiceController@editGroupService')  ;
     Route::delete('api/admin/groups/{id}', 'System\GroupServiceController@deleteGroupService')  ;
 
-    //employee
 
+    //employee
     Route::post('api/admin/add-services', 'System\EmployeeManageController@addServices')  ;
     Route::get('api/admin/user', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
 
@@ -127,17 +127,14 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('api/admin/checkout/confirm', 'System\CustomerWaitlistController@confirmCheckoutWaitlist');
     Route::post('api/admin/checkin/confirm', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');
 
+
     //transaction
     Route::get('/api/admin/transaction', 'System\PaymentController@getBillTransactionByVendor');
     Route::post('api/admin/sms-bill', 'System\PaymentController@sendBillSMS');
 
 
-
-
 //upload image
     Route::any('api/admin/upload-image', 'System\UploadController@updateImage');
-
-
 
 
 //shift api
