@@ -166,7 +166,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('api/booking/configs', 'System\ConfigVendorController@setVendorConfig');
 
 
-
+//       api/admin/send-billsms
 
 
     Route::any('api/admin/dendivsfaker', 'System\EmployeeManageController@getEmployeeForFakerNHOLAPHAIDELETECAIDOQUYNAY');
