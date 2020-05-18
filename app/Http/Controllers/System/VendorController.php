@@ -29,5 +29,14 @@ class VendorController
 
     }
 
+    function updateVendorInformation(){
+
+    }
+    function getVendorInfo(){
+        
+    }
+
 }
+
+
 //8326437502 anh nguyen
