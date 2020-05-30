@@ -109,7 +109,7 @@ class AppointmentController extends Controller
 
 
            $shifts =  $this->ShiftModel->listShiftForEmployee($this->VendorId,$data[$i]['id']);
-          
+
            for($a= 0;$a <sizeof($shifts);$a ++){
                $data[$i]['available'][$a] = [];
                $data[$i]['available'][$a]['start'] =  strtotime($shifts[$a]['start']);
@@ -118,6 +118,8 @@ class AppointmentController extends Controller
 
         }
         return $this->util->returnHttps($data,0,'');
+//        dd($data);
+//        exit();
 //        return $data;
     }
 
