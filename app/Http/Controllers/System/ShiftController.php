@@ -54,6 +54,7 @@ class ShiftController  extends Controller
 
     function addShiftForEmployee(Request $request){
          $info = $request->all();
+         $return = [];
 
          foreach($info['date'] as $shift){
 
@@ -64,7 +65,7 @@ class ShiftController  extends Controller
              $time_end1 = date('H:i:s', $shift['end']);
 
              $dupShift = $this->ShiftModel->returnDupShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
-             $return = [];
+
 
              if(sizeof($dupShift) > 0){
                  $return['dup'] = $dupShift;
