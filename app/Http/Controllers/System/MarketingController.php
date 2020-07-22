@@ -94,6 +94,46 @@ class MarketingController extends Controller
         return $this->util->returnHttps( '',0,'');
     }
 
+    function bulkCustomerData(Request $request){
+        $data = $request->all();
+        $flagMessage = "Wrong format , please review your format below
+        1: name:
+        2: phone_number: 10 number only ( ex:8327744593)";
+
+        $flagMessage2 = 'cannot exceed 200 records in one time';
+        $flagCode =  true;
+        $cusModel = $this->customerModel;
+        $listKey =  array_keys($data[0]);
+        if($listKey[0]!='name'|| $listKey[1]!='phone_number' ){
+            $flagCode = false;
+            return $this->util->returnHttps( '',1,$flagMessage);
+        }
+
+        $dataError ='';
+        if(sizeof($data) >200){
+            $flagCode = false;
+            return $this->util->returnHttps( '',1,$flagMessage2);
+        }
+
+        if($flagCode == true){
+            for($i = 0; $i< sizeof($data);$i++){
+
+                if($data[$i]['name'] != null && $data[$i]['phone_number'] !=null &&preg_match('~^\d{10}$~', $data[$i]['phone_number']) ){
+                    $cusModel->addCustomerBulk($this->VendorId,$data[$i]['name'],$data[$i]['phone_number']);
+                }else{
+                    $st = json_encode($data[$i]);
+                    return $this->util->returnHttps( $data[$i],1,"record " . $st ." has wrong format");
+                }
+            }
+        }
+
+        if($flagCode == true){
+            return $this->util->returnHttps( '',0,'');
+        }else{
+            return $this->util->returnHttps( $dataError,1,$flagMessage);
+        }
+    }
+
 
 
 

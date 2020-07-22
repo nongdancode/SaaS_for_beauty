@@ -159,6 +159,14 @@ class Customer extends MyModel
         return $this->decodeStd($data);
     }
 
+    function addCustomerBulk($vendor,$name,$phone){
+        $data = DB::table('customer')
+            ->updateOrInsert(['phone_number' => $phone,'vendor'=>$vendor],['name'=>$name]);
+
+        return $data;
+
+    }
+
 
 
 }

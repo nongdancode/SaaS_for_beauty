@@ -287,9 +287,9 @@ class AppointmentController extends Controller
 
             $messagesForcus = "Welcome " . $customer_name  .  ".You book success with us:". '  ' .$messagesForcus  ;
             $this->Twillo->SendMessageByNumber( $messagesForcus, $customer_phone);
-            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'2814777810');
-            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
+//            $this->Twillo->SendMessageByNumber( $messagesForStaff, $staffphone);
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'2814777810');
+//            $this->Twillo->SendMessageByNumber( $messagesForVendor,'8327744593');
             $response['code'] = 0;
             return $this->util->returnHttps($data,0,'');
 
