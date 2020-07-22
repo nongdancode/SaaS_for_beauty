@@ -76,8 +76,9 @@ Route::group(['middleware' => ['web']], function () {
 
 
 
-
+    //customer api
     Route::get('/api/admin/marketing', 'System\MarketingController@flectCustomerForMarketing')  ;
+    Route::post('/api/admin/customers/bulk', 'System\MarketingController@bulkCustomerData')  ;
     Route::post('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
     Route::post('/api/admin/mms_sending', 'System\MarketingController@sendMMSForMkt');
     Route::get('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');

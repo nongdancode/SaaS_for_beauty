@@ -24,8 +24,6 @@ class ConfigVendorController extends Controller
     {
         $contentBanner = $this->ConfigModel->getClientBannerConfig($this->Vendor_id);
         return $this->util->returnHttps($contentBanner,0,'') ;
-
-
     }
 
   function getVendorConfig(){

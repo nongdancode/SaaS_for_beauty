@@ -213,4 +213,6 @@ class CustomerWaitlistController extends Controller
        return $this->util->returnHttps('',0,'');
     }
 
+    
+
 }
