@@ -72,6 +72,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get(' /api/admin/shifts/{id}/tasks', 'System\ShiftController@listShiftDetail');
     Route::get(' /api/admin/shifts', 'System\ShiftController@showFullCalendar');
     Route::delete(' /api/admin/shifts/{shiftid}', 'System\ShiftController@deleteShift');
+    Route::delete(' api/admin/shifts/delete-entire', 'System\ShiftController@deleteWholeShiftInMonth');
 
 
 

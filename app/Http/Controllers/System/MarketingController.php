@@ -108,25 +108,21 @@ class MarketingController extends Controller
             $flagCode = false;
             return $this->util->returnHttps( '',1,$flagMessage);
         }
-
         $dataError ='';
         if(sizeof($data) >200){
             $flagCode = false;
             return $this->util->returnHttps( '',1,$flagMessage2);
         }
-
         if($flagCode == true){
             for($i = 0; $i< sizeof($data);$i++){
-
                 if($data[$i]['name'] != null && $data[$i]['phone_number'] !=null &&preg_match('~^\d{10}$~', $data[$i]['phone_number']) ){
                     $cusModel->addCustomerBulk($this->VendorId,$data[$i]['name'],$data[$i]['phone_number']);
                 }else{
                     $st = json_encode($data[$i]);
-                    return $this->util->returnHttps( $data[$i],1,"record " . $st ." has wrong format");
+                    return $this->util->returnHttps( $data[$i],1,"record  " . $st ."  has wrong format");
                 }
             }
         }
-
         if($flagCode == true){
             return $this->util->returnHttps( '',0,'');
         }else{

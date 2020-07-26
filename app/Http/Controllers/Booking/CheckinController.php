@@ -28,10 +28,11 @@ class CheckinController extends Controller
 
     protected $UserModel ;
     protected $VendorId = 1 ;
-    protected $Customer;
     protected $requestCheckin;
     protected $ScheduleTaskModel;
     protected $util;
+    protected $Customer;
+
 
 
 
@@ -51,35 +52,54 @@ class CheckinController extends Controller
         $cusName = $dataCus['name'];
         $cusPhone = $dataCus['phone'];
 
-        if(isset($dataCus['birthday'])){
-            $cusDob = $dataCus['birthday'];
-        }else{
-            $cusDob  = '';
-        }
 
-        $this->Customer->addCustomerCheckin($this->VendorId,$cusPhone,$cusName,$cusDob);
+
         $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
-        $CustomerDataOFBooking = $this->ScheduleTaskModel->getCusBooking($this->VendorId,$CustomerData[0]['id']);
-        $CustomerId = $CustomerData[0]['id'];
-        if($cusDob  != ''){
+
+        if(sizeof($CustomerData) > 0 && $CustomerData[0]['birthday'] != null ){
+            $this->Customer->updateNameCustomer($this->VendorId,$cusPhone,$cusName);
+            $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
+            $CustomerDataOFBooking = $this->ScheduleTaskModel->getCusBooking($this->VendorId,$CustomerData[0]['id']);
+            $CustomerId = $CustomerData[0]['id'];
             $visit_count = $CustomerData[0]['visit_count']+1;
-        }
-        else{
-            $visit_count = 0;
-        }
-
-        $this->Customer->updateVisitCountForCustomer($this->VendorId,$CustomerId,$visit_count);
-
-        if(sizeof($CustomerDataOFBooking) >0){
-            foreach($CustomerDataOFBooking as $cus){
-              $this->ScheduleTaskModel->updateCusBooking($this->VendorId,$cus['cus_id']);
+            $this->Customer->updateVisitCountForCustomer($this->VendorId,$CustomerId,$visit_count);
+            if(sizeof($CustomerDataOFBooking) >0){
+                foreach($CustomerDataOFBooking as $cus){
+                    $this->ScheduleTaskModel->updateCusBooking($this->VendorId,$cus['cus_id']);
+                }
+            }else{
+                $this->ScheduleTaskModel->addCusCheckin($this->VendorId,$CustomerId);
             }
+            return   $this->util->returnHttps($CustomerData,0,'') ;
+        }
+        if($dataCus['birthday']!= null){
+            $cusDob = date('yy-m-d', $dataCus['birthday']);
         }else{
-            $this->ScheduleTaskModel->addCusCheckin($this->VendorId,$CustomerId);
+            $cusDob = null;
         }
 
+        if(sizeof($CustomerData) == 0 || $CustomerData[0]['birthday'] == null){
 
-        return   $this->util->returnHttps($CustomerData,0,'') ;
+            $this->Customer->addCustomerCheckin($this->VendorId,$cusPhone,$cusName,$cusDob);
+            $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
+            $CustomerDataOFBooking = $this->ScheduleTaskModel->getCusBooking($this->VendorId,$CustomerData[0]['id']);
+            $CustomerId = $CustomerData[0]['id'];
+            if($cusDob  != ''){
+                $visit_count = $CustomerData[0]['visit_count']+1;
+            }
+            else{
+                $visit_count = 0;
+            }
+            $this->Customer->updateVisitCountForCustomer($this->VendorId,$CustomerId,$visit_count);
+            if(sizeof($CustomerDataOFBooking) >0){
+                foreach($CustomerDataOFBooking as $cus){
+                    $this->ScheduleTaskModel->updateCusBooking($this->VendorId,$cus['cus_id']);
+                }
+            }else{
+                $this->ScheduleTaskModel->addCusCheckin($this->VendorId,$CustomerId);
+            }
+            return   $this->util->returnHttps($CustomerData,0,'') ;
+        }
 
 
 

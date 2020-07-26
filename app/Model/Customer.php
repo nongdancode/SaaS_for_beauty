@@ -80,6 +80,11 @@ class Customer extends MyModel
         );
 
     }
+    function updateNameCustomer($vendorId,$phone_number,$name){
+        $data = DB::table('customer')->updateOrInsert(['phone_number' => $phone_number,'vendor'=>$vendorId],
+            ['name'=> $name ]
+        );
+    }
 
     function getCustomerForWaitlist($vendor){
 
