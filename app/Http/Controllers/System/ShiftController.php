@@ -205,7 +205,7 @@ class ShiftController  extends Controller
             $InfoShift[$i]['start'] = strtotime($InfoShift[$i]['start']);
             $InfoShift[$i]['end'] = strtotime($InfoShift[$i]['end']);
 
-            $date_start1 = date('yy-m-d', $InfoShift[$i]['start']);;
+            $date_start1 = date('yy-m-d', $InfoShift[$i]['start']);
             $time_start1 = date('H:i:s', $InfoShift[$i]['start']);
             $date_end1 = date('yy-m-d',$InfoShift[$i]['end']);
             $time_end1 = date('H:i:s', $InfoShift[$i]['end']);
@@ -238,6 +238,7 @@ class ShiftController  extends Controller
     }
 
     function deleteWholeShiftInMonth(){
+
       }
 
 

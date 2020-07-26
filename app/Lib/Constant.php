@@ -25,9 +25,6 @@ class Constant
 
 
     //special keys
-    public static $ALL_GAME = "all-game";
-    public static $ALL_GROUP = "all-group";
-    public static $ALL_REPORT = "all-report";
 
 }
 
