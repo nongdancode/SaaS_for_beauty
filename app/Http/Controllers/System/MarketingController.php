@@ -15,6 +15,8 @@ use App\Model\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Twilio\Exceptions\ConfigurationException;
+use Twilio\Exceptions\TwilioException;
 
 class MarketingController extends Controller
 {
@@ -54,13 +56,18 @@ class MarketingController extends Controller
         for($i = 0 ; $i < sizeof($data['customerIds']);$i++){
           $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],$this->VendorId);
 
-          $this->TwilloSMS->SendMessageByNumber($data['message'],$cus_phone[0]['phone_number']);
-//
-//          print($cus_phone2[0]['phone_number']);
-//            exit();
+            try {
+                $this->TwilloSMS->SendMessageByNumber($data['message'], $cus_phone[0]['phone_number']);
+                return $this->util->returnHttps( '',0,'');
+            } catch (ConfigurationException $e) {
+                return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
+            } catch (TwilioException $e) {
+                return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
+            }
+
         }
 //        $return['code'] = 0;
-        return $this->util->returnHttps( '',0,'');
+
 
 
 //          return $this->TwilloSMS->SendMessageByList($data['message'],$nums);
@@ -74,14 +81,21 @@ class MarketingController extends Controller
           $message = $data['message'];
 
           $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],$this->VendorId);
-          $this->TwilloSMS->SendMMSbyNumber($message,$cus_phone[0]['phone_number'],$media);
+          try {
+              $this->TwilloSMS->SendMMSbyNumber($message, $cus_phone[0]['phone_number'], $media);
+              return $this->util->returnHttps( '',0,'');
+          } catch (ConfigurationException $e) {
+              return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
+          } catch (TwilioException $e) {
+              return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
+          }
 
 
-    }
+      }
 
 //        $return['code'] = 0;
 //        return $return;
-        return $this->util->returnHttps( '',0,'');
+
     }
 
 

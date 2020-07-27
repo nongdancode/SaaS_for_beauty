@@ -97,12 +97,11 @@ Route::group(['middleware' => ['web']], function () {
 
     //employee
 
-    Route::get('api/admin/user-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff')  ;
-
-    Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor')  ;
-    Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee')  ;
-    Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee')  ;
-    Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee')  ;
+    Route::get('api/admin/user-listpayment', 'System\EmployeeManageController@showCommissionTypeOfStaff') ;
+    Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor');
+    Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee') ;
+    Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
+    Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;
 
 
 
@@ -128,7 +127,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
     Route::post('api/admin/checkout/confirm', 'System\CustomerWaitlistController@confirmCheckoutWaitlist');
     Route::post('api/admin/checkin/confirm', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');
-
+    Route::post('api/admin/checkout/onlinecard-payment', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');
 
     //transaction
     Route::get('/api/admin/transaction', 'System\PaymentController@getBillTransactionByVendor');
