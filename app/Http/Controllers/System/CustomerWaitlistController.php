@@ -139,7 +139,6 @@ class CustomerWaitlistController extends Controller
 //        dd($billInfo);
 //        exit();
         $cusInfo = $this->customerModel->getCusByPhoneVendor($this->VendorId,$billInfo['phone']);
-
         foreach($billInfo['services'] as $service){
 
             $user_name = $this->userModel->getUserNameInfoById($service['employeeId'],$this->VendorId);
@@ -213,6 +212,6 @@ class CustomerWaitlistController extends Controller
        return $this->util->returnHttps('',0,'');
     }
 
-    
+
 
 }

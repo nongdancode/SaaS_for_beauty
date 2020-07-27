@@ -51,11 +51,7 @@ class CheckinController extends Controller
         $dataCus = $this->requestCheckin;
         $cusName = $dataCus['name'];
         $cusPhone = $dataCus['phone'];
-
-
-
         $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
-
         if(sizeof($CustomerData) > 0 && $CustomerData[0]['birthday'] != null ){
             $this->Customer->updateNameCustomer($this->VendorId,$cusPhone,$cusName);
             $CustomerData = $this->Customer->getCusByPhoneVendor($this->VendorId,$cusPhone);
@@ -101,8 +97,8 @@ class CheckinController extends Controller
             return   $this->util->returnHttps($CustomerData,0,'') ;
         }
 
-
-
   }
+
+
 
 }
