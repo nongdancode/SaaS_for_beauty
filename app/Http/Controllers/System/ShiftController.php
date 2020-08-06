@@ -82,7 +82,6 @@ class ShiftController  extends Controller
              }
              if($date_start1 != $date_end1){
                  $return['code'] = 1;
-
                  $return['start'] =  $date_start1;
                  $return['end_end'] = $date_end1;
                  $return['start2'] =   $shift['start'];
@@ -195,8 +194,7 @@ class ShiftController  extends Controller
 
     function showFullCalendar(){
         $InfoShift =  $this->ShiftModel->listShiftForAllEmployee($this->VendorId);
-//        dd( $InfoShift);
-//        exit();
+
         for($i = 0 ;$i< sizeof($InfoShift);$i++){
             $employee = $this->Staff->getInforStaff($this->VendorId,$InfoShift[$i]['employee_id']);
             $InfoShift[$i]['employee_id'] = (int)$InfoShift[$i]['employee_id'] ;
@@ -232,13 +230,22 @@ class ShiftController  extends Controller
 
         return $this->util->returnHttps('',0,'');
 
-
-
-
     }
 
-    function deleteWholeShiftInMonth(){
+    function deleteWholeShiftInMonth(Request $request){
+          $data  = $request->all();
+      
 
+          for($i = 0 ; $i< sizeof($data['ids']);$i++){
+              $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$data['ids'][$i]);
+              $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['employee_id'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
+              foreach ($booking  as $b){
+                  $this->ShiftModel->deleteBookingInShift($this->VendorId,$shiftInfo[0]['employee_id'],$b['schedule_id']);
+              }
+              $this->ShiftModel->deleteShift($this->VendorId,$shiftInfo[0]['employee_id'],$data['ids'][$i]);
+          }
+        $return['code'] = 0;
+        return $this->util->returnHttps('',0,'');
       }
 
 

@@ -22,4 +22,13 @@ class Vendor extends MyModel
         $queryState = DB::table($this->vendor)->where('id',$vendor)->get();
         return $this->decodeStd($queryState);
     }
+    function updateVendorInfo($vendor,$name,$address,$phone){
+        $queryState = DB::table($this->vendor)->updateOrInsert(['id'=>$vendor,],['name'=>$name,'address'=>$address,'phone_number'=>$phone]);
+        return $queryState;
+    }
+    function updateVendorFinancialInfo($tax,$vendor){
+        $queryState = DB::table($this->vendor_key)
+            ->updateOrInsert(['key_type'=>'financial_info','vendor_id'=>$vendor],['key1'=>$tax]);
+        return $queryState;
+    }
 }
