@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\System;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\System\ScheduleFunction\OpenHours;
 use App\Lib\MyUtils;
 use App\Model\BookingTurn;
 use App\Model\Customer;
@@ -32,6 +33,7 @@ class ShiftController  extends Controller
     protected $ShiftModel;
     protected $CustomerModel;
     protected $util;
+    protected $Openhour;
 
 
     function __construct(Request $request)
@@ -46,6 +48,7 @@ class ShiftController  extends Controller
         $this->requestData = $request->all();
         $this->ShiftModel = new ShiftModel();
         $this->CustomerModel= new Customer();
+        $this->Openhour= new OpenHours();
 
         date_default_timezone_set('America/Chicago');
 
@@ -55,18 +58,18 @@ class ShiftController  extends Controller
     function addShiftForEmployee(Request $request){
          $info = $request->all();
          $return = [];
-
          foreach($info['date'] as $shift){
 
              $date_start1 = date('yy-m-d', $shift['start']);;
              $time_start1 = date('H:i:s', $shift['start']);
-
              $date_end1 = date('yy-m-d', $shift['end']);
              $time_end1 = date('H:i:s', $shift['end']);
+             $checkOpenhour = $this->Openhour->validateOpenHours($shift['start'],$shift['end']);
+             if($checkOpenhour == false){
+                 return $this->util->returnHttps($return,1,  'the time  ' . $time_start1. ' and ' . $time_end1 . '   is not in Open Time Config');
+             }
 
              $dupShift = $this->ShiftModel->returnDupShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
-
-
              if(sizeof($dupShift) > 0){
                  $return['dup'] = $dupShift;
                  $return['start'] =  $date_start1;
@@ -107,11 +110,12 @@ class ShiftController  extends Controller
 //                 $return['code'] = 0;
 //
 //                 return $return;
+                 return $this->util->returnHttps($return,0,'');
              }
          }
 
 
-                 return $this->util->returnHttps($return,0,'');
+
     }
 
     function listShiftForEmployee(Request $request)
@@ -119,8 +123,7 @@ class ShiftController  extends Controller
         $employeeId = $request->employeeId;
         $listShift = $this->ShiftModel->listShiftForEmployee($this->VendorId,$employeeId);
 
-//        dd($listShift);
-//        exit();
+
         for($i = 0 ;$i< sizeof($listShift);$i++){
             $serviceInfo = $this->staffServices->getservicesByStaff($this->VendorId,$employeeId);
 
@@ -234,8 +237,6 @@ class ShiftController  extends Controller
 
     function deleteWholeShiftInMonth(Request $request){
           $data  = $request->all();
-      
-
           for($i = 0 ; $i< sizeof($data['ids']);$i++){
               $shiftInfo = $this->ShiftModel->getShiftDetailById($this->VendorId,$data['ids'][$i]);
               $booking = $this->ShiftModel->getBoookingForShift($this->VendorId, $shiftInfo[0]['employee_id'],$shiftInfo[0]['day'],$shiftInfo[0]['start_time'],$shiftInfo[0]['end_time']);
