@@ -50,12 +50,18 @@ class PaymentController extends Controller
         for($i = 0;$i< sizeof($data);$i++){
 
             $return[$i]['type'] = $data[$i]['type_transaction'];
+            if($return[$i]['type'] == 'check'  ){
+                $return[$i]['refund'] = 'active';
+            }else{
+                $return[$i]['refund'] = 'disable';
+            }
             $return[$i]['id'] = $data[$i]['id'];
             $return[$i]['invoice']['id'] = $data[$i]['invoice_number'];
             $return[$i]['created'] = strtotime($data[$i]['created_at'])*1000;
             $return[$i]['invoice']['deposit'] = $deposit;
             $return[$i]['invoice']['tax'] = $tax;
             $return[$i]['invoice']['total'] = $data[$i]['total'];
+
 
             $return[$i]['invoice']['about'] = $aboutInfo;
             $return[$i]['invoice']['about']['customer']['name'] = $data[$i]['customer_name'];
