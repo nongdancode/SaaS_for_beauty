@@ -66,9 +66,8 @@ class ShiftController  extends Controller
              $time_end1 = date('H:i:s', $shift['end']);
              $checkOpenhour = $this->Openhour->validateOpenHours($shift['start'],$shift['end']);
              if($checkOpenhour == false){
-                 return $this->util->returnHttps($return,1,  'the time  ' . $time_start1. ' and ' . $time_end1 . '   is not in Open Time Config');
+                 return $this->util->returnHttps($return,1,  'the time  ' . $time_start1. ' and ' . $time_end1 .' in day '. $date_start1.  '   is not in Open Time Config');
              }
-
              $dupShift = $this->ShiftModel->returnDupShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
              if(sizeof($dupShift) > 0){
                  $return['dup'] = $dupShift;
@@ -81,7 +80,6 @@ class ShiftController  extends Controller
                  $return['code'] = 1;
                  $return['dup'] = $dupShift;
                  return $this->util->returnHttps($return,1,'duplicate time of shift');
-
              }
              if($date_start1 != $date_end1){
                  $return['code'] = 1;
@@ -93,12 +91,10 @@ class ShiftController  extends Controller
                  $return['end_time2'] =   $shift['end'];
                  $return['code'] = 1;
                  $return['dup'] = $dupShift;
-
                  return $this->util->returnHttps($return,1,'time of a shift must in a day');
              }
              else{
                  $this->ShiftModel->addShift($date_start1,$time_start1,$time_end1,$this->VendorId,$info['employeeId']);
-
 //                 $return['start'] =  $date_start1;
 //                 $return['end_end'] = $date_end1;
 //                 $return['start2'] =   $shift['start'];
@@ -108,14 +104,11 @@ class ShiftController  extends Controller
 //                 $return['code'] = 1;
 //                 $return['dup'] = $dupShift;
 //                 $return['code'] = 0;
-//
-//                 return $return;
-                 return $this->util->returnHttps($return,0,'');
+
+
              }
          }
-
-
-
+        return $this->util->returnHttps($return,0,'');
     }
 
     function listShiftForEmployee(Request $request)

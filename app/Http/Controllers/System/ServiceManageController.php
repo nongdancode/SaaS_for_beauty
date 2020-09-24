@@ -89,8 +89,6 @@ class ServiceManageController  extends Controller
 
             }
         }
-
-
         return $this->util->returnHttps($data,0,'');
     }
 

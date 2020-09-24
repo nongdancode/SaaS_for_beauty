@@ -184,6 +184,8 @@ class CustomerWaitlistController extends Controller
 
     function confirmCheckoutWaitlist(Request $request){
         $billInfo  = $request->all();
+        dd($billInfo);
+        exit();
         $deposit = $billInfo['invoice']['deposit'];
         $totalDiscount = 0;
         $check = [];
@@ -193,7 +195,6 @@ class CustomerWaitlistController extends Controller
             if(!isset($ser['service_id'])){
                 $ser['service_id'] = '';
                 $ser['employee_id'] ='';
-
             }
             $ser['discount'] = (int) $ser['discount'];
             $totalDiscount = $totalDiscount +$ser['discount'];
@@ -210,6 +211,12 @@ class CustomerWaitlistController extends Controller
 //        $return['code'] = 0;
 
        return $this->util->returnHttps('',0,'');
+    }
+
+
+    function CheckoutByCard(Request $request){
+        $data = $request->all();
+        return  $this->util->returnHttps($data,0,'');
     }
 
 
