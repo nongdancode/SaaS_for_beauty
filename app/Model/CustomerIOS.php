@@ -12,9 +12,10 @@ class CustomerIOS  extends MyModel
         return $data;
     }
     function listIOSCustomer($vendor){
-        $data = DB::table('customer')->select('customer.name','customer.phone_number','customer.email',
-            'customer.birthday','customer.visit_count','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
+        $data = DB::table('customer')
             ->join('membercard','membercard.cus_id','=','customer.id')
+            ->select('customer.name','customer.phone_number','customer.email',
+                'customer.birthday','customer.visit_count','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
             ->where('customer.vendor','=',$vendor);
         return  $this->decodeStd($data);
     }
