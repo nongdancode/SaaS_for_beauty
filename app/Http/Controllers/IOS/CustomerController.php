@@ -22,7 +22,8 @@ class CustomerController  extends Controller
     }
   function listDataForIOS(){
       $data = $this->iosUser->listIOSCustomer($this->vendor);
-      return  response($this->util->returnHttps($data,0,''))->header('X-Total-Count',99999);
+//      return  response($this->util->returnHttps($data,0,''))->header('X-Total-Count',99999);
+      return $data;
   }
 
   function updateCusIos(Request $request){
