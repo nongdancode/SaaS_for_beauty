@@ -177,5 +177,10 @@ Route::group(['middleware' => ['web']], function () {
 
 //ios
 
-Route::get('api/ios/list_all_cus', 'IOS\CustomerController@listDataForIOS');
+Route::get('api/ios/cus', 'IOS\CustomerController@listDataForIOS');
+//Route::post('api/ios/list_all_cus', 'IOS\CustomerController@listDataForIOS');
+//Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
+//Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;
+
+
 Route::any('/test', 'Booking\AppointmentController@confirmBooking');
