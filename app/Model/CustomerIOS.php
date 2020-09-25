@@ -16,7 +16,9 @@ class CustomerIOS  extends MyModel
             ->join('membercard','membercard.cus_id','=','customer.id')
             ->select('customer.name','customer.phone_number','customer.email',
                 'customer.birthday','customer.visit_count','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
-            ->where('customer.vendor','=',$vendor);
+            ->where('customer.vendor','like',$vendor)
+            ->get();
+
         return  $this->decodeStd($data);
     }
     function assignaCardForCustomr($vendor,$cus_id,$card_number,$card_exp,$card_type,$card_issue){
