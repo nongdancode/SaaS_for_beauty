@@ -226,7 +226,7 @@ class AppointmentController extends Controller
         $code = $confirm->getMessages()->getResultCode();
 
         if ($code == 'Ok') {
-            $this->Transaction->insertTransactionByVendor
+            $TransId =  $this->Transaction->insertTransactionByVendor
             (substr($cardNumber,-5,4),'','Success',$data['payment']['cardName'],
                 $priceHard,$this->VendorId,'deposit',$customer_phone,$confirm->getRefId());
             $date2 = date('m/d/Y h:i:s a', time());
@@ -274,10 +274,7 @@ class AppointmentController extends Controller
                 $time_start1 = date('H:i:s',$data['booking']['services'][$i]['timeRange']['start']/1000);
                 $time_end1 = date('H:i:s', $data['booking']['services'][$i]['timeRange']['end']/1000);
 
-
-                $this->scheduleTask->confirmBooking($this->VendorId,$cusId2,$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1);
-
-
+                $this->scheduleTask->confirmBooking($this->VendorId,$cusId2,$service_name[0]['id'],$user_name[0]['id'],$time_start1,$time_end1,$date_start1,$TransId);
                 $messagesForcus = $messagesForcus . "  " . $s . ' with ' . $s2 . "  " . ' at ' . $time2;
                 $messagesForStaff =      $messagesForStaff ." You have booking "  . "  at " . $time2  . " for service ". $s ;
                 $messagesForVendor = $messagesForVendor . "  " . $s2 . " have booking "    . "  at: ". $time2 . " for service ". $s ;

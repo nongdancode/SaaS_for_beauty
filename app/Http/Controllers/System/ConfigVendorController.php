@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 class ConfigVendorController extends Controller
 {
     protected $util;
-    protected $ConfigModel;
     protected $Vendor_id = 1;
+    protected $ConfigModel;
     protected $Vendor;
 
     function __construct(Request $request){

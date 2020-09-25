@@ -115,18 +115,20 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('api/admin/waitlist', 'System\CustomerWaitlistController@getWaitlist');
     Route::post('api/admin/checkout/confirm', 'System\CustomerWaitlistController@confirmCheckoutWaitlist');
     Route::post('api/admin/checkin/confirm', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');
-    Route::post('api/admin/checkout/onlinecard-payment', 'System\CustomerWaitlistController@CheckinToCheckoutWaitlist');
+    Route::post('api/admin/checkout/onlinecard-payment', 'System\CustomerWaitlistController@CheckoutByCard');
+
+    //booking-management
+
+
 
     //transaction
     Route::get('/api/admin/transaction', 'System\PaymentController@getBillTransactionByVendor');
     Route::post('api/admin/sms-bill', 'System\PaymentController@sendBillSMS');
-
 //upload image
     Route::any('api/admin/upload-image', 'System\UploadController@updateImage');
 
 //shift api
     Route::post('api/admin/shifts', 'System\ShiftController@addShiftForEmployee');
-
     Route::any('tests3', 'System\UploadController@testS3');
     Route::any('testmms', 'System\MarketingController@sendMMSForMkt');
 
@@ -155,7 +157,6 @@ Route::group(['middleware' => ['web']], function () {
 
 
 //       api/admin/send-billsms
-
     Route::any('api/admin/dendivsfaker', 'System\EmployeeManageController@getEmployeeForFakerNHOLAPHAIDELETECAIDOQUYNAY');
 });
 //Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
@@ -174,6 +175,12 @@ Route::group(['middleware' => ['web']], function () {
 
 //api for admin
 
+//ios
+
+Route::get('api/ios/cus', 'IOS\CustomerController@listDataForIOS');
+//Route::post('api/ios/list_all_cus', 'IOS\CustomerController@listDataForIOS');
+//Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
+//Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;
 
 
 Route::any('/test', 'Booking\AppointmentController@confirmBooking');

@@ -44,13 +44,14 @@ class ScheduleTask  extends MyModel
         return $this->decodeStd($data);
     }
 
-    function confirmBooking($vendorid,$cus_id,$service_id,$employee_id,$start_time,$end_time,$day){
+    function confirmBooking($vendorid,$cus_id,$service_id,$employee_id,$start_time,$end_time,$day,$key_1){
       $data =   DB::table('scheduletask')
           ->insertGetId(['vendor'=>$vendorid,'user_ids'=>$employee_id,'cus_id'=>$cus_id,
-              'services_ids'=>$service_id,'day'=>$day,'start_time'=>$start_time,'end_time'=>$end_time,'status'=>'booking']);
+              'services_ids'=>$service_id,'day'=>$day,'start_time'=>$start_time,'end_time'=>$end_time,'status'=>'booking','key_1'=>$key_1]);
 
         return $data;
     }
+
 
     function confirmCheckin($vendorid,$cus_id,$service_id,$employee_id,$start_time,$end_time,$day){
         DB::table('scheduletask')
@@ -78,14 +79,12 @@ class ScheduleTask  extends MyModel
             ->where('cus_id',$cus_id)
             ->whereRaw('day = CURDATE()')
             ->update(['task'=>'checkin']);
-
     }
 
     function getCusBooking($vendorId,$cusID){
        $data =  DB::table('scheduletask')
-
             ->where('scheduletask.status','=','booking')
-      ->where('scheduletask.cus_id','=',$cusID)
+            ->where('scheduletask.cus_id','=',$cusID)
            ->whereRaw('scheduletask.day = CURDATE()')
             ->where('scheduletask.vendor',$vendorId)
             ->get();

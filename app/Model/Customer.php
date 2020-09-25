@@ -51,9 +51,8 @@ class Customer extends MyModel
             ->where('vendor', $vendorID)
             ->where('id',$cusId)
             ->get();
-
-
         return $this->decodeStd($data);
+
     }
 
     function addCustomerByBooking($vendorId,$phone_number , $name ,$amount_paid ,$point){
