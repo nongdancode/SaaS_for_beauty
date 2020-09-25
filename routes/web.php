@@ -178,6 +178,20 @@ Route::group(['middleware' => ['web']], function () {
 //ios
 
 Route::get('api/ios/cus', 'IOS\CustomerController@listDataForIOS');
+Route::post('api/ios/cus', 'IOS\CustomerController@updateCusIos') ;
+Route::put('api/ios/cus', 'IOS\CustomerController@updateCusIos') ;
+Route::delete('api/ios/cus/{id}', 'IOS\CustomerController@deleteCusIosData') ;
+
+Route::post('api/ios/card_member', 'IOS\CustomerController@assginCardForCus') ;
+Route::put('api/ios/card_member', 'IOS\CustomerController@assginCardForCus') ;
+
+
+Route::delete('api/ios/card_member/{id}', 'IOS\CustomerController@unsignCard') ;
+//
+//Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor');
+//Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee') ;
+//Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
+//Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;
 //Route::post('api/ios/list_all_cus', 'IOS\CustomerController@listDataForIOS');
 //Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
 //Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;

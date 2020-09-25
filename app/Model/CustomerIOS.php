@@ -13,7 +13,7 @@ class CustomerIOS  extends MyModel
     }
     function listIOSCustomer($vendor){
         $data = DB::table('customer')
-            ->join('membercard','membercard.cus_id','=','customer.id')
+            ->leftjoin('membercard','membercard.cus_id','=','customer.id')
             ->select('customer.id','customer.name','customer.phone_number','customer.email',
                 'customer.birthday','customer.visit_count','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
             ->where('customer.vendor','=',$vendor)
@@ -27,5 +27,19 @@ class CustomerIOS  extends MyModel
 
         return $data;
     }
+
+    function deleteCustomer($vendor,$customerID){
+       $data =  DB::table('customer')
+           ->where('vendor_id',$vendor)
+           ->where('id',$customerID)
+           ->delete();
+    }
+    function unsignCard($vendor,$card_number){
+        $data =  DB::table('customer')
+            ->where('vendor_id',$vendor)
+            ->where('card_number',$card_number)
+            ->delete();
+    }
+
 
 }
