@@ -14,9 +14,9 @@ class CustomerIOS  extends MyModel
     function listIOSCustomer($vendor){
         $data = DB::table('customer')
             ->join('membercard','membercard.cus_id','=','customer.id')
-            ->select('customer.name','customer.phone_number','customer.email',
+            ->select('customer.id','customer.name','customer.phone_number','customer.email',
                 'customer.birthday','customer.visit_count','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
-            ->where('customer.vendor','like',$vendor)
+            ->where('customer.vendor','=',$vendor)
             ->get();
 
         return  $this->decodeStd($data);
