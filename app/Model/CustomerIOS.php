@@ -40,6 +40,17 @@ class CustomerIOS  extends MyModel
             ->where('card_number',$card_number)
             ->delete();
     }
+    function getCusById($vendor,$cus_id){
+        $data = DB::table('customer')
+            ->leftjoin('membercard','membercard.cus_id','=','customer.id')
+            ->select('customer.id','customer.name','customer.phone_number','customer.email',
+                'customer.birthday','customer.visit_count','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
+            ->where('customer.vendor','=',$vendor)
+            ->where('customer.id','=',$cus_id)
+            ->get();
+
+        return  $this->decodeStd($data);
+    }
 
 
 }
