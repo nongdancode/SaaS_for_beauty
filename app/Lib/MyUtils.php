@@ -90,4 +90,13 @@ class MyUtils
       $return['error'] = $error;
       return  $return;
     }
+
+    public function returnIoss($data,$code,$error,$total){
+        $return = [];
+        $return['data'] = $data;
+        $return['code'] = $code;
+        $return['error'] = $error;
+        $return['total'] = $total;
+        return  $return;
+    }
 }
