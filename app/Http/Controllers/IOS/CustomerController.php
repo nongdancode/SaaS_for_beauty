@@ -40,7 +40,7 @@ class CustomerController  extends Controller
 
   function deleteCusIosData(Request $request){
       $cus_id = $request->id;
-         $this->iosUser->deleteCustomer($this->vendor,$cus_id);
+      $this->iosUser->deleteCustomer($this->vendor,$cus_id);
       $data2 = $this->iosUser->listIOSCustomer($this->vendor);
       return response($this->util->returnHttps($data2,0,''))->header('X-Total-Count',sizeof($data2));
   }

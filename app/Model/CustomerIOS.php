@@ -30,7 +30,7 @@ class CustomerIOS  extends MyModel
 
     function deleteCustomer($vendor,$customerID){
        $data =  DB::table('customer')
-           ->where('vendor_id',$vendor)
+           ->where('vendor',$vendor)
            ->where('id',$customerID)
            ->delete();
     }
