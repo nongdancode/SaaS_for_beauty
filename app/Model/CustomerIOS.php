@@ -30,12 +30,12 @@ class CustomerIOS  extends MyModel
 
     function deleteCustomer($vendor,$customerID){
        $data =  DB::table('customer')
-           ->where('vendor_id',$vendor)
+           ->where('vendor',$vendor)
            ->where('id',$customerID)
            ->delete();
     }
     function unsignCard($vendor,$card_number){
-        $data =  DB::table('customer')
+        $data =  DB::table('membercard')
             ->where('vendor_id',$vendor)
             ->where('card_number',$card_number)
             ->delete();

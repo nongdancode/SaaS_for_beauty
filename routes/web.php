@@ -179,7 +179,7 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::get('api/ios/cus', 'IOS\CustomerController@listDataForIOS');
 Route::post('api/ios/cus', 'IOS\CustomerController@updateCusIos');
-Route::put('api/ios/cus', 'IOS\CustomerController@updateCusIos') ;
+Route::put('api/ios/cus', 'IOS\CustomerController@updateCusIos');
 Route::delete('api/ios/cus/{id}', 'IOS\CustomerController@deleteCusIosData') ;
 Route::get('api/ios/cus/{id}', 'IOS\CustomerController@getcusById');
 
