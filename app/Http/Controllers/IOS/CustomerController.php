@@ -42,14 +42,14 @@ class CustomerController  extends Controller
       $cus_id = $request->id;
       $this->iosUser->deleteCustomer($this->vendor,$cus_id);
       $data2 = $this->iosUser->listIOSCustomer($this->vendor);
-      return response($this->util->returnHttps($data2,0,''))->header('X-Total-Count',sizeof($data2));
+      return response($this->util->returnHttps($data2,0,''))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data2));
   }
 
   function assginCardForCus(Request $request){
     $data = $request->all();
     $this->iosUser->assignaCardForCustomr($this->vendor,$data['cus_id'],$data['card_number'],$data['card_exp'],$data['card_type'],$data['card_issue']);
       $data2 = $this->iosUser->listIOSCustomer($this->vendor);
-      return response($this->util->returnHttps($data2,0,''))->header('X-Total-Count',sizeof($data2));
+      return response($this->util->returnHttps($data2,0,''))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data2));
 
   }
 
@@ -57,13 +57,13 @@ class CustomerController  extends Controller
       $data = $request->all();
       $this->iosUser->unsignCard($this->vendor,$data['card_number']);
       $data2 = $this->iosUser->listIOSCustomer($this->vendor);
-      return response($this->util->returnHttps($data2,0,''))->header('X-Total-Count',sizeof($data2));
+      return response($this->util->returnHttps($data2,0,''))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data2));
   }
 
   function getcusById(Request $request){
       $cus_id = $request->id;
       $data2 = $this->iosUser->getCusById($this->vendor,$cus_id);
-      return response($this->util->returnHttps($data2,0,''))->header('X-Total-Count',sizeof($data2));
+      return response($this->util->returnHttps($data2,0,''))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data2));
 
 
   }
