@@ -61,7 +61,7 @@ class CustomerController  extends Controller
   }
 
   function getcusById(Request $request){
-      $cus_id = $request->id;
+      $cus_id = $request->cus_id;
       $data2 = $this->iosUser->getCusById($this->vendor,$cus_id);
       return  response($this->util->returnIoss($data2,0,'',sizeof($data2)))->header('X-Total-Count',sizeof($data2));
 
