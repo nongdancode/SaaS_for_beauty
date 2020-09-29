@@ -45,7 +45,8 @@ class CustomerIOS  extends MyModel
         $data = DB::table('customer')
             ->leftjoin('membercard','membercard.cus_id','=','customer.id')
             ->select('customer.id','customer.name','customer.phone_number','customer.email',
-                'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number','membercard.card_exp_date','membercard.card_issue')
+                'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number'
+                ,'membercard.card_exp_date','membercard.card_issue','membercard.card_type')
             ->where('customer.vendor','=',$vendor)
             ->get();
 
