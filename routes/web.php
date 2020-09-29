@@ -163,9 +163,11 @@ Route::group(['middleware' => ['web']], function () {
     //ios
     Route::get('api/ios/cus', 'IOS\CustomerController@listDataForIOS');
     Route::get('api/ios/cus/{cus_id}', 'IOS\CustomerController@getcusById');
-    Route::post('api/ios/cus', 'IOS\CustomerController@updateCusIos');
+    Route::post('api/ios/cus', 'IOS\CustomerController@addNewCusIos');
     Route::put('api/ios/cus', 'IOS\CustomerController@updateCusIos');
-    Route::delete('api/ios/cus/{id}', 'IOS\CustomerController@deleteCusIosData') ;
+    Route::put('api/ios/cus/{id}', 'IOS\CustomerController@updateCusIos');
+//    Route::delete('api/ios/cus/{id}', 'IOS\CustomerController@deleteCusIosData') ;
+    Route::delete('api/ios/cus', 'IOS\CustomerController@deleteCusIosData') ;
 
 
 
