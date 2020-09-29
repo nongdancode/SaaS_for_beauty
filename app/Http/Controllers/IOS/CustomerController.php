@@ -18,11 +18,13 @@ class CustomerController  extends Controller
   private $customer;
   private $vendor = 2;
   private $util;
+  private $config;
 
     function __construct(Request $request){
         $this->util = new MyUtils();
         $this->iosUser = new CustomerIOS();
         $this->customer = new Customer();
+        $this->config = new ConfigVendorModel();
     }
   function listDataForIOS(){
       $data = $this->iosUser->listIOSCustomer($this->vendor);
@@ -90,7 +92,16 @@ class CustomerController  extends Controller
       $cus_id = $request->cus_id;
       $data2 = $this->iosUser->getCusById($this->vendor,$cus_id);
       return  response($this->util->returnIoss($data2,0,'',sizeof($data2)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data2));
-
-
   }
+
+  function setConfig(Request $request){
+        $data = $request->all();
+        $this->config->setConfig($this->vendor,$data['config']);
+  }
+    function getConfig(Request $request){
+        $data = $request->all();
+        $data2 = $this->config->getConfig($this->vendor);
+        return response($this->util->returnIoss($data2,0,'',sizeof($data2)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data2));
+    }
+
 }

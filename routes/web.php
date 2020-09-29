@@ -166,6 +166,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('api/ios/cus', 'IOS\CustomerController@addNewCusIos');
     Route::put('api/ios/cus', 'IOS\CustomerController@updateCusIos');
     Route::put('api/ios/cus/{id}', 'IOS\CustomerController@updateCusIos');
+
+
 //    Route::delete('api/ios/cus/{id}', 'IOS\CustomerController@deleteCusIosData') ;
     Route::delete('api/ios/cus', 'IOS\CustomerController@deleteCusIosData') ;
 
@@ -175,6 +177,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('api/ios/card_member', 'IOS\CustomerController@assginCardForCus') ;
     Route::put('api/ios/card_member', 'IOS\CustomerController@assginCardForCus') ;
     Route::delete('api/ios/card_member/{id}', 'IOS\CustomerController@unsignCard') ;
+
+    Route::get('api/ios/config', 'IOS\CustomerController@setConfig');
+    Route::post('api/ios/config', 'IOS\CustomerController@getConfig');
+
 });
 //Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
 //Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
