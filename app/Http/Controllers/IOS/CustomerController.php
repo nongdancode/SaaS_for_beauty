@@ -35,15 +35,17 @@ class CustomerController  extends Controller
   function updateCusIos(Request $request){
     $data = $request ->all();
     $cus = $this->iosUser->customerIOS($data);
+    $err = "";
 
-    $data3 = $this->iosUser->AssigneCustomerForIOS($this->vendor,$cus['name'],$cus['phone_number'],$cus['email'],$cus['birthday'],$cus['visit_count']);
-    if($cus['card_number']!= null){
-        $AssignCard = $this->iosUser->assignaCardForCustomer($this->vendor,$data['id'],$cus['card_number'],$cus['card_exp_date'],$cus['card_type'],$cus['card_issue']);
-    }elseif ($cus['card_number']== null){
+    $this->iosUser->AssigneCustomerForIOS($this->vendor,$data['name'],$data['phone_number'],$data['email'],$data['birthday'],$data['visit_count']);
+    if($data['card_number']!= ""){
+        $AssignCard = $this->iosUser->assignaCardForCustomer($this->vendor,$data['id'],$data['card_number'],$data['card_exp_date'],$data['card_type'],$data['card_issue']);
+    }elseif ($cus['card_number']== ""){
         $this->iosUser->unsignCard($this->vendor,$cus['id']);
+        $err = 'delete card success';
     }
      $data2 = $this->iosUser->listIOSCustomer($this->vendor);
-      return  response($this->util->returnIoss($data3,0,'',sizeof($data)))
+      return  response($this->util->returnIoss("",0,$err,sizeof($data)))
           ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($cus));
 
   }
@@ -51,9 +53,9 @@ class CustomerController  extends Controller
       $data = $request ->all();
       $cus = $this->iosUser->customerIOS($data);
       $data3 = $this->iosUser->AssigneCustomerForIOS($this->vendor,$cus['name'],$cus['phone_number'],$cus['email'],$cus['birthday'],$cus['visit_count']);
-      $data['card_type'] = 'test';
-      if($cus['card_number']!= null){
-          $AssignCard = $this->iosUser->assignaCardForCustomer($this->vendor,$data['id'],$cus['card_number'],$cus['card_exp_date'],$cus['card_type'],$cus['card_issue']);
+
+      if($cus['card_number']!= ""){
+          $AssignCard = $this->iosUser->assignaCardForCustomer($this->vendor,$cus['id'],$cus['card_number'],$cus['card_exp_date'],$cus['card_type'],$cus['card_issue']);
       }
       return  response($this->util->returnIoss($data3,0,'',sizeof($data)))
           ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($cus));
