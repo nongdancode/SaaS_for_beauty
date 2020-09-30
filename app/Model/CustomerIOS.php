@@ -83,5 +83,43 @@ class CustomerIOS  extends MyModel
         return  $this->decodeStd($data);
     }
 
+    function filterByPhoneAndName($vendor,$phone,$name){
+        $data = DB::table('customer')
+            ->leftjoin('membercard','membercard.cus_id','=','customer.id')
+            ->select('customer.id','customer.name','customer.phone_number','customer.email',
+                'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number'
+                ,'membercard.card_exp_date','membercard.card_issue','membercard.card_type')
+            ->where('customer.vendor','=',$vendor)
+            ->where('customer.name','like','%'.$name.'%')
+            ->where('customer.phone_number','like','%'.$phone.'%')
+            ->get();
+
+        return  $this->decodeStd($data);
+    }
+    function filterByPhone($vendor,$phone){
+        $data = DB::table('customer')
+            ->leftjoin('membercard','membercard.cus_id','=','customer.id')
+            ->select('customer.id','customer.name','customer.phone_number','customer.email',
+                'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number'
+                ,'membercard.card_exp_date','membercard.card_issue','membercard.card_type')
+            ->where('customer.vendor','=',$vendor)
+            ->where('customer.phone_number','like','%'.$phone.'%')
+            ->get();
+
+        return  $this->decodeStd($data);
+    }
+    function filterByName($vendor,$name){
+        $data = DB::table('customer')
+            ->leftjoin('membercard','membercard.cus_id','=','customer.id')
+            ->select('customer.id','customer.name','customer.phone_number','customer.email',
+                'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number'
+                ,'membercard.card_exp_date','membercard.card_issue','membercard.card_type')
+            ->where('customer.vendor','=',$vendor)
+            ->where('customer.name','like','%'.$name.'%')
+            ->get();
+
+        return  $this->decodeStd($data);
+    }
+
 
 }
