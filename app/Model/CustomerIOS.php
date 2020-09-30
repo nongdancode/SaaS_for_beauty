@@ -120,6 +120,31 @@ class CustomerIOS  extends MyModel
 
         return  $this->decodeStd($data);
     }
+    function filterByLastVisit($vendor,$lastVisit){
+    $data = DB::table('customer')
+        ->leftjoin('membercard','membercard.cus_id','=','customer.id')
+        ->select('customer.id','customer.name','customer.phone_number','customer.email',
+            'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number'
+            ,'membercard.card_exp_date','membercard.card_issue','membercard.card_type')
+        ->where('customer.vendor','=',$vendor)
+        ->where('customer.last_visit','>',$lastVisit)
+        ->get();
+
+    return  $this->decodeStd($data);
+}
+    function filterByCardexp($vendor,$card_exp){
+        $data = DB::table('customer')
+            ->leftjoin('membercard','membercard.cus_id','=','customer.id')
+            ->select('customer.id','customer.name','customer.phone_number','customer.email',
+                'customer.birthday','customer.visit_count','customer.last_visit','membercard.card_number'
+                ,'membercard.card_exp_date','membercard.card_issue','membercard.card_type')
+            ->where('customer.vendor','=',$vendor)
+            ->where('membercard.card_exp_date','>',$card_exp)
+            ->get();
+
+        return  $this->decodeStd($data);
+    }
+
 
 
 }

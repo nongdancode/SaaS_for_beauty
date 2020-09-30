@@ -46,7 +46,18 @@ class CustomerController  extends Controller
          $data = $this->iosUser->filterByPhone($this->vendor,$cus_id2['phone_number']);
          return  response($this->util->returnIoss($data,0,'',sizeof($data)))
              ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
-     }else{
+     }
+      if(isset($cus_id2['last_visit'])){
+          $data = $this->iosUser->filterByLastVisit($this->vendor,$cus_id2['last_visit']);
+          return  response($this->util->returnIoss($data,0,'',sizeof($data)))
+              ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+      }
+      if(isset($cus_id2['card_exp_date'])){
+          $data = $this->iosUser->filterByCardexp($this->vendor,$cus_id2['card_exp_date']);
+          return  response($this->util->returnIoss($data,0,'',sizeof($data)))
+              ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+      }
+     else{
 
          $data = $this->iosUser->listIOSCustomer($this->vendor);
          return  response($this->util->returnIoss($data,0,'',sizeof($data)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
