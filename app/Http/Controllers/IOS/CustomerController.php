@@ -26,9 +26,34 @@ class CustomerController  extends Controller
         $this->customer = new Customer();
         $this->config = new ConfigVendorModel();
     }
-  function listDataForIOS(){
-      $data = $this->iosUser->listIOSCustomer($this->vendor);
-      return  response($this->util->returnIoss($data,0,'',sizeof($data)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+  function listDataForIOS(Request $request){
+      $data = $request->all();
+      $cus_id = json_decode($request->filter);
+      $cus_id2 = json_decode(json_encode($cus_id),true);
+
+//      return  response($this->util->returnIoss(isset($cus_id2['name']),0,'',sizeof($data)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+     if(isset($cus_id2['name']) && isset($cus_id2['phone_number'])){
+        $data = $this->iosUser->filterByPhoneAndName($this->vendor,$cus_id2['phone_number'],$cus_id2['name']);
+         return  response($this->util->returnIoss($data,0,'',sizeof($data)))
+             ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+     }
+     if(isset($cus_id2['name'])){
+         $data = $this->iosUser->filterByName($this->vendor,$cus_id2['name']);
+         return  response($this->util->returnIoss($data,0,'',sizeof($data)))
+             ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+     }
+     if(isset($cus_id2['phone_number'])){
+         $data = $this->iosUser->filterByPhone($this->vendor,$cus_id2['phone_number']);
+         return  response($this->util->returnIoss($data,0,'',sizeof($data)))
+             ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+     }else{
+
+         $data = $this->iosUser->listIOSCustomer($this->vendor);
+         return  response($this->util->returnIoss($data,0,'',sizeof($data)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
+
+     }
+//      $data = $this->iosUser->listIOSCustomer($this->vendor);
+//      return  response($this->util->returnIoss($data,0,'',sizeof($data)))->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($data));
 
   }
 
