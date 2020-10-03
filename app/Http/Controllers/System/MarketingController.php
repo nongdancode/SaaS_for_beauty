@@ -58,7 +58,7 @@ class MarketingController extends Controller
 
             try {
                 $this->TwilloSMS->SendMessageByNumber($data['message'], $cus_phone[0]['phone_number']);
-                return $this->util->returnHttps( '',0,'');
+                return $this->util->returnHttps( $i,0,'');
             } catch (ConfigurationException $e) {
                 return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
             } catch (TwilioException $e) {
@@ -83,7 +83,7 @@ class MarketingController extends Controller
           $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],$this->VendorId);
           try {
               $this->TwilloSMS->SendMMSbyNumber($message, $cus_phone[0]['phone_number'], $media);
-              return $this->util->returnHttps( '',0,'');
+              return $this->util->returnHttps( $i,0,'');
           } catch (ConfigurationException $e) {
               return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
           } catch (TwilioException $e) {
