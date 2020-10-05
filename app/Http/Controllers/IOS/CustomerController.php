@@ -90,11 +90,14 @@ class CustomerController  extends Controller
       $cus = $this->iosUser->customerIOS($data);
       $data3 = $this->iosUser->AssigneCustomerForIOS($this->vendor,$cus['name'],$cus['phone_number'],$cus['email'],$cus['birthday'],$cus['visit_count']);
       $addedCus = $this->customer->getCusByPhoneVendor($this->vendor,$cus['phone_number']);
-      if($cus['card_number']!= ""){
-          $AssignCard = $this->iosUser->assignaCardForCustomer($this->vendor, $addedCus['id'],$cus['card_number'],$cus['card_exp_date'],$cus['card_type'],$cus['card_issue']);
-      }
-      return  response($this->util->returnIoss($data3,0,'',sizeof($data)))
+      return  response($this->util->returnIoss($addedCus,0,'',sizeof($data)))
           ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($cus));
+//
+//      if($cus['card_number']!= ""){
+//          $AssignCard = $this->iosUser->assignaCardForCustomer($this->vendor, $addedCus['id'],$cus['card_number'],$cus['card_exp_date'],$cus['card_type'],$cus['card_issue']);
+//      }
+//      return  response($this->util->returnIoss($data3,0,'',sizeof($data)))
+//          ->header('Access-Control-Allow-Headers: origin, x-requested-with, content-type, x-total-count',sizeof($cus));
   }
 
   function deleteCusIosData(Request $request){
