@@ -54,5 +54,8 @@ class CustomerManagementController extends Controller
         return $this->util->returnHttps($data ,0,'');
 
     }
+    function deleteCus(Request $request){
+
+    }
 
 }
