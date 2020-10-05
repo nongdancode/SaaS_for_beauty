@@ -18,7 +18,7 @@ class CustomerIOS  extends MyModel
          }if (!isset($customer['phone_number'])){
              $customer['phone_number'] = null;
          }if (!isset($customer['visit_count'])){
-             $customer['visit_count'] = null;
+             $customer['visit_count'] = 0;
          }if (!isset($customer['last_visit'])){
              $customer['last_visit'] = null;
          }if (!isset($customer['card_number'])){
