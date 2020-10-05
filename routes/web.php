@@ -79,6 +79,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
     Route::put('/api/admin/marketing', 'System\MarketingController@editCustomer');
     Route::get('/api/admin/history-customer/{id}', 'System\CustomerManagementController@showCustomerHistory');
+    Route::delete(' /api/admin/customers/{ids}', 'System\CustomerManagementControllerr@deleteCus');
 
 
     //report
@@ -182,33 +183,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('api/ios/config', 'IOS\CustomerController@getConfig');
 
 });
-//Route::any('/api/booking/list_services', 'Booking\AppointmentController@getReadyServices');
-//Route::any('/api/booking/list_employee', 'Booking\AppointmentController@getAllFromEmployee');
-//Route::get('/api/booking/confirm', 'Booking\AppointmentController@confirmBooking');
-//
-//
-//
-//Route::any('/api/admin/mkt_customer', 'System\MarketingController@flectCustomerForMarketing')  ;
-//Route::any('/api/admin/sms_sending', 'System\MarketingController@sendSMSForMkt');
-//Route::any('/api/admin/payment', 'System\PaymentController@getTransactionByVendor');
-//
-//
-//Route::any('api/admin/customer_report', 'System\ReportController@apiCustomerReportByPieChart');
-//Route::any('api/admin/payment_report', 'System\ReportController@apiPaymentReportByPieChart')  ;
-
-//api for admin
-
-//ios
-
-
-//
-//Route::get('api/admin/employees', 'System\EmployeeManageController@getAllEmployeeFromVendor');
-//Route::post('api/admin/employees', 'System\EmployeeManageController@addEmployee') ;
-//Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
-//Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;
-//Route::post('api/ios/list_all_cus', 'IOS\CustomerController@listDataForIOS');
-//Route::put('api/admin/employees', 'System\EmployeeManageController@editEmployee') ;
-//Route::delete('api/admin/employees/{id}', 'System\EmployeeManageController@deleteEmployee') ;
 
 
 Route::any('/test', 'Booking\AppointmentController@confirmBooking');
