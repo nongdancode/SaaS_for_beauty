@@ -182,6 +182,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('api/ios/config', 'IOS\CustomerController@setConfig');
     Route::post('api/ios/config', 'IOS\CustomerController@getConfig');
 
+    Route::post('/api/ios/send_sms', 'IOS\MarketingController@sendSMSForMkt');
+    Route::post('/api/ios/send_mms', 'IOS\MarketingController@sendMMSForMkt');
 });
 
 
