@@ -58,7 +58,7 @@ class MarketingController
 
         for($i = 0 ; $i < sizeof($data['customerIds']);$i++){
 
-            $media = $data['images'];
+            $media = $data['images'][0]['data'];
             $message = $data['message'];
 
             $cus_phone = $this->customerModel->getCustomerByIdVendor($data['customerIds'][$i],$this->VendorId);
