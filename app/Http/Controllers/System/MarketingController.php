@@ -90,7 +90,6 @@ class MarketingController extends Controller
               return $this->util->returnHttps( $e->getMessage(),1,$e->getMessage());
           }
 
-
       }
         return $this->util->returnHttps( '',0,'');
 
