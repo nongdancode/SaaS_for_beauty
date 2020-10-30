@@ -171,6 +171,13 @@ class Customer extends MyModel
 
     }
 
+    function deleteCustomer($vendor,$customerId){
+        $data = DB::table('customer')
+            ->where('vendor',$vendor)
+            ->where('id',$customerId)
+            ->delete();
+    }
+
 
 
 }

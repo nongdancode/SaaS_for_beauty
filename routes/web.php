@@ -79,7 +79,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/api/admin/payment-manager', 'System\PaymentController@getTransactionByVendor');
     Route::put('/api/admin/marketing', 'System\MarketingController@editCustomer');
     Route::get('/api/admin/history-customer/{id}', 'System\CustomerManagementController@showCustomerHistory');
-    Route::delete(' /api/admin/customers/{ids}', 'System\CustomerManagementControllerr@deleteCus');
+    Route::post('/api/admin/marketing/delete-customer', 'System\CustomerManagementController@deleteCus');
 
 
     //report

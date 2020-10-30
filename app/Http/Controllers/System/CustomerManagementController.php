@@ -55,7 +55,11 @@ class CustomerManagementController extends Controller
 
     }
     function deleteCus(Request $request){
-
+        $cus_ids = $request->customerIds;
+        for($i = 0; $i <sizeof($cus_ids);$i++){
+            $this->customerModel->deleteCustomer($this->vendorId,$cus_ids[$i]);
+        }
+        return $this->util->returnHttps('',0,'');
     }
 
 }
