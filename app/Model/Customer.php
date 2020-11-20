@@ -150,8 +150,8 @@ class Customer extends MyModel
         $data = DB::table('customer')
             ->join('internaltransaction','internaltransaction.cus_id','=','customer.id')
             ->join('service','service.id','=','internaltransaction.service_id')
-            ->join('user','user.id','=','internaltransaction.employee_id')
-            ->select('customer.id as id','service.service_name as service_name','user.name as staff'
+            ->join('users','users.id','=','internaltransaction.employee_id')
+            ->select('customer.id as id','service.service_name as service_name','users.name as staff'
                 ,'customer.visit_count as count','internaltransaction.note as note')
             ->where('internaltransaction.status','=','split_bill')
             ->where('internaltransaction.vendor_id','=',$vendor)
