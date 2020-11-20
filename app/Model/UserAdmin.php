@@ -55,9 +55,9 @@ class UserAdmin extends  MyModel
 
         $queryState = DB::table('scheduletask')->join('users', 'users.id', '=', 'scheduletask.user_ids')
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
-            ->select('scheduletask.user_ids as id', 'user.name', 'user.image as img', 'scheduletask.services_ids as service_id', 'service.service_name')
+            ->select('scheduletask.user_ids as id', 'users.name', 'users.image as img', 'scheduletask.services_ids as service_id', 'service.service_name')
             ->where('scheduletask.vendor', '=', $vendor)
-            ->groupBy('scheduletask.user_ids', 'user.name', 'user.image', 'scheduletask.services_ids', 'service.service_name', 'scheduletask.day')
+            ->groupBy('scheduletask.user_ids', 'users.name', 'users.image', 'scheduletask.services_ids', 'service.service_name', 'scheduletask.day')
             ->get();
         return $this->decodeStd($queryState);
     }
@@ -161,7 +161,7 @@ class UserAdmin extends  MyModel
         $queryState = DB::table('users')
             ->join('users_services','users.id','=','users_services.user_id')
             ->join('service','service.id','=','users_services.services_id')
-             ->select('users_services.user_id as user_id','user.name as user_name',
+             ->select('users_services.user_id as user_id','users.name as user_name',
                 'users_services.services_id as service_id','service.service_name')
             ->where('users_services.vendor_id',$vendor)
             ->where('users_services.services_id',$service)
