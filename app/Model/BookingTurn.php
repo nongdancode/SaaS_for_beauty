@@ -48,9 +48,9 @@ class BookingTurn  extends MyModel
     function getBookingListForVendor($vendor){
         $data =  DB::table('scheduletask')
             ->join('customer','customer.id','=','scheduletask.cus_id')
-            ->join('user','user.id','=','scheduletask.user_ids')
+            ->join('users','users.id','=','scheduletask.user_ids')
             ->join('service','service.id','=','scheduletask.services.ids')
-            ->select('customer.name as cus_name','customer.phone_number as cus_phone','user.name as staff_name'
+            ->select('customer.name as cus_name','customer.phone_number as cus_phone','users.name as staff_name'
                 ,'scheduletask.day as day','scheduletask.start_time as start_time','scheduletask.end_time as end_time',
                 '')
             ->where('scheduletask.status','=','booking')

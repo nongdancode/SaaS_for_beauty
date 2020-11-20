@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class StaffSalary extends MyModel
 {
-   protected $UserModel = 'user';
+   protected $UserModel = 'users';
    protected $SalaryDefine = 'salarydefine';
 
 
@@ -85,9 +85,9 @@ class StaffSalary extends MyModel
 
    function getCurrentBaseSalaryIncome($Vendor,$employeeId){
        $dbData = DB::table('salarydefine')
-           ->join('user','user.id','=','salarydefine.user_id')
+           ->join('users','users.id','=','salarydefine.user_id')
            ->selectRaw('(curdate() - date_add(curdate(),interval -DAY(curdate())+1 DAY))*salarydefine.description) as salary
-           ,user.name as name ,salarydefine.salary_type as type')
+           ,users.name as name ,salarydefine.salary_type as type')
 
            ->where('salarydefine.vendor_id',$Vendor)
            ->where('salarydefine.user_id',$employeeId)
@@ -98,19 +98,19 @@ class StaffSalary extends MyModel
    }
    function getSalaryInfoForAllEmployee($vendor){
        $dbData = DB::table('salarydefine')
-           ->join('user','user.id','=','salarydefine.user_id')
+           ->join('users','users.id','=','salarydefine.user_id')
            ->where('vendor_id',$vendor)
            ->get();
        return $this->decodeStd($dbData);
    }
 
-   function getIncomeMonthByMonthForEmployee($Vendor)
+   public function getIncomeMonthByMonthForEmployee($Vendor)
    {
        $dbData = DB::table('internaltransaction')
-           ->join('user','user.id','=','internaltransaction.employee_id')
-         ->selectRaw('DATE_FORMAT(internaltransaction.created_at,\'%Y-%m\') as month_salary,sum(internaltransaction.amount) as income_service,user.name as employee_name,user.id as employee_id')
+           ->join('users','users.id','=','internaltransaction.employee_id')
+         ->selectRaw('DATE_FORMAT(internaltransaction.created_at,\'%Y-%m\') as month_salary,sum(internaltransaction.amount) as income_service,users.name as employee_name,users.id as employee_id')
            ->where('internaltransaction.vendor_id','=',$Vendor)
-           ->groupBy('month_salary','user.name','user.id')
+           ->groupBy('month_salary','users.name','users.id')
            ->get();
        return $this->decodeStd($dbData);
    }

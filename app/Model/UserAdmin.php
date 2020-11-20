@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserAdmin extends  MyModel
 {
-    protected $user = "user";
+    protected $user = "users";
 
 
 
@@ -26,7 +26,7 @@ class UserAdmin extends  MyModel
 
 
     function CreateAdminUserRole($email,$name,$password,$role,$vendor){
-        $queryState = DB::table('user')->insertGetId(
+        $queryState = DB::table('users')->insertGetId(
             ['email' => $email, 'password'=> $password,'name'=>$name,'role'=> $role,'vendor'=>$vendor]
         );
 
@@ -39,7 +39,7 @@ class UserAdmin extends  MyModel
     }
 
     function CreateEmployeeForVendor($email,$name,$ssn,$role,$vendor,$phone_number,$img){
-        $queryState = DB::table('user')->insertGetId(
+        $queryState = DB::table('users')->insertGetId(
             ['email' => $email, 'ssn'=> $ssn,'name'=>$name,'role'=> $role,'vendor'=>$vendor,'phone_number'=>$phone_number,'image'=>$img]
         );
         if($queryState){
@@ -53,23 +53,23 @@ class UserAdmin extends  MyModel
     function getStaffByAllServices($vendor)
     {
 
-        $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
+        $queryState = DB::table('scheduletask')->join('users', 'users.id', '=', 'scheduletask.user_ids')
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
-            ->select('scheduletask.user_ids as id', 'user.name', 'user.image as img', 'scheduletask.services_ids as service_id', 'service.service_name')
+            ->select('scheduletask.user_ids as id', 'users.name', 'users.image as img', 'scheduletask.services_ids as service_id', 'service.service_name')
             ->where('scheduletask.vendor', '=', $vendor)
-            ->groupBy('scheduletask.user_ids', 'user.name', 'user.image', 'scheduletask.services_ids', 'service.service_name', 'scheduletask.day')
+            ->groupBy('scheduletask.user_ids', 'users.name', 'users.image', 'scheduletask.services_ids', 'service.service_name', 'scheduletask.day')
             ->get();
         return $this->decodeStd($queryState);
     }
 
     function getStaffByALlServicesVer2($vendor){
-        $queryState = DB::table('user')
-            ->join('users_services','user.id','=','users_services.user_id')
+        $queryState = DB::table($this->user)
+            ->join('users_services','users.id','=','users_services.user_id')
             ->join('service','service.id','=','users_services.services_id')
-            ->select('user.id as id','user.name','user.image as img',
+            ->select('users.id as id','users.name','users.image as img',
                 'users_services.services_id as service_id','service.service_name')
             ->where('users_services.vendor_id',$vendor)
-            ->groupBy('user.id','user.name','user.image',
+            ->groupBy('users.id','users.name','users.image',
                 'users_services.services_id','service.service_name')
             ->get();
 
@@ -77,7 +77,7 @@ class UserAdmin extends  MyModel
     }
 
     function getServicesByStaff($vendor,$staffId){
-        $queryState = DB::table('scheduletask')->join('user', 'user.id', '=', 'scheduletask.user_ids')
+        $queryState = DB::table('scheduletask')->join('users', 'users.id', '=', 'scheduletask.user_ids')
             ->join('service', 'scheduletask.services_ids', '=', 'service.id')
             ->select( 'scheduletask.services_ids as id', 'service.service_name as name','service.image as img','service.duration as stepping')
             ->where('scheduletask.vendor', '=', $vendor)
@@ -88,7 +88,7 @@ class UserAdmin extends  MyModel
     }
 
     function getStaffByVendor($vendor){
-        $queryState = DB::table('user')
+        $queryState = DB::table('users')
             ->where('vendor',$vendor)
 
             ->get();
@@ -127,7 +127,7 @@ class UserAdmin extends  MyModel
     }
 
     function AddStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
-        $queryState = DB::table('user')->insertGetId(
+        $queryState = DB::table('users')->insertGetId(
             ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','vendor'=>$vendor,'phone_number'=>$phone_number,
                 'birthday'=>$birthday,'image'=>$image,'ssn'=>$ssn]
         );
@@ -135,7 +135,7 @@ class UserAdmin extends  MyModel
     }
 
     function UpdateStaffForVendor($name,$password,$phone_number,$birthday,$image,$email,$vendor,$ssn,$role){
-        $queryState = DB::table('user')->updateOrInsert(['email'=>$email,'vendor'=>$vendor],
+        $queryState = DB::table('users')->updateOrInsert(['email'=>$email,'vendor'=>$vendor],
             ['email'=>$email, 'password'=> $password,'name'=>$name,$role=> 'staff','phone_number'=>$phone_number,
                 'birthday'=>$birthday,'image'=>$image,'ssn'=>$ssn]
             );
@@ -158,10 +158,10 @@ class UserAdmin extends  MyModel
     }
 
     function getStaffByVendorService($vendor,$service){
-        $queryState = DB::table('user')
-            ->join('users_services','user.id','=','users_services.user_id')
+        $queryState = DB::table('users')
+            ->join('users_services','users.id','=','users_services.user_id')
             ->join('service','service.id','=','users_services.services_id')
-             ->select('users_services.user_id as user_id','user.name as user_name',
+             ->select('users_services.user_id as user_id','users.name as user_name',
                 'users_services.services_id as service_id','service.service_name')
             ->where('users_services.vendor_id',$vendor)
             ->where('users_services.services_id',$service)
@@ -181,7 +181,7 @@ class UserAdmin extends  MyModel
     }
 
     function getInforStaff($vendor,$employee){
-        $queryState = DB::table('user')
+        $queryState = DB::table('users')
             ->where('vendor',$vendor)
             ->where('id',$employee)
             ->get();
@@ -190,7 +190,7 @@ class UserAdmin extends  MyModel
 
     function editEmployee($name,$email,$img,$password,$phone_number,$social_number,$vendor,$id)
     {
-        $queryState = DB::table('user')
+        $queryState = DB::table('users')
 
             ->where('vendor',$vendor)
             ->where('id',$id)
@@ -206,7 +206,7 @@ class UserAdmin extends  MyModel
             ->delete();
 
 
-        $dbData2 = DB::table('user')
+        $dbData2 = DB::table('users')
             ->where('vendor',$vendor)
             ->where('id',$employee_id)
             ->delete();
